@@ -8,9 +8,6 @@ import { CategoryMenu } from "@/components/category-menu";
 import { useSearchParams } from "react-router-dom"; 
 import './styles.css';
 
-// MUDANÇA: Lista definitiva dos 8 produtos mais populares (para duas linhas de 4)
-const TOP_8_PRODUCT_IDS = [1, 2, 3, 4, 5, 6, 7, 8]; 
-
 export const HomePage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(false);
@@ -19,34 +16,34 @@ export const HomePage = () => {
   const { findAll } = ProductService;
   const [searchParams, setSearchParams] = useSearchParams(); 
 
-  const categoryIdParam = searchParams.get('category')?.toLowerCase();
-  const selectedCategoryId = categoryIdParam ? parseInt(categoryIdParam) : undefined;
-  
-  // MUDANÇA: Função de carregamento focada em obter os 8 produtos (e ignorar filtro de URL por enquanto)
   const loadProducts = useCallback(async () => { 
     setLoading(true);
-    // Buscar TODOS os produtos (a API retorna 12)
-    const response = await findAll(undefined); 
+    try {
+        const response = await findAll(undefined); 
 
-    if (response.success && Array.isArray(response.data)) {
-      const allProducts = response.data as IProduct[];
-      
-      // FILTRO: Mapeia e reordena para exibir apenas os 8 produtos definidos
-      const topProducts = TOP_8_PRODUCT_IDS
-        .map(id => allProducts.find(p => p.id === id)) 
-        .filter(p => p !== undefined) as IProduct[]; 
-      
-      setProducts(topProducts);
-    } else {
-      setProducts([]);
+        if (response.success && Array.isArray(response.data)) {
+            const allProducts = response.data as IProduct[];
+            
+            // CORREÇÃO: Pega os primeiros 8 produtos da lista, independente do ID
+            const topProducts = allProducts.slice(0, 8);
+            
+            setProducts(topProducts);
+        } else {
+            setProducts([]);
+        }
+    } catch (error) {
+        console.error("Erro ao carregar produtos", error);
+        setProducts([]);
+    } finally {
+        setLoading(false);
     }
-    setLoading(false);
   }, [findAll]);
 
   useEffect(() => {
     loadProducts();
-  }, []); 
+  }, [loadProducts]); 
 
+  // ... (Mantenha o resto das funções: handleSelectCategory, etc.)
   const handleSelectCategory = (categoryId?: number) => { 
     if (categoryId) {
         setSearchParams({ category: String(categoryId) });
@@ -56,40 +53,44 @@ export const HomePage = () => {
     setIsMenuVisible(false);
   };
   
-  const bannerPlaceholderUrl = "https://via.placeholder.com/1200x200?text=TABULA+BANNER+PLACEHOLDER"; 
+  const bannerPlaceholderUrl = "https://placehold.co/1200x200?text=Banner+Promocao"; 
   
   return (
     <div className="pt-0"> 
       <Toast ref={toast} />
       
-      {/* 1. SEÇÃO DO BANNER e NAVBANNER */}
       <section className="mb-4">
-        <a href="/products/show">
-          <img src={bannerPlaceholderUrl} className="w-full" alt="Banner Promoção" style={{ display: 'block' }} /> 
+        <a href="/products">
+          <img src={bannerPlaceholderUrl} className="w-full" alt="Banner Promoção" style={{ display: 'block', maxHeight: '300px', objectFit: 'cover' }} /> 
         </a>
       </section>
       <div style={{ height: '5vh', backgroundColor: '#5c0000' }} className="mb-4"></div>
 
-      {/* 2. SEÇÃO DE LISTAGEM (.Lista) */}
       <div className="Lista">
-        <div className="Lista-header flex align-items-center mb-3">
+        <div className="Lista-header flex align-items-center mb-3 px-4">
           <i className="pi pi-chevron-right text-3xl mr-2" style={{ color: '#2e0000' }} />
           <h2 className="text-2xl font-bold" style={{ color: '#2e0000' }}>Produtos mais populares</h2>
         </div> 
 
-        {/* Usando o Grid CSS Nativo (4x1) */}
         <div className="produtos-container"> 
           {loading ? (
-            <p className="col-12 text-center">Loading products...</p> 
+             <div className="col-12 text-center p-5">
+                <i className="pi pi-spin pi-spinner text-4xl" style={{color: '#800000'}}></i>
+             </div>
           ) : (
-            // MUDANÇA: Renderiza os 8 produtos filtrados
             products.map((product) => (
               <div key={product.id}> 
                 <ProductCard product={product} /> 
               </div>
             ))
           )}
-          {products.length === 0 && !loading && <p className="col-12 text-center">No popular products found.</p>} 
+          
+          {!loading && products.length === 0 && (
+             <div className="col-12 text-center p-5">
+                <i className="pi pi-inbox text-4xl mb-3 block text-gray-400"></i>
+                <p>Nenhum produto encontrado.</p>
+             </div>
+          )} 
         </div>
       </div>
       
