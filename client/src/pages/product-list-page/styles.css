@@ -1,0 +1,120 @@
+/* client/src/pages/product-list-page/styles.css */
+
+/* --- Cabeçalho e Grid (Estrutura) --- */
+.lista-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.produtos-container {
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+/* --- Estilos Decorativos e Estados (Loading/Vazio) --- */
+
+/* Faixa cinza decorativa no topo */
+.decorative-strip {
+    height: 20px;
+    background-color: #e0e0e0;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+/* Ícone e Título do cabeçalho */
+.header-icon {
+    color: #800000; /* Vermelho Tabula */
+    margin-right: 0.5rem;
+}
+
+.header-title {
+    color: #800000; /* Vermelho Tabula */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Loading Spinner - Centralizado na tela toda */
+.loading-container {
+    grid-column: 1 / -1; /* Ocupa todas as colunas do grid */
+    text-align: center;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spinner-icon {
+    color: #800000;
+}
+
+/* Mensagem de "Não encontrado" */
+.empty-message {
+    grid-column: 1 / -1; /* Ocupa todas as colunas do grid */
+    text-align: center;
+    font-size: 1.25rem;
+    padding: 3rem;
+    color: #666;
+}
+
+/* Responsividade do Grid */
+@media screen and (max-width: 950px) {
+    .produtos-container {
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 15px;
+    }
+}
+@media screen and (max-width: 600px) {
+    .produtos-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/*.decorative-strip {
+    height: 20px;
+    background-color: #e0e0e0;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+/* Ícone e Título do cabeçalho *
+.header-icon {
+    color: #800000; /* Vermelho Tabula *
+    margin-right: 0.5rem;
+}
+
+.header-title {
+    color: #800000; /* Vermelho Tabula *
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Loading Spinner *
+.loading-container {
+    grid-column: 1 / -1; * Ocupa toda a largura do grid *
+    text-align: center;
+    padding: 3rem;
+}
+
+.spinner-icon {
+    color: #800000;
+}
+
+.empty-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 1.25rem;
+    padding: 3rem;
+    color: #666;
+}*/

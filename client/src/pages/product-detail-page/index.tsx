@@ -6,6 +6,9 @@ import { IProduct } from "@/commons/types";
 import ProductService from "@/services/product-service";
 import { useCart } from "@/context/hooks/use-cart";
 
+// IMPORTANTE: Importar o CSS que acabamos de corrigir
+import './styles.css';
+
 export const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>(); 
   const navigate = useNavigate();
@@ -20,7 +23,6 @@ export const ProductDetailPage = () => {
   const { findById } = ProductService;
   const { addItem } = useCart();
  
-  // Como a API não tem esses dados, criamos aqui para manter o visual
   const mockData = {
     parcelamento: "Em até 12x sem juros",
     informacao: [
@@ -30,7 +32,6 @@ export const ProductDetailPage = () => {
         "Número de jogadores: 2-6 Jogadores",
         "Idade Recomendada: 14+"
     ],
-    // Vamos usar a imagem principal para preencher 3 slots de miniatura
     miniaturas: [] as string[] 
   };
 
@@ -45,11 +46,12 @@ export const ProductDetailPage = () => {
           const loadedProduct = response.data as IProduct;
           setProduct(loadedProduct);
           
-          // Define imagem ou placeholder
-          const imgUrl = loadedProduct.url_image ?? "/assets/images/utfpr-logo.png";
+          const baseUrl = "http://localhost:8044/assetsImages/";
+          const imgUrl = loadedProduct.url_image 
+            ? `${baseUrl}${loadedProduct.url_image}` 
+            : "/assets/images/utfpr-logo.png";
+            
           setSelectedImage(imgUrl);
-          
-          // Cria 3 miniaturas iguais para simular a galeria (funcionalidade visual)
           mockData.miniaturas = [imgUrl, imgUrl, imgUrl];
           
         } else {
@@ -78,61 +80,43 @@ export const ProductDetailPage = () => {
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-5"><h3>Carregando detalhes do produto...</h3></div>;
-  }
-
-  if (!product) {
-    return (
-        <div className="text-center mt-5">
-            <h3>Produto não encontrado.</h3>
-            <button onClick={() => navigate("/")}>Voltar</button>
-        </div>
-    );
-  }
+  if (loading) return <div className="text-center mt-5"><h3>Carregando...</h3></div>;
+  if (!product) return <div className="text-center mt-5"><h3>Produto não encontrado.</h3></div>;
 
   return (
     <div className="container-compras">
       <Toast ref={toast} />
       
       <div className="grade-compras">
-        
-        {/* Coluna Esquerda: Imagens */}
+        {/* Imagens */}
         <div className="image">
-            {/* Lista de Miniaturas */}
             <div className="miniaturas">
-                {[product.url_image ?? "/assets/images/utfpr-logo.png", product.url_image ?? "/assets/images/utfpr-logo.png", product.url_image ?? "/assets/images/utfpr-logo.png"].map((imgSrc, index) => (
+                {[selectedImage, selectedImage, selectedImage].map((imgSrc, index) => (
                     <img 
                         key={index}
                         src={imgSrc} 
-                        alt={`Miniatura ${index + 1}`}
-                        className={selectedImage === imgSrc ? 'selected' : ''} // Classe para borda vermelha
-                        onClick={() => setSelectedImage(imgSrc)} // Troca a imagem principal ao clicar
+                        alt="Miniatura"
+                        className={selectedImage === imgSrc ? 'selected' : ''}
+                        onClick={() => setSelectedImage(imgSrc)} 
                     />
                 ))}
             </div>
-
-            {/* Imagem Principal Grande */}
             <div className="main-image">
                 <img src={selectedImage} alt={product.name} />
             </div>
         </div>
 
-        {/* Coluna Direita: Informações e Botões */}
+        {/* Detalhes */}
         <div className="compra">
             <div>
                 <h2>{product.name}</h2>
-                <div style={{ height: '2px', width: '50px', backgroundColor: '#800000', marginBottom: '15px' }}></div>
+                <div style={{ height: '2px', width: '50px', backgroundColor: 'var(--primary-color)', marginBottom: '15px' }}></div>
                 
-                {/* Caixa de Informações Técnicas */}
                 <div className="informacao">
                     <p><strong>Categoria:</strong> {product.category?.name || 'Geral'}</p>
-                    {mockData.informacao.map((info, i) => (
-                        <p key={i}>{info}</p>
-                    ))}
+                    {mockData.informacao.map((info, i) => <p key={i}>{info}</p>)}
                 </div>
 
-                {/* Preço e Parcelamento */}
                 <div className="preco-container">
                     <div className="preco">
                         {product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
@@ -141,7 +125,6 @@ export const ProductDetailPage = () => {
                 </div>
             </div>
 
-            {/* Ações: Quantidade e Botões */}
             <div className="acoes-compra">
                 <div className="flex align-items-center gap-3 mb-2">
                     <label htmlFor="qtd" style={{ fontWeight: 'bold', color: '#333' }}>Quantidade:</label>
@@ -160,8 +143,9 @@ export const ProductDetailPage = () => {
                     />
                 </div>
 
+                {/* Botões usando as classes do CSS Local */}
                 <button className="botao-carrinho" onClick={handleAddToCart}>
-                    <i className="pi pi-shopping-cart"></i>
+                    <i className="pi pi-shopping-cart" style={{marginRight: '10px'}}></i>
                     ADICIONAR AO CARRINHO
                 </button>
 
@@ -172,12 +156,10 @@ export const ProductDetailPage = () => {
         </div>
       </div>
 
-      {/* Seção Inferior: Descrição */}
       <div className="descricao">
         <h2>Descrição do Produto</h2>
         <p>{product.description}</p>
       </div>
-
     </div>
   );
 };

@@ -1,105 +1,77 @@
 // client/src/pages/product-list-page/index.tsx
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import { Toast } from "primereact/toast";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom"; 
+import { Toast } from "primereact/toast"; // Se precisar de toast
 import { IProduct } from "@/commons/types";
 import ProductService from "@/services/product-service";
 import { ProductCard } from "@/components/product-card";
-import { useSearchParams, useNavigate } from "react-router-dom"; 
+import './styles.css'; // Importa o CSS que criamos no Passo 1
 
 export const ProductListPage = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [loading, setLoading] = useState(true);
-    const toast = useRef(null);
-    const { findAll } = ProductService;
+    
+    // Hook para ler ?categoryId=1 da URL
     const [searchParams] = useSearchParams(); 
-    const navigate = useNavigate();
+    
+    // Pega o ID e o Título da URL
+    const categoryId = searchParams.get('categoryId');
+    const pageTitle = searchParams.get('title') || 'Todos os Produtos';
 
-    // Pega a categoria da URL (ex: ?category=guerra)
-    const categoryKey = searchParams.get('category')?.toLowerCase() || 'all';
-
-    // --- REGRAS DE NEGÓCIO (IDs por Categoria) ---
-    // Aqui definimos exatamente quais produtos aparecem em qual menu
-    const rules = useMemo(() => ({
-        'guerra': { 
-            title: 'Guerra', 
-            // Os 8 primeiros (IDs 1 a 8)
-            ids: [1, 2, 3, 4, 5, 6, 7, 8] 
-        },
-        'estrategia': { 
-            title: 'Estratégia', 
-            // Do 3 ao 10
-            ids: [3, 4, 5, 6, 7, 8, 9, 10] 
-        },
-        'cooperativo': { 
-            title: 'Cooperativo', 
-            // Do 5 ao 12
-            ids: [5, 6, 7, 8, 9, 10, 11, 12] 
-        },
-        'cartas': { 
-            title: 'Cartas', 
-            // Do 3 ao 10 (Repetindo a lógica de estratégia conforme seu pedido)
-            ids: [3, 4, 5, 6, 7, 8, 9, 10] 
-        },
-        'classicos': { 
-            title: 'Clássicos', 
-            // Do 1 ao 8
-            ids: [1, 2, 3, 4, 5, 6, 7, 8] 
-        },
-        'all': { 
-            title: 'Todos os Produtos', 
-            // Todos os 12
-            ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] 
-        }
-    }), []);
-
-    const currentRule = rules[categoryKey as keyof typeof rules] || rules['all'];
-
-    const loadProducts = useCallback(async () => { 
-        setLoading(true);
-        // Buscamos TODOS os produtos da API para poder filtrar manualmente no front
-        const response = await findAll(undefined); 
-
-        if (response.success && Array.isArray(response.data)) {
-            const allProducts = response.data as IProduct[];
-           
-            const filteredProducts = currentRule.ids
-                .map(id => allProducts.find(p => p.id === id)) // Mapeia na ordem correta
-                .filter(p => p !== undefined) as IProduct[]; // Remove vazios
-                
-            setProducts(filteredProducts);
-        } else {
-            setProducts([]);
-        }
-        setLoading(false);
-    }, [findAll, currentRule.ids]);
+    const { findAll } = ProductService;
 
     useEffect(() => {
-        loadProducts();
-    }, [loadProducts]);
+        const fetchProducts = async () => {
+            setLoading(true);
+            let response;
+
+            if (categoryId) {
+                // Se tem ID, busca filtrado pelo endpoint que ajustamos no service
+                response = await findAll(parseInt(categoryId));
+            } else {
+                // Se não tem ID, busca todos
+                response = await findAll();
+            }
+
+            if (response.success && Array.isArray(response.data)) {
+                setProducts(response.data as IProduct[]);
+            } else {
+                setProducts([]);
+            }
+            setLoading(false);
+        };
+
+        fetchProducts();
+    }, [categoryId]); // Recarrega toda vez que o categoryId muda na URL
     
     return (
-        <div className="pt-0"> 
-            <Toast ref={toast} />
-            <div style={{ height: '5vh', backgroundColor: '#5c0000' }} className="mb-4"></div>
+        <div className="w-full">
+            {/* Faixa decorativa opcional antes do título */}
+            <div style={{ height: '20px', backgroundColor: '#e0e0e0' }} className="mb-4 w-full"></div>
             
-            <div className="Lista">
-                <div className="Lista-header flex align-items-center mb-3 px-4">
-                    <i className="pi pi-chevron-right text-3xl mr-2" style={{ color: '#2e0000' }} />
-                    <h2 className="text-2xl font-bold" style={{ color: '#2e0000' }}>{currentRule.title}</h2>
-                </div> 
+            <div className="lista-header">
+                <i className="pi pi-chevron-right text-2xl mr-2" style={{ color: '#800000' }} />
+                <h2 className="text-3xl font-bold uppercase" style={{ color: '#800000' }}>
+                    {pageTitle}
+                </h2>
+            </div> 
 
-                <div className="produtos-container"> 
-                    {loading ? (
-                        <p className="col-12 text-center">Carregando produtos...</p> 
-                    ) : (
+            <div className="produtos-container"> 
+                {loading ? (
+                    <div className="col-12 text-center p-5">
+                        <i className="pi pi-spin pi-spinner text-4xl" style={{color: '#800000'}}></i>
+                    </div> 
+                ) : (
+                    products.length > 0 ? (
                         products.map((product) => (
-                            <div key={product.id}> 
+                            <div key={product.id} style={{ height: '100%' }}> 
                                 <ProductCard product={product} /> 
                             </div>
                         ))
-                    )}
-                    {products.length === 0 && !loading && <p className="col-12 text-center">Nenhum produto encontrado nesta categoria.</p>} 
-                </div>
+                    ) : (
+                        <p className="col-12 text-center text-xl">Nenhum produto encontrado nesta categoria.</p>
+                    )
+                )}
             </div>
         </div>
     );

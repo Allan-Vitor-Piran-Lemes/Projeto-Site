@@ -4,8 +4,9 @@ import TopMenu from "@/components/top-menu";
 import React, { useEffect, useState } from "react"; 
 import CategoryService from "@/services/category-service"; 
 import type { ICategory } from "@/commons/types"; 
+import './styles.css'; // Importa o CSS externo com as classes definidas
 
-// COMPONENTE: Menu de Categorias (Underbar)
+// --- COMPONENTE: Menu de Categorias (Underbar) ---
 const Underbar: React.FC = () => {
     const navigate = useNavigate();
     const [categories, setCategories] = useState<ICategory[]>([]);
@@ -20,49 +21,34 @@ const Underbar: React.FC = () => {
         loadCategories();
     }, []);
 
-    // LISTA FIXA DE CATEGORIAS (Garante que os links apareçam mesmo se a API falhar)
-    const fixedCategories = [
-        { name: 'Todos os Produtos', key: 'all' },
-        { name: 'Guerra', key: 'guerra' },
-        { name: 'Estratégia', key: 'estrategia' },
-        { name: 'Cooperativo', key: 'cooperativo' },
-        { name: 'Cartas', key: 'cartas' },
-        { name: 'Clássicos', key: 'classicos' },
-    ];
+    const handleCategoryClick = (categoryId: number | null, categoryName: string) => {
+        if (categoryId) {
+            navigate(`/products?categoryId=${categoryId}&title=${categoryName}`);
+        } else {
+            navigate(`/products?title=Todos os Produtos`);
+        }
+    };
 
     return (
-        <nav 
-            style={{ 
-                backgroundColor: 'rgb(126, 0, 0)', 
-                padding: '0.5rem 0',
-                position: 'fixed',
-                // AJUSTE CRÍTICO: 80px garante que fique abaixo do TopMenu (que tem ~75px)
-                top: '80px', 
-                left: 0,
-                width: '100%',
-                zIndex: 990, // Fica logo abaixo do TopMenu (que tem 1000)
-                display: 'flex',
-                justifyContent: 'center',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-            }}
-        >
-            <ul className="flex justify-content-center gap-4 flex-wrap" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-                {/* Links das categorias fixas */}
-                {fixedCategories.map((category) => (
-                    <li key={category.key}>
-                        <a 
-                            href="#" 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                navigate(`/products-list?category=${category.key}`); 
-                            }}
-                            className="p-2 no-underline text-white font-bold border-round"
-                            style={{ fontSize: '1rem', display: 'block', transition: '0.3s' }}
-                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#5c0000'}
-                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        <nav className="underbar-nav">
+            <ul className="underbar-list">
+                <li>
+                    <span 
+                        onClick={() => handleCategoryClick(null, 'Todos os Produtos')}
+                        className="underbar-item-span"
+                    >
+                        Todos os Produtos
+                    </span>
+                </li>
+
+                {categories.map((category) => (
+                    <li key={category.id}>
+                        <span 
+                            onClick={() => handleCategoryClick(category.id!, category.name)}
+                            className="underbar-item-span"
                         >
                             {category.name}
-                        </a>
+                        </span>
                     </li>
                 ))}
             </ul>
@@ -70,8 +56,7 @@ const Underbar: React.FC = () => {
     );
 };
 
-
-// COMPONENTE: Rodapé (Footer)
+// --- COMPONENTE: Rodapé (Footer) ---
 const Footer: React.FC = () => {
     const socialLinks = [
         { name: 'whatsapp', icon: 'pi pi-whatsapp', url: 'https://wa.me/559999999999' },
@@ -79,68 +64,69 @@ const Footer: React.FC = () => {
         { name: 'facebook', icon: 'pi pi-facebook', url: 'https://facebook.com/tabula' } 
     ];
 
-    const privacyLinkStyle = { 
-        color: '#428bca', 
-        textDecoration: 'underline', 
-        fontWeight: 'bold', 
-        cursor: 'pointer' 
-    };
-
     return (
-        <footer className="mt-5 w-full" style={{ backgroundColor: 'rgb(90, 0, 0)', color: 'whitesmoke', padding: '0.4rem 0' }}> 
-            <div className="grid container mx-auto p-1"> 
-                <div className="col-12 md:col-4" style={{ color: 'rgb(177, 177, 177)' }}>
+        <footer className="layout-footer"> 
+            <div className="footer-container"> 
+                {/* Coluna 1 */}
+                <div className="footer-column">
                     <h5 className="text-xl mb-1">Institution Information</h5> 
-                    <p className="text-base">CNPJ: 00.623.904/0001-73</p>
-                    <p className="text-base">Registration: 123.45678-50</p>
-                    <p className="text-base">Address: Rua Ernesto Beuter - 53</p>
+                    <p className="text-base m-0">CNPJ: 00.623.904/0001-73</p>
+                    <p className="text-base m-0">Registration: 123.45678-50</p>
+                    <p className="text-base m-0">Address: Rua Ernesto Beuter - 53</p>
                 </div>
-                <div className="col-12 md:col-4" style={{ color: 'rgb(177, 177, 177)' }}>
+                
+                {/* Coluna 2 */}
+                <div className="footer-column">
                     <h5 className="text-xl mb-1">Customer Support</h5> 
-                    <p className="text-base">Email: tabula.email@tabulairos.com</p>
-                    <p className="text-base">Phone: +55 (99) 99999-9999</p>
+                    <p className="text-base m-0">Email: tabula.email@tabulairos.com</p>
+                    <p className="text-base m-0">Phone: +55 (99) 99999-9999</p>
                 </div>
-                <div className="col-12 md:col-4" style={{ color: 'rgb(177, 177, 177)' }}>
+                
+                {/* Coluna 3 */}
+                <div className="footer-column">
                     <h5 className="text-xl mb-1">Privacy</h5> 
                     <RouterLink 
                         to="/privacy-policy" 
-                        className="no-underline text-base" 
-                        style={privacyLinkStyle}
+                        className="footer-link-privacy"
                     >
                         Our Privacy Policy
                     </RouterLink>
                 </div>
             </div>
-            <div className="flex justify-content-center mt-1"> 
-                <div className="flex gap-3">
-                    {socialLinks.map(link => (
-                        <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" className="no-underline">
-                            <i className={link.icon} style={{ fontSize: '1.8rem', color: 'whitesmoke' }} /> 
-                        </a>
-                    ))}
-                </div>
+            
+            {/* Ícones Sociais */}
+            <div className="footer-social"> 
+                {socialLinks.map(link => (
+                    <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" className="no-underline">
+                        <i className={`${link.icon}`} style={{ fontSize: '1.8rem', color: 'whitesmoke' }} /> 
+                    </a>
+                ))}
             </div>
-            <div className="text-center mt-1 text-sm" style={{ color: 'rgb(177, 177, 177)' }}> 
+            
+            {/* Copyright */}
+            <div className="footer-copyright"> 
                 © {new Date().getFullYear()} Tabula. All rights reserved.
             </div>
         </footer>
     );
 };
 
+// --- COMPONENTE LAYOUT PRINCIPAL ---
 export function Layout() {
     return (
-        <>
-            <TopMenu />
+        <div className="flex flex-column min-h-screen">
+            {/* CONTAINER FIXO: TopMenu + Underbar */}
+            <div className="layout-fixed-header">
+                <TopMenu />
+                <Underbar />
+            </div>
             
-            {/* Menu de Categorias */}
-            <Underbar /> 
-            
-            {/* AJUSTE DE ESPAÇO: Aumentamos para 140px para compensar as duas barras fixas */}
-            <main style={{ paddingTop: "140px", minHeight: "calc(100vh - 100px)" }}> 
+            {/* Conteúdo Principal com padding para não esconder atrás do header */}
+            <main className="layout-main-content"> 
                 <Outlet />
             </main>
             
             <Footer />
-        </>
+        </div>
     );
 }

@@ -1,27 +1,37 @@
 /* client/src/index.css */
+/* client/src/index.css */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 :root {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', Verdana, Geneva, Tahoma, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  /* --- CORES DA TABULA (Sobrescrevendo o Azul) --- */
-  /* O !important garante que o vermelho vença o tema azul carregado pelo main.tsx */
+  /* --- CORES DA TABULA (VERMELHO SUPREMO) --- */
   --primary-color: rgb(167, 42, 42) !important;
-  --primary-light: rgb(167, 42, 42) !important; 
-  
-  /* Sobrescrevendo variáveis específicas do PrimeReact */
-  --primary-500: rgb(167, 42, 42) !important;
-  --primary-600: rgb(130, 30, 30) !important; /* Um vermelho um pouco mais escuro para hover */
-  
-  --hover-color: rgb(141, 185, 227);
+  --primary-dark: rgb(130, 30, 30) !important; /* Vermelho mais escuro para hover */
   --text-color: #333;
   --bg-color: #ecf0f1;
   --white: #fff;
   --gray-light: #ecf0f1;
   --error-color: red;
+
+  /* --- SOBRESCREVENDO O PRIMEREACT (Matando o Azul) --- */
+  --primary-50: #fbf2f2 !important;
+  --primary-100: #f5e0e0 !important;
+  --primary-200: #ecc4c4 !important;
+  --primary-300: #e09e9e !important;
+  --primary-400: #d17070 !important;
+  --primary-500: rgb(167, 42, 42) !important; /* Cor Principal */
+  --primary-600: rgb(130, 30, 30) !important; /* Hover */
+  --primary-700: #942424 !important;
+  --primary-800: #751d1d !important;
+  --primary-900: #611818 !important;
+  
+  /* Forçando variáveis de azul a serem vermelhas caso algum componente use */
+  --blue-500: rgb(167, 42, 42) !important;
+  --blue-600: rgb(130, 30, 30) !important;
 }
 
 body {
@@ -32,9 +42,7 @@ body {
   width: 100%; 
 }
 
-/* --- ESTILOS GLOBAIS --- */
-
-/* Input Padrão */
+/* --- INPUTS GLOBAIS --- */
 .input-field {
     height: 45px;
     width: 100%;
@@ -47,10 +55,8 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-/* FORÇAR LARGURA TOTAL NAS SENHAS */
-.p-password {
-    width: 100%;
-}
+/* Correção de Senha (PrimeReact) */
+.p-password { width: 100%; }
 .p-password-input {
     width: 100%;
     background-color: var(--gray-light);
@@ -59,15 +65,21 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 .p-password-input:focus {
-    box-shadow: none !important; /* Remove borda azul do PrimeReact ao clicar */
-    border: 1px solid var(--primary-color) !important;
+    box-shadow: 0 0 0 2px var(--primary-color) !important; /* Foco Vermelho */
 }
 
-/* Classe de erro */
-.p-invalid {
-    border: 2px solid var(--error-color) !important;
+/* Botões do PrimeReact (Paginadores, etc) */
+.p-button {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+.p-button:hover {
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
 }
 
+/* Erros */
+.p-invalid { border: 2px solid var(--error-color) !important; }
 .error-msg {
     color: var(--error-color);
     font-size: 12px;
@@ -75,13 +87,9 @@ body {
     margin-bottom: 5px;
     display: block;
     text-align: left;
-    width: 100%;
-    padding-left: 2px;
 }
 
-/* --- BOTÕES CUSTOMIZADOS (Para garantir o vermelho) --- */
-
-/* Botão Sólido (Salvar/Entrar) */
+/* --- CLASSES DE BOTÕES (USADAS NO LOGIN/REGISTER) --- */
 .btn-second {
     background-color: var(--primary-color) !important;
     border: 1px solid var(--primary-color) !important;
@@ -92,20 +100,15 @@ body {
     font-weight: bold;
     padding: 12px 45px;
     letter-spacing: 1px;
-    margin-top: 20px; 
+    margin-top: 20px;
     cursor: pointer;
-    transition: background-color .5s, color .5s;
-    width: auto;
+    transition: 0.3s;
 }
-
-/* Hover: Fica Branco com texto Vermelho */
 .btn-second:hover {
     background-color: var(--white) !important;
     color: var(--primary-color) !important;
-    border: 1px solid var(--primary-color) !important;
 }
 
-/* Botão Transparente (Painel Lateral) */
 .btn-primary {
     background-color: transparent !important;
     border: 1px solid var(--white) !important;
@@ -117,272 +120,19 @@ body {
     padding: 10px 50px;
     cursor: pointer;
     margin-top: 1rem;
-    transition: background-color .5s;
-    width: auto;
+    transition: 0.3s;
 }
-
 .btn-primary:hover {
     background-color: var(--white) !important;
     color: var(--primary-color) !important;
 }
-/* client/src/index.css *//*
-:root {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  line-height: 1.5;
-  font-weight: 400; 
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  background-color: rgb(235, 235, 235);
-  min-height: 100vh;
-  width: 100%; 
-}
-
-/* Estilos que replicam o .Lista-Produto *//*
-.product-card-custom {
-  display: flex;
-  flex-direction: column;
-  background: white;
-  border-radius: 8px;
-  padding: 10px; 
-  box-shadow: 0 3px 5px rgba(0,0,0,0.1); 
-  transition: transform 0.3s;
-  width: 100%; 
-}
-
-.product-card-custom:hover {
-  transform: translateY(-5px);
-}
-
-.product-card-custom .Titulo {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: var(--text-color); 
-  text-align: center;
-  margin-bottom: 15px;
-  min-height: 50px; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-card-custom .preco {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--text-color); 
-  text-align: center;
-  margin: 10px 0;
-}
-
-.produtos-container {
-    display: grid; 
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 5px; 
-    width: 100%; 
-    max-width: 1200px; 
-    margin: 0 auto;
-}
-
-@media screen and (max-width: 950px) {
-    .produtos-container {
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 15px;
-    }
-}
-@media screen and (max-width: 600px) {
-    .produtos-container {
-        grid-template-columns: 1fr;
-    }
-}
 
 
-/* --- ESTILOS DA PÁGINA DE DETALHES (Baseado no seu design original) --- *//*
 
-.container-compras {
-  width: 100%;
-  max-width: 1200px;
-  margin: 30px auto;
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  border-radius: 8px;
-}
 
-.grade-compras {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 40px;
-  align-items: flex-start;
-}
 
-/* Área das Imagens *//*
-.image {
-  display: flex;
-  gap: 10px;
-  flex: 0 0 50%; /* Ocupa metade da largura *//*
-}
 
-.miniaturas {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 120px; /* Largura fixa para miniaturas *//*
-}
-
-.miniaturas img {
-  width: 100%;
-  height: 90px;
-  object-fit: cover; /* Garante que a imagem preencha o quadrado *//*
-  border-radius: 8px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-}
-
-.miniaturas img:hover, .miniaturas img.selected {
-  border-color: #800000; /* Destaque ao selecionar *//*
-}
-
-.main-image {
-  flex: 1;
-  height: 400px; /* Altura fixa para a imagem principal *//*
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.main-image img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-/* Área de Informações *//*
-.compra {
-  flex: 1;
-  background-color: #fdfdfd;
-  padding: 20px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.compra h2 {
-  font-size: 28px;
-  color: #800000; /* Vermelho Tabula *//*
-  margin-bottom: 5px;
-}
-
-.informacao {
-  font-size: 15px;
-  color: #555;
-  line-height: 1.6;
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 5px;
-  border: 1px solid #eee;
-}
-
-.informacao p {
-    margin: 5px 0;
-}
-
-.preco-container {
-    margin-top: 10px;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
-}
-
-.preco {
-  font-size: 36px;
-  color: #222;
-  font-weight: bold;
-}
-
-.texto-parcelamento {
-  font-size: 14px;
-  color: #888;
-  margin-top: -5px;
-}
-
-/* Botões *//*
-.acoes-compra {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.botao-carrinho {
-  background-color: #800000; /* Mudado para Vermelho Tabula *//*
-  border: none;
-  color: white;
-  padding: 15px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 18px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: background-color 0.3s;
-}
-
-.botao-carrinho:hover {
-  background-color: #5c0000;
-}
-
-.botao-voltar {
-    background-color: #e0e0e0;
-    color: #333;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 100%;
-    text-align: center;
-    transition: background-color 0.3s;
-}
-
-.botao-voltar:hover {
-    background-color: #ccc;
-}
-
-/* Área de Descrição *//*
-.descricao {
-  background-color: #fff;
-  padding: 30px;
-  margin-bottom: 40px;
-  border-radius: 8px;
-  border: 2px solid #eae3e3;
-}
-
-.descricao h2 {
-  margin-bottom: 15px;
-  color: #800000;
-  font-size: 24px;
-  border-bottom: 2px solid #800000;
-  padding-bottom: 10px;
-  display: inline-block;
-}
-
-.descricao p {
-    line-height: 1.8;
-    color: #444;
-    font-size: 16px;
-    text-align: justify;
-}
-
-/* Responsividade Básica 
+/* Responsividade Básica *
 @media (max-width: 900px) {
   .grade-compras {
     flex-direction: column;

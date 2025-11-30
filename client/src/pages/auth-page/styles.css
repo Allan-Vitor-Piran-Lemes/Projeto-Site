@@ -210,13 +210,6 @@
     transform: translateX(20%);
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .auth-card {
-        min-height: 1000px;
-        width: 100%;
-    }
-}
 /* Overlay (Lado Vermelho) */
 .overlay-container {
     position: absolute;

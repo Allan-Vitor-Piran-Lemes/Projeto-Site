@@ -6,6 +6,7 @@ import ProductService from "@/services/product-service";
 import { ProductCard } from "@/components/product-card";
 import { CategoryMenu } from "@/components/category-menu"; 
 import { useSearchParams } from "react-router-dom"; 
+import './styles.css';
 
 // MUDANÇA: Lista definitiva dos 8 produtos mais populares (para duas linhas de 4)
 const TOP_8_PRODUCT_IDS = [1, 2, 3, 4, 5, 6, 7, 8]; 

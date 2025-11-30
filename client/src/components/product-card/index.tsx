@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/hooks/use-cart.ts";
 import { Toast } from 'primereact/toast';
 import { useRef } from "react";
+import './styles.css';
 
 interface ProductCardProps {
   product: IProduct;
