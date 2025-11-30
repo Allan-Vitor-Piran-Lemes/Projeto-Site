@@ -53,14 +53,15 @@ export interface ICategory {
 
 // MUDANÇA: Adicionar o campo url_image
 export interface IProduct {
-  id?: number;
-  name: string;
-  description: string;
-  price: number;
-  category: ICategory;
-  imageName?: string;
-  url_image?: string; // CAMPO ADICIONADO
-  contentType?: string;
+    id?: number;
+    name: string;
+    price: number;
+    description: string;
+    image: string;          // Renomeado de url_image para image
+    installmentInfo?: string; // Novo campo
+    specifications?: string[]; // Novo campo
+    gallery?: string[];     // Novo campo
+    category: ICategory;
 }
 
 // ADIÇÃO: Interface para o item do menu de categoria

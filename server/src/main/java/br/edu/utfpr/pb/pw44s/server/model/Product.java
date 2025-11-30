@@ -1,33 +1,49 @@
 package br.edu.utfpr.pb.pw44s.server.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_product")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
-    private String brand;
-    private String material;
-    private String players;
-    private String description;
+
     private BigDecimal price;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    // Renomeado de url_image para image para ficar mais limpo
+    private String image;
 
-    private String url_image;
+    // Novo campo para o parcelamento
+    private String installmentInfo;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    // Lista de especificações (Marca, Material, Jogadores...)
+    @ElementCollection
+    @CollectionTable(name = "product_specifications", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "specification")
+    private List<String> specifications;
+
+    // Galeria de imagens extras
+    @ElementCollection
+    @CollectionTable(name = "product_gallery", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "image_url")
+    private List<String> gallery;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

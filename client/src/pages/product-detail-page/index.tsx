@@ -2,11 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import { Toast } from "primereact/toast";
 import { InputNumber } from 'primereact/inputnumber'; 
+import { Button } from "primereact/button";
 import { IProduct } from "@/commons/types";
 import ProductService from "@/services/product-service";
 import { useCart } from "@/context/hooks/use-cart";
-
-// IMPORTANTE: Importar o CSS que acabamos de corrigir
 import './styles.css';
 
 export const ProductDetailPage = () => {
@@ -17,23 +16,13 @@ export const ProductDetailPage = () => {
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  
   const [selectedImage, setSelectedImage] = useState<string>("");
 
   const { findById } = ProductService;
   const { addItem } = useCart();
- 
-  const mockData = {
-    parcelamento: "Em até 12x sem juros",
-    informacao: [
-        "Marca: Tabula Games",
-        "Material: Papelão, Plástico, Cartas Premium",
-        "Gênero: Estratégia / Familiar",
-        "Número de jogadores: 2-6 Jogadores",
-        "Idade Recomendada: 14+"
-    ],
-    miniaturas: [] as string[] 
-  };
+
+  // Imagem genérica caso a do produto falhe
+  const fallbackImage = "https://placehold.co/600x400?text=Sem+Imagem";
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -46,20 +35,15 @@ export const ProductDetailPage = () => {
           const loadedProduct = response.data as IProduct;
           setProduct(loadedProduct);
           
-          const baseUrl = "http://localhost:8044/assetsImages/";
-          const imgUrl = loadedProduct.url_image 
-            ? `${baseUrl}${loadedProduct.url_image}` 
-            : "/assets/images/utfpr-logo.png";
-            
-          setSelectedImage(imgUrl);
-          mockData.miniaturas = [imgUrl, imgUrl, imgUrl];
+          // Define a imagem principal inicial (ou fallback se vazia)
+          setSelectedImage(loadedProduct.image || fallbackImage);
           
         } else {
-          navigate("/products/show"); 
+          navigate("/products"); // Redireciona para lista se não achar
         }
       } catch (error) {
         console.error("Erro ao carregar produto:", error);
-        navigate("/products/show");
+        navigate("/products");
       } finally {
         setLoading(false);
       }
@@ -80,54 +64,69 @@ export const ProductDetailPage = () => {
     }
   };
 
-  if (loading) return <div className="text-center mt-5"><h3>Carregando...</h3></div>;
+  if (loading) {
+    return (
+        <div className="flex justify-content-center align-items-center min-h-screen">
+            <i className="pi pi-spin pi-spinner text-4xl" style={{color: '#5c0000'}}></i>
+        </div>
+    );
+  }
+
   if (!product) return <div className="text-center mt-5"><h3>Produto não encontrado.</h3></div>;
 
+  // Cria lista de imagens para as miniaturas (Principal + Galeria do Banco)
+  const allImages = [product.image, ...(product.gallery || [])].filter(Boolean);
+
   return (
-    <div className="container-compras">
+    <div className="product-detail-container">
       <Toast ref={toast} />
       
-      <div className="grade-compras">
-        {/* Imagens */}
-        <div className="image">
-            <div className="miniaturas">
-                {[selectedImage, selectedImage, selectedImage].map((imgSrc, index) => (
-                    <img 
-                        key={index}
-                        src={imgSrc} 
-                        alt="Miniatura"
-                        className={selectedImage === imgSrc ? 'selected' : ''}
-                        onClick={() => setSelectedImage(imgSrc)} 
-                    />
-                ))}
+      <div className="detail-top-section">
+        {/* --- Coluna Esquerda: Imagens --- */}
+        <div className="gallery-container">
+            <div className="main-image-wrapper">
+                <img 
+                    src={selectedImage} 
+                    alt={product.name} 
+                    className="main-image"
+                    onError={(e) => (e.currentTarget.src = fallbackImage)}
+                />
             </div>
-            <div className="main-image">
-                <img src={selectedImage} alt={product.name} />
-            </div>
+            
+            {/* Renderiza miniaturas apenas se houver imagens */}
+            {allImages.length > 0 && (
+                <div className="thumbnails-row">
+                    {allImages.map((imgSrc, index) => (
+                        <img 
+                            key={index}
+                            src={imgSrc} 
+                            alt={`Miniatura ${index}`}
+                            className={`thumbnail-image ${selectedImage === imgSrc ? 'active' : ''}`}
+                            onClick={() => setSelectedImage(imgSrc!)}
+                            onError={(e) => (e.currentTarget.src = fallbackImage)}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
 
-        {/* Detalhes */}
-        <div className="compra">
-            <div>
-                <h2>{product.name}</h2>
-                <div style={{ height: '2px', width: '50px', backgroundColor: 'var(--primary-color)', marginBottom: '15px' }}></div>
-                
-                <div className="informacao">
-                    <p><strong>Categoria:</strong> {product.category?.name || 'Geral'}</p>
-                    {mockData.informacao.map((info, i) => <p key={i}>{info}</p>)}
-                </div>
-
-                <div className="preco-container">
-                    <div className="preco">
-                        {product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                    </div>
-                    <div className="texto-parcelamento">{mockData.parcelamento}</div>
-                </div>
+        {/* --- Coluna Direita: Detalhes e Compra --- */}
+        <div className="info-container">
+            <h1 className="product-title">{product.name}</h1>
+            
+            <div className="product-price">
+                {product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
             </div>
-
-            <div className="acoes-compra">
-                <div className="flex align-items-center gap-3 mb-2">
-                    <label htmlFor="qtd" style={{ fontWeight: 'bold', color: '#333' }}>Quantidade:</label>
+            
+            <div className="installment-info">
+                <i className="pi pi-credit-card mr-2"></i>
+                {product.installmentInfo || "Em até 12x sem juros"}
+            </div>
+            
+            {/* Botões e Ações */}
+            <div className="actions-row">
+                <div className="flex align-items-center gap-3">
+                    <label htmlFor="qtd" className="font-bold text-gray-700">Qtd:</label>
                     <InputNumber 
                         id="qtd"
                         value={quantity} 
@@ -143,22 +142,49 @@ export const ProductDetailPage = () => {
                     />
                 </div>
 
-                {/* Botões usando as classes do CSS Local */}
-                <button className="botao-carrinho" onClick={handleAddToCart}>
-                    <i className="pi pi-shopping-cart" style={{marginRight: '10px'}}></i>
-                    ADICIONAR AO CARRINHO
-                </button>
-
-                <button className="botao-voltar" onClick={() => navigate("/")}>
-                    Voltar para a Loja
-                </button>
+                <Button 
+                    label="Adicionar ao Carrinho"
+                    icon="pi pi-shopping-cart"
+                    className="add-cart-btn"
+                    onClick={handleAddToCart}
+                />
             </div>
+            
+            <Button 
+                label="Voltar para a Loja" 
+                icon="pi pi-arrow-left" 
+                className="p-button-text mt-3" 
+                style={{color: '#5c0000'}}
+                onClick={() => navigate("/")}
+            />
         </div>
       </div>
 
-      <div className="descricao">
-        <h2>Descrição do Produto</h2>
-        <p>{product.description}</p>
+      {/* --- Área Inferior: Descrição e Ficha Técnica --- */}
+      <div className="detail-bottom-section">
+        <div className="description-block">
+            <h3 className="section-title">Descrição do Produto</h3>
+            <p className="description-text">
+                {product.description || "Descrição não informada pelo fabricante."}
+            </p>
+        </div>
+
+        <div className="specs-block">
+            <h3 className="section-title">Ficha Técnica</h3>
+            <ul className="specs-list">
+                {/* Renderiza as especificações vindas do Banco de Dados */}
+                {product.specifications && product.specifications.length > 0 ? (
+                    product.specifications.map((info, i) => (
+                        <li key={i}>
+                            <i className="pi pi-check-circle mr-2" style={{color: '#5c0000', fontSize: '0.8rem'}}></i>
+                            {info}
+                        </li>
+                    ))
+                ) : (
+                    <li>Informações técnicas não disponíveis.</li>
+                )}
+            </ul>
+        </div>
       </div>
     </div>
   );

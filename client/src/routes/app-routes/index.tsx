@@ -1,107 +1,4 @@
-/*/ client/src/routes/app-routes/index.tsx
-import { Route, Routes } from "react-router-dom";
-import { Layout } from "@/components/layout";
-import { LoginPage } from "@/pages/login";
-import { RegisterPage } from "@/pages/register";
-import { HomePage } from "@/pages/home-page"; 
-import { RequireAuth } from "@/components/require-auth";
-import { CategoryListPage } from "@/pages/category-list";
-import { CategoryFormPage } from "@/pages/category-form";
-import { ProductListPage } from "@/pages/product-list";
-import { ProductFormPage } from "@/pages/product-form";
-import { NotFound } from "@/pages/not-found";
-import { ProductDetailPage } from "@/pages/product-detail-page"; 
-import { CartPage } from "@/pages/cart-page";
-import { PrivacyPolicyPage } from "@/pages/privacy-policy-page"; // ADIÇÃO: Importar a nova página
-
-export function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        {/* public routes }/*
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        {/* ADIÇÃO: Rota da Política de Privacidade (Deve ser pública) }/*
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} /> 
-
-        {/* protected routes }/*
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<HomePage />} /> 
-          <Route path="/home" element={<HomePage />} />
-
-          <Route path="/categories" element={<CategoryListPage />} />
-          <Route path="/categories/new" element={<CategoryFormPage />} />
-          <Route path="/categories/:id" element={<CategoryFormPage />} />
-
-          <Route path="/products" element={<ProductListPage />} />
-          <Route path="/products/new" element={<ProductFormPage />} />
-          <Route path="/products/:id" element={<ProductFormPage />} />
-          <Route path="/products/show" element={<HomePage />} />
-          
-          <Route path="/product/:id" element={<ProductDetailPage />} /> 
-
-          <Route path="/cart" element={<CartPage />} /> 
-
-          {/* Rotas futuras de Checkout, Pedido e Endereços aqui }/*
-
-          {/* catch all }
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Route>
-    </Routes>
-  );
-}
-
-import { Route, Routes } from "react-router-dom";
-import { Layout } from "@/components/layout";
-import { AuthPage } from "@/pages/auth-page"; // Importando a nova página
-import { HomePage } from "@/pages/home-page"; 
-import { RequireAuth } from "@/components/require-auth";
-import { CategoryListPage } from "@/pages/category-list";
-import { CategoryFormPage } from "@/pages/category-form";
-import { ProductListPage } from "@/pages/product-list";
-import { ProductFormPage } from "@/pages/product-form";
-import { NotFound } from "@/pages/not-found";
-import { ProductDetailPage } from "@/pages/product-detail-page"; 
-import { CartPage } from "@/pages/cart-page";
-import { PrivacyPolicyPage } from "@/pages/privacy-policy-page";
-
-export function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        {/* Usando AuthPage para ambas as rotas *}
-        <Route path="login" element={<AuthPage />} />
-        <Route path="register" element={<AuthPage />} />
-        
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} /> 
-
-        {/* protected routes *}
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<HomePage />} /> 
-          <Route path="/home" element={<HomePage />} />
-
-          <Route path="/categories" element={<CategoryListPage />} />
-          <Route path="/categories/new" element={<CategoryFormPage />} />
-          <Route path="/categories/:id" element={<CategoryFormPage />} />
-
-          <Route path="/products" element={<ProductListPage />} />
-          <Route path="/products/new" element={<ProductFormPage />} />
-          <Route path="/products/:id" element={<ProductFormPage />} />
-          <Route path="/products/show" element={<HomePage />} />
-          
-          <Route path="/product/:id" element={<ProductDetailPage />} /> 
-
-          <Route path="/cart" element={<CartPage />} /> 
-
-          {/* catch all *}
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Route>
-    </Routes>
-  );
-}*/
-
+// client/src/routes/app-routes/index.tsx
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { AuthPage } from "@/pages/auth-page";
@@ -109,8 +6,8 @@ import { HomePage } from "@/pages/home-page";
 import { RequireAuth } from "@/components/require-auth";
 import { CategoryListPage } from "@/pages/category-list";
 import { CategoryFormPage } from "@/pages/category-form";
-// CORREÇÃO 1: Importar da pasta nova (product-list-page)
-import { ProductListPage } from "@/pages/product-list-page"; 
+// IMPORTANTE: Esta é a nova página de listagem (Catálogo para o cliente)
+import { ProductListPage } from "@/pages/product-list-page";
 import { ProductFormPage } from "@/pages/product-form";
 import { NotFound } from "@/pages/not-found";
 import { ProductDetailPage } from "@/pages/product-detail-page"; 
@@ -121,34 +18,35 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* public routes */}
+        {/* Rotas Públicas */}
         <Route path="login" element={<AuthPage />} />
         <Route path="register" element={<AuthPage />} />
-        
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} /> 
 
-        {/* protected routes */}
+        {/* Rotas Protegidas */}
         <Route element={<RequireAuth />}>
           <Route path="/" element={<HomePage />} /> 
           <Route path="/home" element={<HomePage />} />
 
+          {/* Categorias */}
           <Route path="/categories" element={<CategoryListPage />} />
           <Route path="/categories/new" element={<CategoryFormPage />} />
           <Route path="/categories/:id" element={<CategoryFormPage />} />
 
-          {/* Rota principal de listagem (agora aceita ?categoryId=X) */}
+          {/* Produtos - Catálogo do Cliente */}
           <Route path="/products" element={<ProductListPage />} />
           
+          {/* Produtos - Admin (Se quiser manter a edição, use rotas diferentes ou renomeie o componente no futuro) */}
           <Route path="/products/new" element={<ProductFormPage />} />
           <Route path="/products/:id" element={<ProductFormPage />} />
           
-          {/* CORREÇÃO 2: Removi a rota "/products/show" pois "/products" já faz esse papel */}
-          
+          {/* Detalhes do Produto */}
           <Route path="/product/:id" element={<ProductDetailPage />} /> 
 
+          {/* Carrinho */}
           <Route path="/cart" element={<CartPage />} /> 
 
-          {/* catch all */}
+          {/* Catch All */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
