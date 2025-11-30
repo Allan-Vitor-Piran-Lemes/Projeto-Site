@@ -13,6 +13,9 @@ public class ProductDTO {
 
     private Long id;
     private String name;
+    private String brand;
+    private String material;
+    private String players;
     private String description;
     private BigDecimal price;
     private CategoryDTO category;

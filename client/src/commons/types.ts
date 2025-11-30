@@ -4,14 +4,15 @@ export interface IUserRegister {
   password: string;
 }
 
-/*export interface IUserRegister {
+export interface IUserRegister {
   displayName: string;
   username: string;
   password: string;
-  // NOVOS CAMPOS EXIGIDOS PELO FORMULÁRIO:
-  cpf: string; 
-  telefone: string; 
+  cpf: string;
+  telefone: string;
 }
+
+/*
 
 // MUDANÇA: Interface para o formulário de Registro (inclui campo de validação local)
 export interface IUserRegisterForm extends IUserRegister {

@@ -30,10 +30,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     });
   };
 
-  const imageUrl = "/assets/images/utfpr-logo.png"; 
+  // LÓGICA DA IMAGEM:
+  // Se existir url_image no produto, monta o caminho completo.
+  // Caso contrário, usa o placeholder.
+  const imageUrl = product.url_image 
+    ? `http://localhost:8044/assetsImages/${product.url_image}` 
+    : "/assets/images/utfpr-logo.png";
 
-  // MUDANÇA: Estilo do botão de carrinho (vermelho escuro Tabula)
   const cartButtonStyle = {
+    // ... (mantenha o estilo igual)
     width: '100%', 
     height: '50px', 
     backgroundColor: '#5c0000', 
@@ -52,31 +57,29 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    // MUDANÇA CRÍTICA: Adicionar mx-auto para centralizar o card dentro da sua coluna e limitar o max-width
     <div className="product-card-custom p-3 mx-auto" style={{ maxWidth: '280px' }}> 
       <Toast ref={toast} />
       
-      {/* O Link para os Detalhes envolve a Imagem e o Título, como no seu HTML/JS */}
       <a onClick={handleDetailsClick} className="cursor-pointer" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
         <img
             alt={product.name}
             src={imageUrl} 
-            style={{ width: "100%", height: "150px", objectFit: "contain", borderRadius: '5px', marginBottom: '10px' }} 
+            // Ajustei o objectFit para 'cover' para preencher melhor o cartão sem distorcer
+            style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: '5px', marginBottom: '10px' }} 
         />
         <h3 className="Titulo">
             {product.name}
         </h3>
       </a>
       
-      {/* Divisor */}
+      {/* ... (resto do componente igual) ... */}
+      
       <div style={{ width: '100%', height: '3px', backgroundColor: '#2e0000', margin: '5px 0' }}></div>
       
-      {/* Preço */}
       <p className="preco">
-        Starting from: {product.price.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+        Starting from: {product.price.toLocaleString("pt-PT", { style: "currency", currency: "EUR" })}
       </p>
 
-      {/* Botão Adicionar ao Carrinho (.carrinho) */}
       <button 
         className="carrinho"
         onClick={handleAddToCart}

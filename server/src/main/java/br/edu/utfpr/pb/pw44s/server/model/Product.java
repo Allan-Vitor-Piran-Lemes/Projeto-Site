@@ -19,9 +19,10 @@ public class Product {
     private long id;
 
     private String name;
-
+    private String brand;
+    private String material;
+    private String players;
     private String description;
-
     private BigDecimal price;
 
     @ManyToOne

@@ -6,30 +6,36 @@ insert into tb_category (id, name) values (3, 'Cooperativo');
 insert into tb_category (id, name) values (4, 'Cartas');
 insert into tb_category (id, name) values (5, 'Clássicos');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (1, 'Catan', 'Descubra tudo sobre o jogo Catan (Os Colonizadores de Catan), um dos board games mais famosos do mundo! Aprenda as regras, estratégias, expansões e curiosidades.', 249.90, 2, 'Catan.jpg');
+-- server/src/main/resources/import.sql
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (2, 'Azul', 'Azul é um jogo premiado onde os jogadores competem para decorar as paredes do Palácio Real de Évora com azulejos coloridos, combinando estratégia e habilidade.', 399.90, 2, 'Azul.jpg');
+-- (Mantenha os inserts de categoria como estão)
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (3, 'Bonanza', 'Bonanza é um jogo divertido de negociação e estratégia onde os jogadores cultivam feijões para trocar e lucrar, exigindo boa comunicação e tática.', 211.99, 2, 'Bohnanza.png');
+-- Produtos com as imagens principais corrigidas
+insert into tb_product (id, name, description, price, category_id, url_image) values (1, 'Catan', 'Descubra tudo sobre o jogo Catan...', 249.90, 2, 'catanprincipal.jpg');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (4, 'Certo ou Errado', 'Certo ou Errado é um jogo rápido de perguntas e respostas que testa seu conhecimento e raciocínio, perfeito para grupos e festas.', 150.90, 4, 'CertoouErrado.webp');
+insert into tb_product (id, name, description, price, category_id, url_image) values (2, 'Azul', 'Azul é um jogo premiado...', 399.90, 2, 'azulprincipal.jpg');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (5, 'CuBirds', 'CuBirds é um jogo encantador onde os jogadores colecionam aves raras, usando estratégia e sorte para vencer.', 277.24, 4, 'CuBirds.jpg');
+insert into tb_product (id, name, description, price, category_id, url_image) values (3, 'Bonanza', 'Bonanza é um jogo divertido...', 211.99, 2, 'bohnanzaprincipal.png');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (6, 'Distilled', 'Distilled desafia os jogadores a criar as melhores bebidas destiladas, combinando estratégia e sorte para dominar o mercado.', 320.99, 2, 'Distilled.webp');
+insert into tb_product (id, name, description, price, category_id, url_image) values (4, 'Certo ou Errado', 'Certo ou Errado é um jogo rápido...', 150.90, 4, 'certoouerradoprincipal.webp');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (7, 'Gatinho', 'Gatinho é um jogo divertido que envolve cuidado e estratégia com gatinhos fofos para toda família.', 200.99, 3, 'Gatinho.jpg');
+insert into tb_product (id, name, description, price, category_id, url_image) values (5, 'CuBirds', 'CuBirds é um jogo encantador...', 277.24, 4, 'cubirdsprincipal.jpg');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (8, 'Pandemic', 'Pandemic é um clássico jogo cooperativo onde os jogadores unem forças para conter epidemias que ameaçam o mundo.', 415.70, 3, 'Pandemic.jpg');
+insert into tb_product (id, name, description, price, category_id, url_image) values (6, 'Distilled', 'Distilled desafia os jogadores...', 320.99, 2, 'distilledprincipal.webp');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (9, 'Red7', 'Red7 é um jogo rápido e estratégico onde as regras mudam a cada rodada, exigindo adaptação constante dos jogadores.', 178.90, 4, 'Red7.webp');
+insert into tb_product (id, name, description, price, category_id, url_image) values (7, 'Gatinho', 'Gatinho é um jogo divertido...', 200.99, 3, 'gatinhoprincipal.jpg');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (10, 'Splendor', 'Splendor é um jogo de estratégia onde jogadores competem para coletar gemas e comprar cartas para conquistar prestígio.', 305.80, 1, 'Splendor.jpg');
+insert into tb_product (id, name, description, price, category_id, url_image) values (8, 'Pandemic', 'Pandemic é um clássico jogo...', 415.70, 3, 'pandemicprincipal.jpg');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (11, 'Terra Mistica', 'Terra Mistica é um jogo de estratégia profunda onde os jogadores desenvolvem suas facções para dominar o mapa.', 860.90, 5, 'TerraMistica.webp');
+insert into tb_product (id, name, description, price, category_id, url_image) values (9, 'Red7', 'Red7 é um jogo rápido...', 178.90, 4, 'red7principal.webp');
 
-insert into tb_product (id, name, description, price, category_id, url_image) values (12, 'Welcome', 'Welcome é um jogo leve e estratégico onde os jogadores desenvolvem a cidade americana ideal através de planejamento cuidadoso.', 299.90, 1, 'Welcome.jpg');
+insert into tb_product (id, name, description, price, category_id, url_image) values (10, 'Splendor', 'Splendor é um jogo de estratégia...', 305.80, 1, 'splendorprincipal.jpg');
 
+insert into tb_product (id, name, description, price, category_id, url_image) values (11, 'Terra Mistica', 'Terra Mistica é um jogo...', 860.90, 5, 'terramisticaprincipal.webp');
+
+insert into tb_product (id, name, description, price, category_id, url_image) values (12, 'Welcome', 'Welcome é um jogo leve...', 299.90, 1, 'welcomeprincipal.jpg');
+
+-- (Mantenha os inserts de user e address como estão)
 
 INSERT INTO tb_user(display_name, username, password) VALUES ('Administrador', 'admin','$2a$10$.PVIfB07x.SfMYTcToxL0.yxcLWU0GbS2NUO1W1QAvqMm/TsFhVem');/*123*/
 INSERT INTO tb_user(display_name, username, password) VALUES ('Teste', 'test','$2a$10$.PVIfB07x.SfMYTcToxL0.yxcLWU0GbS2NUO1W1QAvqMm/TsFhVem'); /*123*/
