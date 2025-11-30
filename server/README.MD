@@ -126,7 +126,7 @@ src/
 │   │               └── dto/                            # Data Transfer Objects com validações
 │   └── resources/
 │       ├── application.properties                      # Configurações da aplicação
-│       └── import.sql						            # Script de inicialização
+│       └── data.sql						            # Script de inicialização
 ├── test/                                               # Testes unitários e de integração
 └── pom.xml                                             # Gerenciador de dependências Maven
 ```
@@ -2622,7 +2622,7 @@ public class ProductController extends CrudController<Product, ProductDTO, Long>
 ```
 ---
 ### 10. 🔬Carregando dados para teste
-Para que seja mais fácil testar a API nesse momento, vamos adicionar um conjunto de dados padrão junto com a execução da aplicação. Assim, toda vez que a aplicação for iniciada os dados serão inseridos no banco de dados e estarão disponíveis para teste nos diferentes *endpoints* implementados. Para isso, criar um arquivo chamado `import.sql` dentro da pasta de `resources` da aplicação. A senha no exemplo abaixo já está criptografada e o valor é **123**.
+Para que seja mais fácil testar a API nesse momento, vamos adicionar um conjunto de dados padrão junto com a execução da aplicação. Assim, toda vez que a aplicação for iniciada os dados serão inseridos no banco de dados e estarão disponíveis para teste nos diferentes *endpoints* implementados. Para isso, criar um arquivo chamado `data.sql` dentro da pasta de `resources` da aplicação. A senha no exemplo abaixo já está criptografada e o valor é **123**.
 
 ```sql
 -- Category  

@@ -1,4 +1,3 @@
-// client/src/pages/home-page/index.tsx
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Toast } from "primereact/toast";
 import { IProduct } from "@/commons/types";
@@ -16,6 +15,7 @@ export const HomePage = () => {
   const { findAll } = ProductService;
   const [searchParams, setSearchParams] = useSearchParams(); 
 
+  // Função que carrega os produtos
   const loadProducts = useCallback(async () => { 
     setLoading(true);
     try {
@@ -24,7 +24,9 @@ export const HomePage = () => {
         if (response.success && Array.isArray(response.data)) {
             const allProducts = response.data as IProduct[];
             
-            // CORREÇÃO: Pega os primeiros 8 produtos da lista, independente do ID
+            // CORREÇÃO AQUI: 
+            // Removemos o "TOP_8_PRODUCT_IDS" que estava bloqueando os produtos.
+            // Agora pegamos os primeiros 8 produtos que o banco devolver, não importa o ID.
             const topProducts = allProducts.slice(0, 8);
             
             setProducts(topProducts);
@@ -43,7 +45,6 @@ export const HomePage = () => {
     loadProducts();
   }, [loadProducts]); 
 
-  // ... (Mantenha o resto das funções: handleSelectCategory, etc.)
   const handleSelectCategory = (categoryId?: number) => { 
     if (categoryId) {
         setSearchParams({ category: String(categoryId) });

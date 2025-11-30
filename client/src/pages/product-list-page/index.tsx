@@ -12,33 +12,24 @@ export const ProductListPage = () => {
   const [loading, setLoading] = useState(true);
   const toast = useRef<Toast>(null);
   
-  // Hook para ler os parâmetros da URL (ex: ?categoryId=1)
   const [searchParams] = useSearchParams();
   const categoryIdParam = searchParams.get('categoryId');
-  const pageTitle = searchParams.get('title') || 'Todos os Produtos';
+  const categoryName = searchParams.get('title') || 'Todos os Produtos';
 
   useEffect(() => {
     loadProducts();
-  }, [categoryIdParam]); // Recarrega sempre que a categoria mudar
+  }, [categoryIdParam]); 
 
   const loadProducts = async () => {
     setLoading(true);
     try {
-      // Se houver categoria na URL, converte para número, senão envia undefined
       const id = categoryIdParam ? parseInt(categoryIdParam) : undefined;
-      
       const response = await ProductService.findAll(id);
 
       if (response.success && Array.isArray(response.data)) {
         setProducts(response.data as IProduct[]);
       } else {
         setProducts([]);
-        toast.current?.show({
-          severity: "error",
-          summary: "Erro",
-          detail: "Erro ao carregar produtos.",
-          life: 3000,
-        });
       }
     } catch (error) {
       console.error(error);
@@ -49,20 +40,20 @@ export const ProductListPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-5">
+    <div className="container mx-auto px-4 pt-5" style={{ minHeight: '80vh' }}>
       <Toast ref={toast} />
       
-      {/* Título da Página / Categoria */}
-      <div className="lista-header">
-        <i className="pi pi-th-large header-icon text-3xl mr-3"></i>
-        <h2 className="header-title text-3xl">{pageTitle}</h2>
+      <div className="lista-header flex align-items-center mb-4">
+        <i className="pi pi-th-large header-icon text-3xl mr-3" style={{ color: '#800000' }}></i>
+        <h2 className="header-title text-3xl m-0" style={{ color: '#800000' }}>{categoryName}</h2>
       </div>
-      <div className="decorative-strip"></div>
+      
+      <div className="w-full mb-5" style={{ height: '4px', backgroundColor: '#e0e0e0' }}></div>
 
       {loading ? (
-        <div className="loading-container">
-           <i className="pi pi-spin pi-spinner text-4xl spinner-icon"></i>
-           <p className="mt-3">A carregar produtos...</p>
+        <div className="flex flex-column align-items-center justify-content-center mt-5">
+           <i className="pi pi-spin pi-spinner text-5xl" style={{ color: '#800000' }}></i>
+           <p className="mt-3 text-lg text-600">A carregar produtos...</p>
         </div>
       ) : (
         <>
@@ -75,9 +66,9 @@ export const ProductListPage = () => {
               ))}
             </div>
           ) : (
-            <div className="empty-message">
-              <i className="pi pi-box text-5xl mb-3 block"></i>
-              <p>Nenhum produto encontrado nesta categoria.</p>
+            <div className="flex flex-column align-items-center justify-content-center mt-5 text-gray-500">
+              <i className="pi pi-box text-6xl mb-3"></i>
+              <p className="text-xl">Nenhum produto encontrado.</p>
             </div>
           )}
         </>

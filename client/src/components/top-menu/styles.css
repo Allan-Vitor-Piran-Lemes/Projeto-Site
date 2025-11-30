@@ -1,142 +1,84 @@
 /* client/src/components/top-menu/styles.css */
-
-/* --- Container Principal (Header) --- */
+/* Container Principal */
 .top-menu-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     background-color: #5c0000; /* Vermelho Tabula */
-    padding: 1rem 2rem;
-    height: 100px;
+    padding: 0.5rem 2rem;
+    height: 80px;
     box-sizing: border-box;
 }
 
-/* --- Logo --- */
-.top-menu-logo {
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
+/* Logo */
+.top-menu-logo { margin: 0; display: flex; align-items: center; }
+.top-menu-logo-link { color: whitesmoke; font-size: 2rem; text-decoration: none; font-weight: bold; }
 
-.top-menu-logo-link {
-    color: whitesmoke;
-    font-size: 2rem;
-    text-decoration: none;
-    font-weight: bold; /* Opcional, se quiser o logo mais forte */
-}
-
-/* --- Barra de Busca (Search Box) --- */
-/* Só aparece a partir de telas médias (md no PrimeFlex) */
+/* Busca (Escondida em mobile) */
 .top-menu-search-box {
-    display: none; /* Mobile first: escondido por padrão */
+    display: none;
     width: 100%;
     max-width: 400px;
     background-color: white;
-    border-radius: 4px; /* Opcional: arredondar cantos */
-    overflow: hidden; /* Garante que o input não vase */
+    border-radius: 4px;
+    overflow: hidden;
 }
 
-.top-menu-search-input {
-    flex: 1;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    outline: none; /* Remove contorno ao clicar */
-}
+.top-menu-search-input { flex: 1; border: none; padding: 0.5rem 1rem; outline: none; }
+.top-menu-search-icon-container { display: flex; align-items: center; padding: 0 10px; background-color: #fff; cursor: pointer; }
+.top-menu-search-icon { color: #888; }
 
-.top-menu-search-icon-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-    background-color: #fff; /* Fundo branco igual ao input */
-    cursor: pointer;
-}
-
-.top-menu-search-icon {
-    font-size: 1.25rem; /* text-xl */
-    color: #888;
-}
-
-/* --- Navegação Direita (Nav) --- */
+/* Navegação Direita */
 .top-menu-nav {
     display: flex;
     align-items: center;
-    gap: 1rem; /* gap-3 aprox */
+    color: white;
+    gap: 10px;
+}
+
+/* Ícone de Usuário e Nome */
+.top-menu-user-icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
     color: white;
 }
 
-/* Carrinho */
-.top-menu-cart-container {
-    position: relative;
+.user-first-name {
+    font-size: 0.75rem;
+    margin-top: 2px;
+    font-weight: bold;
 }
 
-.top-menu-cart-button {
-    color: whitesmoke !important; /* !important para sobrescrever PrimeReact se necessário */
-}
-
-.top-menu-cart-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-/* Login / User Info */
-.top-menu-user-container {
+/* Links de Login/Cadastro */
+.auth-buttons-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* gap-2 */
+    gap: 5px;
+    font-size: 0.9rem;
 }
 
-.top-menu-user-name {
-    font-size: 0.875rem; /* text-sm */
-    font-weight: bold;
-    display: none; /* Esconde em telas muito pequenas */
-}
-
-.top-menu-avatar {
-    cursor: pointer;
-}
-
-.top-menu-logout-button {
-    color: whitesmoke !important;
-}
-
-/* Login Links (Não autenticado) */
-.top-menu-auth-links {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.75rem; /* text-xs */
-    line-height: 1.2;
-}
-
-.top-menu-login-link {
-    color: whitesmoke;
+.auth-btn-link {
+    color: white;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
-.top-menu-register-link {
-    color: whitesmoke;
+.auth-btn-link:hover {
+    color: #ffd700; /* Dourado suave no hover */
     text-decoration: underline;
 }
 
-/* Switch Modo Noturno */
-.top-menu-theme-switch {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem; /* gap-1 */
+.divider {
+    color: rgba(255,255,255,0.5);
 }
 
-@media (min-width: 992px) { /* lg breakpoint */
-    .top-menu-user-name {
-        display: block;
-    }
-}
+/* Carrinho */
+.top-menu-cart-container { position: relative; }
+.top-menu-cart-button { color: whitesmoke !important; }
+.top-menu-cart-badge { position: absolute; top: 0; right: 0; }
 
-@media (min-width: 768px) {
-    .top-menu-search-box {
-        display: flex; /* Exibe em telas maiores */
-    }
-}

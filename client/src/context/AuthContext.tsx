@@ -19,8 +19,7 @@ const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authenticated, setAuthenticated] = useState(false);
-  const [authenticatedUser, setAuthenticatedUser] =
-    useState<AuthenticatedUser>();
+  const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,29 +29,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (storedUser && storedToken) {
       setAuthenticatedUser(JSON.parse(storedUser));
       setAuthenticated(true);
-      api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
-        storedToken
-      )}`;
-      navigate("/");
+      api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(storedToken)}`;
+      // REMOVIDO: navigate("/") -> Isso evita o redirect forçado no F5
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleLogin = async (
-    authenticationResponse: AuthenticationResponse
-  ) => {
+  const handleLogin = async (authenticationResponse: AuthenticationResponse) => {
     try {
-      localStorage.setItem(
-        "token",
-        JSON.stringify(authenticationResponse.token)
-      );
+      localStorage.setItem("token", JSON.stringify(authenticationResponse.token));
       localStorage.setItem("user", JSON.stringify(authenticationResponse.user));
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${authenticationResponse.token}`;
+      api.defaults.headers.common["Authorization"] = `Bearer ${authenticationResponse.token}`;
 
       setAuthenticatedUser(authenticationResponse.user);
       setAuthenticated(true);
+      // O redirect para a Home é feito na página de Login (AuthPage) após sucesso
     } catch {
       setAuthenticatedUser(undefined);
       setAuthenticated(false);
@@ -69,9 +59,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ authenticated, authenticatedUser, handleLogin, handleLogout }}
-    >
+    <AuthContext.Provider value={{ authenticated, authenticatedUser, handleLogin, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

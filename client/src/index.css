@@ -127,7 +127,16 @@ body {
     color: var(--primary-color) !important;
 }
 
+/* Adicione se não tiver */
+.text-green-600 { color: #2ecc71 !important; }
+.bg-green-100 { background-color: #dcfce7 !important; }
 
+/* Ajustes finos para a tabela do carrinho */
+.p-datatable .p-datatable-thead > tr > th {
+    background-color: #f8f9fa;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
 
 
 

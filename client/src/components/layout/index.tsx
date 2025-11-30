@@ -1,10 +1,10 @@
 // client/src/components/layout/index.tsx
-import { Outlet, Link as RouterLink, useNavigate } from "react-router-dom";
-import TopMenu from "@/components/top-menu";
+import { Outlet, useNavigate, Link as RouterLink } from "react-router-dom";
+import TopMenu from "@/components/top-menu"; // Importação Padrão (Sem chaves)
 import React, { useEffect, useState } from "react"; 
 import CategoryService from "@/services/category-service"; 
 import type { ICategory } from "@/commons/types"; 
-import './styles.css'; // Importa o CSS externo com as classes definidas
+import './styles.css';
 
 // --- COMPONENTE: Menu de Categorias (Underbar) ---
 const Underbar: React.FC = () => {
@@ -67,7 +67,6 @@ const Footer: React.FC = () => {
     return (
         <footer className="layout-footer"> 
             <div className="footer-container"> 
-                {/* Coluna 1 */}
                 <div className="footer-column">
                     <h5 className="text-xl mb-1">Institution Information</h5> 
                     <p className="text-base m-0">CNPJ: 00.623.904/0001-73</p>
@@ -75,14 +74,12 @@ const Footer: React.FC = () => {
                     <p className="text-base m-0">Address: Rua Ernesto Beuter - 53</p>
                 </div>
                 
-                {/* Coluna 2 */}
                 <div className="footer-column">
                     <h5 className="text-xl mb-1">Customer Support</h5> 
                     <p className="text-base m-0">Email: tabula.email@tabulairos.com</p>
                     <p className="text-base m-0">Phone: +55 (99) 99999-9999</p>
                 </div>
                 
-                {/* Coluna 3 */}
                 <div className="footer-column">
                     <h5 className="text-xl mb-1">Privacy</h5> 
                     <RouterLink 
@@ -94,7 +91,6 @@ const Footer: React.FC = () => {
                 </div>
             </div>
             
-            {/* Ícones Sociais */}
             <div className="footer-social"> 
                 {socialLinks.map(link => (
                     <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" className="no-underline">
@@ -103,7 +99,6 @@ const Footer: React.FC = () => {
                 ))}
             </div>
             
-            {/* Copyright */}
             <div className="footer-copyright"> 
                 © {new Date().getFullYear()} Tabula. All rights reserved.
             </div>
@@ -115,13 +110,11 @@ const Footer: React.FC = () => {
 export function Layout() {
     return (
         <div className="flex flex-column min-h-screen">
-            {/* CONTAINER FIXO: TopMenu + Underbar */}
             <div className="layout-fixed-header">
                 <TopMenu />
                 <Underbar />
             </div>
             
-            {/* Conteúdo Principal com padding para não esconder atrás do header */}
             <main className="layout-main-content"> 
                 <Outlet />
             </main>

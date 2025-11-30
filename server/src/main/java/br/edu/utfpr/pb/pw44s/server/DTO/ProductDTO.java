@@ -19,10 +19,10 @@ public class ProductDTO {
     private String description;
     private BigDecimal price;
 
-    // Corrigido de url_image para image para bater com a Entidade e o Front
+    // O Front espera 'image', a Entidade tem 'image'. O DTO precisava ter 'image'.
     private String image;
 
-    // Novos campos adicionados para bater com a Entidade Product
+    // Campos adicionais para bater com a sua Entidade e Front-end
     private String installmentInfo;
     private List<String> specifications;
     private List<String> gallery;

@@ -1,154 +1,174 @@
 // client/src/pages/cart-page/index.tsx
-import { useCart } from "@/context/hooks/use-cart.ts";
+import { useCart } from "@/context/hooks/use-cart";
+import { useAuth } from "@/context/hooks/use-auth";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputNumber } from "primereact/inputnumber";
 import { useNavigate } from "react-router-dom";
 import type { ICartItem } from "@/commons/types";
+import './styles.css';
 
 export const CartPage = () => {
     const navigate = useNavigate();
     const { cart, cartTotal, updateQuantity, removeItem, clearCart, cartCount } = useCart();
+    const { authenticated } = useAuth(); 
     
-    // MUDANÇA: Frete fixo (como no seu JS original) para teste
-    const SHIPPING_COST = 10.00; 
-    const finalTotal = cartTotal + (cartTotal > 0 ? SHIPPING_COST : 0);
+    // O total é apenas o subtotal agora, pois o frete é calculado/exibido depois
+    const finalTotal = cartTotal; 
     
-    // --- Templates para as colunas da tabela ---
+    // --- Templates da Tabela ---
 
-    // Template de Imagem e Nome
     const productColumnTemplate = (item: ICartItem) => (
-        <div className="flex align-items-center">
-            {/* Usando a URL placeholder temporariamente */}
+        <div className="flex align-items-center gap-3">
             <img 
-                src="/assets/images/utfpr-logo.png" 
+                src={item.product.image || "https://placehold.co/100x100?text=Sem+Imagem"} 
                 alt={item.product.name} 
-                style={{ width: '50px', height: '50px', objectFit: 'contain', marginRight: '10px' }}
+                className="cart-product-image"
+                onError={(e) => (e.currentTarget.src = "https://placehold.co/100x100?text=Erro")}
             />
-            <strong>{item.product.name}</strong>
+            <div className="flex flex-column">
+                <span className="font-bold text-lg text-900">{item.product.name}</span>
+                <span className="text-sm text-500">{item.product.category?.name || 'Geral'}</span>
+            </div>
         </div>
     );
 
-    // Template de Preço Unitário
     const priceColumnTemplate = (item: ICartItem) => (
-        <span className="cart-product-price">
-            {item.product.price.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+        <span className="font-medium text-lg">
+            {item.product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
         </span>
     );
     
-    // Template de Quantidade e Ação de Remoção
     const quantityColumnTemplate = (item: ICartItem) => (
         <div className="flex align-items-center gap-2">
             <InputNumber
                 value={item.quantity}
                 onValueChange={(e) => updateQuantity(item.product.id!, e.value ?? 1)}
                 showButtons
+                buttonLayout="horizontal"
                 min={1}
-                max={10}
-                inputStyle={{ width: '4rem', textAlign: 'center' }}
+                max={99}
+                inputStyle={{ width: '3rem', textAlign: 'center' }}
+                // Classe customizada para estilizar as flechas com a cor do tema
+                className="cart-quantity-input" 
+                decrementButtonClassName="p-button-secondary"
+                incrementButtonClassName="p-button-secondary"
+                // CORREÇÃO: Agora os ícones estão certos
+                incrementButtonIcon="pi pi-plus"   // Botão de aumentar -> Ícone de mais
+                decrementButtonIcon="pi pi-minus"  // Botão de diminuir -> Ícone de menos
             />
             <Button
                 icon="pi pi-trash"
-                className="p-button-danger p-button-sm p-button-text"
+                className="p-button-rounded p-button-danger p-button-text"
                 onClick={() => removeItem(item.product.id!)}
-                tooltip="Remove"
+                tooltip="Remover item"
             />
         </div>
     );
 
-    // --- Renderização Principal ---
+    // --- Lógica de Finalização ---
+    const handleCheckout = () => {
+        if (authenticated) {
+            // Se logado, segue para o checkout (Endereço, Pagamento)
+            navigate("/checkout");
+        } else {
+            // Se não logado, manda para o login
+            navigate("/login"); 
+        }
+    };
+
+    // --- Renderização ---
 
     if (cartCount === 0) {
         return (
-            <div className="container mx-auto px-4 pt-5 text-center" style={{ minHeight: '60vh' }}>
-                <h2 className="text-3xl mt-6 mb-4" style={{ color: '#2e0000' }}>Your Cart is Empty</h2>
+            <div className="container mx-auto px-4 pt-4 text-center cart-container">
+                <i className="pi pi-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                <h2 className="text-3xl font-bold text-900 mb-2 cart-title">Seu carrinho está vazio</h2>
+                <p className="text-gray-600 mb-6">Parece que você ainda não adicionou nenhum jogo.</p>
                 <Button 
-                    label="Continue Shopping" 
+                    label="Começar a Comprar" 
                     icon="pi pi-arrow-left" 
-                    onClick={() => navigate("/products/show")} 
-                    className="p-button-secondary"
+                    onClick={() => navigate("/")} 
+                    className="p-button-secondary p-button-outlined"
                 />
             </div>
         );
     }
     
-    // MUDANÇA: Layout baseado na estrutura de tabela do seu HTML/CSS original
     return (
-        <div className="container mx-auto px-4 pt-5" style={{ minHeight: '60vh' }}>
-            <h2 className="text-3xl mb-4" style={{ color: '#2e0000' }}>Shopping Cart ({cartCount} item{cartCount > 1 ? 's' : ''})</h2>
+        <div className="container mx-auto px-4 pt-1 pb-8 cart-container">
+            <h2 className="text-3xl font-bold mb-6 cart-title">Meu Carrinho ({cartCount} itens)</h2>
 
             <div className="grid">
                 
-                {/* COLUNA ESQUERDA: TABELA DE PRODUTOS */}
+                {/* COLUNA ESQUERDA: LISTA DE PRODUTOS */}
                 <div className="col-12 lg:col-8">
-                    <DataTable 
-                        value={cart} 
-                        className="p-datatable-gridlines cart-table"
-                        stripedRows
-                    >
-                        <Column 
-                            header="Product" 
-                            body={productColumnTemplate} 
-                            style={{ width: '50%' }}
-                        />
-                        <Column 
-                            header="Price" 
-                            body={priceColumnTemplate} 
-                            style={{ width: '20%' }}
-                        />
-                        <Column 
-                            header="Quantity & Actions" 
-                            body={quantityColumnTemplate} 
-                            style={{ width: '30%' }}
-                        />
-                    </DataTable>
+                    <div className="card shadow-1 border-round-xl overflow-hidden bg-white">
+                        <DataTable value={cart} className="p-datatable-lg" stripedRows responsiveLayout="scroll">
+                            <Column header="Produto" body={productColumnTemplate} style={{ width: '55%' }} />
+                            <Column header="Preço" body={priceColumnTemplate} style={{ width: '20%' }} />
+                            <Column header="Quantidade" body={quantityColumnTemplate} style={{ width: '25%' }} />
+                        </DataTable>
+                    </div>
                     
-                    <div className="flex justify-content-between mt-3">
+                    <div className="flex justify-content-between align-items-center mt-4">
                         <Button 
-                            label="Continue Shopping" 
+                            label="Continuar Comprando" 
                             icon="pi pi-arrow-left" 
-                            onClick={() => navigate("/products/show")} 
-                            className="p-button-secondary p-button-sm"
+                            onClick={() => navigate("/products")} 
+                            className="btn-continue-shopping"
                         />
+                        
                         <Button 
-                            label="Clear Cart" 
-                            icon="pi pi-times" 
+                            label="Limpar Carrinho" 
+                            icon="pi pi-trash" 
                             onClick={clearCart} 
-                            className="p-button-danger p-button-sm"
+                            className="p-button-text p-button-danger btn-clear-cart"
                         />
                     </div>
                 </div>
 
-                {/* COLUNA DIREITA: RESULTADO E CHECKOUT */}
+                {/* COLUNA DIREITA: RESUMO */}
                 <div className="col-12 lg:col-4">
-                    <div className="card p-4 shadow-2 bg-white" style={{ border: '1px solid #ddd' }}>
-                        <h4 className="text-xl mb-3">Order Summary</h4>
+                    <div className="summary-card">
+                        <h3 className="text-xl font-bold mb-4 text-900">Resumo da Compra</h3>
                         
-                        <div className="flex justify-content-between mb-2">
-                            <span className="font-semibold">Subtotal (Items):</span>
-                            <span>{cartTotal.toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                        <div className="flex justify-content-between mb-3">
+                            <span className="text-600">Subtotal</span>
+                            <span className="font-bold text-900">
+                                {cartTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                            </span>
                         </div>
                         
-                        <div className="flex justify-content-between mb-2">
-                            <span className="font-semibold">Shipping Cost:</span>
-                            <span>{SHIPPING_COST.toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                        <div className="flex justify-content-between mb-3 align-items-center">
+                            <span className="text-600">Frete</span>
+                            <span className="freight-badge">
+                                + frete
+                            </span>
                         </div>
 
-                        <div className="border-top-1 surface-border my-3"></div>
+                        <div className="border-top-1 border-gray-200 my-3"></div>
 
-                        <div className="flex justify-content-between text-2xl font-bold mb-4">
-                            <span>Total:</span>
-                            <span style={{ color: '#2e0000' }}>{finalTotal.toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                        <div className="flex justify-content-between align-items-end mb-5">
+                            <span className="text-xl font-bold text-900">Total</span>
+                            <div className="text-right">
+                                <span className="text-2xl font-bold text-900 block">
+                                    {finalTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                                </span>
+                            </div>
                         </div>
 
                         <Button 
-                            label="Proceed to Checkout" 
-                            icon="pi pi-check-circle" 
-                            // Esta rota será criada na próxima etapa (Finalizar Compra)
-                            onClick={() => navigate("/checkout")} 
-                            className="p-button-success p-button-lg w-full"
+                            label="Finalizar" 
+                            icon="pi pi-check" 
+                            onClick={handleCheckout} 
+                            className="btn-finalize"
                         />
+                        
+                        <div className="security-text">
+                            <i className="pi pi-lock mr-1"></i> Compra 100% Segura
+                        </div>
                     </div>
                 </div>
             </div>

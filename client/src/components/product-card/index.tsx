@@ -1,6 +1,6 @@
 import { IProduct } from "@/commons/types";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "@/context/hooks/use-cart";
+import { useCart } from "@/context/hooks/use-cart"; // Verifique se o caminho está correto
 import { Toast } from 'primereact/toast';
 import { useRef } from "react";
 import './styles.css';
@@ -20,34 +20,34 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     }
   };
   
+  // CORREÇÃO AQUI: Adicionado 'e: React.MouseEvent' e 'e.stopPropagation()'
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Impede que o clique no botão afete o card inteiro
+    
     addItem(product, 1);
+    
     toast.current?.show({ 
         severity: 'success', 
-        summary: 'Adicionado', 
-        detail: `${product.name} foi para o carrinho.`, 
+        summary: 'Adicionado', // Traduzido
+        detail: `${product.name} adicionado ao carrinho.`, 
         life: 3000 
     });
   };
 
-  // Fallback genérico (Sem Imagem)
-  const fallbackImage = 'https://placehold.co/600x400?text=Sem+Imagem';
-  
-  // Se o produto tiver imagem, usa ela. Senão, usa o fallback.
-  const imageUrl = product.image || fallbackImage;
+  // Se existir imagem no banco, usa. Se não, usa placeholder.
+  const imageUrl = product.image || "https://placehold.co/600x400?text=Sem+Imagem";
 
   return (
     <div className="product-card-custom"> 
       <Toast ref={toast} />
       
+      {/* Área clicável que leva aos detalhes */}
       <div onClick={handleDetailsClick} className="card-link cursor-pointer">
         <img
             alt={product.name}
             src={imageUrl} 
             className="product-image"
-            // Se a imagem não carregar (ex: caminho errado), mostra o fallback
-            onError={(e) => (e.currentTarget.src = fallbackImage)}
+            onError={(e) => (e.currentTarget.src = "https://placehold.co/600x400?text=Erro+Imagem")}
         />
         <h3 className="Titulo">
             {product.name}
@@ -60,6 +60,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         {product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
       </p>
 
+      {/* Botão de Adicionar */}
       <button 
         className="carrinho"
         onClick={handleAddToCart}
