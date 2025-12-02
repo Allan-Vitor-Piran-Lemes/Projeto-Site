@@ -1,8 +1,4 @@
-export interface IUserRegister {
-  displayName: string;
-  username: string;
-  password: string;
-}
+// client/src/commons/types.ts
 
 export interface IUserRegister {
   displayName: string;
@@ -12,18 +8,12 @@ export interface IUserRegister {
   telefone: string;
 }
 
-/*
-
-// MUDANÇA: Interface para o formulário de Registro (inclui campo de validação local)
-export interface IUserRegisterForm extends IUserRegister {
-  confirmPassword?: string; 
-}*/
-
 export interface IResponse {
   status?: number;
   success?: boolean;
   message?: string;
-  data?: object
+  data?: any; // Alterado para any para facilitar
+  error?: any; // Adicionado para capturar erros
 }
 
 export interface IUserLogin {
@@ -51,29 +41,59 @@ export interface ICategory {
   name: string;
 }
 
-// MUDANÇA: Adicionar o campo url_image
 export interface IProduct {
     id?: number;
     name: string;
     price: number;
     description: string;
-    image: string;          // Renomeado de url_image para image
-    installmentInfo?: string; // Novo campo
-    specifications?: string[]; // Novo campo
-    gallery?: string[];     // Novo campo
+    image: string;          
+    installmentInfo?: string; 
+    specifications?: string[]; 
+    gallery?: string[];     
     category: ICategory;
 }
 
-// ADIÇÃO: Interface para o item do menu de categoria
 export interface ICategoryMenuItem {
   id: number;
   label: string;
   command?: () => void;
 }
 
-// ADIÇÃO: Interface para Item do Carrinho (Preparação para próxima etapa)
 export interface ICartItem {
   product: IProduct;
   quantity: number;
 }
-export default TopMenu;
+
+// --- NOVAS INTERFACES ADICIONADAS ---
+
+export interface IAddress {
+    id?: number;
+    title?: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    complemento?: string;
+    city: string;       // Aqui está o 'city' que estava dando erro
+    estado?: string;
+    cep: string;
+    userId?: number;
+}
+
+export interface IOrderItem {
+    id: number;
+    product: IProduct;
+    quantity: number;
+    unit_price: number;
+}
+
+export interface IOrder {
+    id: number;
+    data: string;
+    total: number;
+    address: IAddress;
+    items: IOrderItem[];
+    
+    // Campos que estavam faltando:
+    freight?: number;         
+    paymentMethod?: string;
+}

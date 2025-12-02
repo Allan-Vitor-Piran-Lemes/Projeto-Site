@@ -10,6 +10,8 @@ import './styles.css';
 export const ProductListPage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // 1. Criar referência do Toast
   const toast = useRef<Toast>(null);
   
   const [searchParams] = useSearchParams();
@@ -39,8 +41,19 @@ export const ProductListPage = () => {
     }
   };
 
+  // 2. Função de callback para mostrar o Toast
+  const handleShowToast = (product: IProduct) => {
+      toast.current?.show({ 
+          severity: 'success', 
+          summary: 'Sucesso', 
+          detail: `${product.name} adicionado ao carrinho!`, 
+          life: 3000 
+      });
+  };
+
   return (
     <div className="container mx-auto px-4 pt-5" style={{ minHeight: '80vh' }}>
+      {/* 3. Componente Toast aqui */}
       <Toast ref={toast} />
       
       <div className="lista-header flex align-items-center mb-4">
@@ -61,7 +74,8 @@ export const ProductListPage = () => {
             <div className="produtos-container">
               {products.map((product) => (
                 <div key={product.id}>
-                  <ProductCard product={product} />
+                  {/* 4. Passar a função para o card */}
+                  <ProductCard product={product} onAddToCart={handleShowToast} />
                 </div>
               ))}
             </div>

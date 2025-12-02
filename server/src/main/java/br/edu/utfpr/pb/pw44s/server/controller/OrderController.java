@@ -1,7 +1,8 @@
 package br.edu.utfpr.pb.pw44s.server.controller;
 
-import br.edu.utfpr.pb.pw44s.server.DTO.OrderDTO;
+import br.edu.utfpr.pb.pw44s.server.DTO.*;
 import br.edu.utfpr.pb.pw44s.server.model.*;
+import br.edu.utfpr.pb.pw44s.server.repository.OrderRepository;
 import br.edu.utfpr.pb.pw44s.server.service.AuthService;
 import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw44s.server.service.IOrderItensService;
@@ -12,9 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,14 +24,19 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
     private final IOrderItensService orderItensService;
     private final ModelMapper modelMapper;
     private final AuthService authService;
+    private final OrderRepository orderRepository;
 
-
-    public OrderController(IOrderService orderService, IOrderItensService orderItensService, ModelMapper modelMapper, AuthService authService) {
+    public OrderController(IOrderService orderService,
+                           IOrderItensService orderItensService,
+                           ModelMapper modelMapper,
+                           AuthService authService,
+                           OrderRepository orderRepository) {
         super(Order.class, OrderDTO.class);
         this.orderService = orderService;
         this.orderItensService = orderItensService;
         this.modelMapper = modelMapper;
         this.authService = authService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -45,52 +49,82 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
         return modelMapper;
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderDTO>> getOrdersByUser(@PathVariable Long userId) {
-    List<Order> orders = orderService.findAllByUserId(userId);
-    List<OrderDTO> orderDTO = orders.stream()
-            .map(order -> modelMapper.map(order, OrderDTO.class))
-            .collect(Collectors.toList());
-    return ResponseEntity.ok(orderDTO);
-    }
-
-    @GetMapping("/{orderId}/total")
-    public ResponseEntity<BigDecimal> getOrderTotal(@PathVariable Long orderId) {
-        Order order = orderService.findOrderById(orderId);
-        if (order == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(order.getTotalOrder());
-    }
-
+    // --- LISTAR MEUS PEDIDOS ---
     @GetMapping("/my_orders")
-    public ResponseEntity<List<OrderDTO>> getMyOrders() {
-        Long userId = authService.getAuthenticatedUserId();
-        List<Order> orders = orderService.findAllByUserId(userId);
-        List<OrderDTO> orderDTOs = orders.stream()
-                .map(order -> modelMapper.map(order, OrderDTO.class))
+    public ResponseEntity<List<OrderResponseDTO>> getMyOrders() {
+        User user = authService.getAuthenticatedUser();
+        List<Order> orders = orderRepository.findByUser(user);
+
+        List<OrderResponseDTO> response = orders.stream()
+                .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(orderDTOs);
+
+        return ResponseEntity.ok(response);
     }
 
+    // --- DETALHES DO PEDIDO ---
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<OrderResponseDTO> getOrderDetail(@PathVariable Long id) {
+        Order order = orderService.findOrderById(id);
+        if (order == null) return ResponseEntity.notFound().build();
+
+        Long userId = authService.getAuthenticatedUserId();
+        if (order.getUser().getId() != userId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        return ResponseEntity.ok(convertToResponseDTO(order));
+    }
+
+    // Método auxiliar para converter Order -> OrderResponseDTO
+    private OrderResponseDTO convertToResponseDTO(Order order) {
+        OrderResponseDTO dto = new OrderResponseDTO();
+        dto.setId(order.getId());
+        dto.setData(order.getData());
+        dto.setTotal(order.getTotalOrder());
+        dto.setFreight(order.getFreight());
+        dto.setPaymentMethod(order.getPaymentMethod());
+
+        if (order.getAddress() != null) {
+            dto.setAddress(modelMapper.map(order.getAddress(), AddressDTO.class));
+        }
+
+        if (order.getItems() != null) {
+            List<OrderItensResponseDTO> itemsDto = order.getItems().stream().map(item -> {
+                OrderItensResponseDTO iDto = new OrderItensResponseDTO();
+                iDto.setId(item.getId());
+
+                // --- CORREÇÃO AQUI ---
+                // Como 'quantity' é double primitivo, fazemos o cast direto para int
+                iDto.setQuantity((int) item.getQuantity());
+
+                iDto.setUnit_price(item.getUnit_price());
+
+                if (item.getProduct() != null) {
+                    iDto.setProduct(modelMapper.map(item.getProduct(), ProductDTO.class));
+                }
+                return iDto;
+            }).collect(Collectors.toList());
+            dto.setItems(itemsDto);
+        }
+
+        return dto;
+    }
+
+    // --- CRIAR PEDIDO ---
     @Override
     @PostMapping
     @Transactional
     public ResponseEntity<OrderDTO> create(@Valid @RequestBody OrderDTO orderDTO) {
         User authenticatedUser = authService.getAuthenticatedUser();
 
-        if (orderDTO.getUser() != null &&
-                orderDTO.getUser().getId() != authenticatedUser.getId()) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
-                    "Você não pode criar pedidos para outros usuários"
-            );
-        }
-
         Order order = new Order();
-        order.setData(orderDTO.getData());
+        order.setData(java.time.LocalDateTime.now());
         order.setUser(authenticatedUser);
+
         order.setAddress(modelMapper.map(orderDTO.getAddress(), Address.class));
+        order.setFreight(orderDTO.getFreight());
+        order.setPaymentMethod(orderDTO.getPaymentMethod());
 
         order = orderService.save(order);
 
@@ -105,7 +139,9 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
                         product.setId(itemDTO.getProductId());
                         item.setProduct(product);
 
-                        item.setQuantity(itemDTO.getQuantity());
+                        // Cast de Integer (DTO) para double (Banco)
+                        item.setQuantity((double) itemDTO.getQuantity());
+
                         item.setUnit_price(itemDTO.getUnit_price());
                         return item;
                     })
@@ -113,13 +149,6 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
 
             orderItensService.saveAll(orderItensList);
         }
-
-        order = orderService.findOrderById(order.getId());
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(modelMapper.map(order, OrderDTO.class));
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(order, OrderDTO.class));
     }
-
-
-
 }

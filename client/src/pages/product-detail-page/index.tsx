@@ -1,3 +1,4 @@
+// client/src/pages/product-detail-page/index.tsx
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import { Toast } from "primereact/toast";
@@ -21,28 +22,23 @@ export const ProductDetailPage = () => {
   const { findById } = ProductService;
   const { addItem } = useCart();
 
-  // Imagem genérica caso a do produto falhe
   const fallbackImage = "https://placehold.co/600x400?text=Sem+Imagem";
 
   useEffect(() => {
     const loadProduct = async () => {
       if (!id) return;
-
       setLoading(true);
       try {
         const response = await findById(parseInt(id)); 
         if (response.success && response.data) {
           const loadedProduct = response.data as IProduct;
           setProduct(loadedProduct);
-          
-          // Define a imagem principal inicial (ou fallback se vazia)
           setSelectedImage(loadedProduct.image || fallbackImage);
-          
         } else {
-          navigate("/products"); // Redireciona para lista se não achar
+          navigate("/products");
         }
       } catch (error) {
-        console.error("Erro ao carregar produto:", error);
+        console.error(error);
         navigate("/products");
       } finally {
         setLoading(false);
@@ -64,6 +60,10 @@ export const ProductDetailPage = () => {
     }
   };
 
+  const handleGoBack = () => {
+      navigate(-1); // Volta para a página anterior
+  };
+
   if (loading) {
     return (
         <div className="flex justify-content-center align-items-center min-h-screen">
@@ -74,16 +74,17 @@ export const ProductDetailPage = () => {
 
   if (!product) return <div className="text-center mt-5"><h3>Produto não encontrado.</h3></div>;
 
-  // Cria lista de imagens para as miniaturas (Principal + Galeria do Banco)
   const allImages = [product.image, ...(product.gallery || [])].filter(Boolean);
 
   return (
     <div className="product-detail-container">
       <Toast ref={toast} />
       
-      <div className="detail-top-section">
-        {/* --- Coluna Esquerda: Imagens --- */}
-        <div className="gallery-container">
+      {/* --- BLOCO SUPERIOR (IMAGENS + INFO) --- */}
+      <div className="detail-block top-block">
+        
+        {/* Lado Esquerdo: Galeria */}
+        <div className="gallery-column">
             <div className="main-image-wrapper">
                 <img 
                     src={selectedImage} 
@@ -92,8 +93,6 @@ export const ProductDetailPage = () => {
                     onError={(e) => (e.currentTarget.src = fallbackImage)}
                 />
             </div>
-            
-            {/* Renderiza miniaturas apenas se houver imagens */}
             {allImages.length > 0 && (
                 <div className="thumbnails-row">
                     {allImages.map((imgSrc, index) => (
@@ -110,23 +109,32 @@ export const ProductDetailPage = () => {
             )}
         </div>
 
-        {/* --- Coluna Direita: Detalhes e Compra --- */}
-        <div className="info-container">
-            <h1 className="product-title">{product.name}</h1>
+        {/* Lado Direito: Informações e Ações */}
+        <div className="info-column">
+            <h1 className="product-name">{product.name}</h1>
             
-            <div className="product-price">
+            {/* Lista de Informações (Ficha Técnica aqui) */}
+            <ul className="info-list">
+                {product.specifications && product.specifications.length > 0 ? (
+                    product.specifications.map((spec, i) => (
+                        <li key={i}>{spec}</li>
+                    ))
+                ) : (
+                    <li>Sem especificações adicionais.</li>
+                )}
+            </ul>
+
+            <div className="price-tag">
                 {product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
             </div>
             
-            <div className="installment-info">
-                <i className="pi pi-credit-card mr-2"></i>
+            <div className="installment-tag">
                 {product.installmentInfo || "Em até 12x sem juros"}
             </div>
-            
-            {/* Botões e Ações */}
-            <div className="actions-row">
-                <div className="flex align-items-center gap-3">
-                    <label htmlFor="qtd" className="font-bold text-gray-700">Qtd:</label>
+
+            <div className="purchase-area">
+                <div className="qty-wrapper">
+                    <label htmlFor="qtd">Quantidade:</label>
                     <InputNumber 
                         id="qtd"
                         value={quantity} 
@@ -136,7 +144,7 @@ export const ProductDetailPage = () => {
                         step={1}
                         min={1} 
                         max={99} 
-                        inputStyle={{ width: '3rem', textAlign: 'center' }}
+                        inputStyle={{ width: '4rem', textAlign: 'center' }}
                         decrementButtonClassName="p-button-secondary"
                         incrementButtonClassName="p-button-secondary"
                     />
@@ -145,46 +153,26 @@ export const ProductDetailPage = () => {
                 <Button 
                     label="Adicionar ao Carrinho"
                     icon="pi pi-shopping-cart"
-                    className="add-cart-btn"
+                    className="action-btn add-btn"
                     onClick={handleAddToCart}
                 />
+                
+                <Button 
+                    label="Voltar" 
+                    icon="pi pi-arrow-left" 
+                    className="action-btn back-btn" 
+                    onClick={handleGoBack}
+                />
             </div>
-            
-            <Button 
-                label="Voltar para a Loja" 
-                icon="pi pi-arrow-left" 
-                className="p-button-text mt-3" 
-                style={{color: '#5c0000'}}
-                onClick={() => navigate("/")}
-            />
         </div>
       </div>
 
-      {/* --- Área Inferior: Descrição e Ficha Técnica --- */}
-      <div className="detail-bottom-section">
-        <div className="description-block">
-            <h3 className="section-title">Descrição do Produto</h3>
-            <p className="description-text">
-                {product.description || "Descrição não informada pelo fabricante."}
-            </p>
-        </div>
-
-        <div className="specs-block">
-            <h3 className="section-title">Ficha Técnica</h3>
-            <ul className="specs-list">
-                {/* Renderiza as especificações vindas do Banco de Dados */}
-                {product.specifications && product.specifications.length > 0 ? (
-                    product.specifications.map((info, i) => (
-                        <li key={i}>
-                            <i className="pi pi-check-circle mr-2" style={{color: '#5c0000', fontSize: '0.8rem'}}></i>
-                            {info}
-                        </li>
-                    ))
-                ) : (
-                    <li>Informações técnicas não disponíveis.</li>
-                )}
-            </ul>
-        </div>
+      {/* --- BLOCO INFERIOR (DESCRIÇÃO) --- */}
+      <div className="detail-block bottom-block">
+        <h3 className="desc-title">Descrição</h3>
+        <p className="desc-text">
+            {product.description || "Descrição não informada pelo fabricante."}
+        </p>
       </div>
     </div>
   );

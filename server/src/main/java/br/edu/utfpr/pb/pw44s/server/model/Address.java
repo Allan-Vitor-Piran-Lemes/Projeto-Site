@@ -29,5 +29,5 @@ public class Address {
     private String bairro;
     private String complemento;
     private String cep;
-
+    private String title;
 }

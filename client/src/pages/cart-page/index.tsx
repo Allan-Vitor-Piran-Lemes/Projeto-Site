@@ -50,13 +50,11 @@ export const CartPage = () => {
                 min={1}
                 max={99}
                 inputStyle={{ width: '3rem', textAlign: 'center' }}
-                // Classe customizada para estilizar as flechas com a cor do tema
                 className="cart-quantity-input" 
                 decrementButtonClassName="p-button-secondary"
                 incrementButtonClassName="p-button-secondary"
-                // CORREÇÃO: Agora os ícones estão certos
-                incrementButtonIcon="pi pi-plus"   // Botão de aumentar -> Ícone de mais
-                decrementButtonIcon="pi pi-minus"  // Botão de diminuir -> Ícone de menos
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
             />
             <Button
                 icon="pi pi-trash"
@@ -67,14 +65,17 @@ export const CartPage = () => {
         </div>
     );
 
-    // --- Lógica de Finalização ---
+    // --- Lógica de Finalização (CORRIGIDA) ---
     const handleCheckout = () => {
         if (authenticated) {
-            // Se logado, segue para o checkout (Endereço, Pagamento)
-            navigate("/checkout");
+            // Se logado, segue direto para a seleção de endereço
+            navigate("/checkout/address");
         } else {
-            // Se não logado, manda para o login
-            navigate("/login"); 
+            // Se não logado, manda para o login COM O ESTADO de origem
+            // Assim, após logar, ele volta para /checkout/address automaticamente
+            navigate("/login", { 
+                state: { from: { pathname: "/checkout/address" } } 
+            });
         }
     };
 

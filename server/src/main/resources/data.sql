@@ -1,157 +1,148 @@
--- ==================================================================================
--- CATEGORIAS
--- ==================================================================================
+/*-- LIMPEZA (Opcional, se precisar resetar)
+-- DELETE FROM product_gallery;
+-- DELETE FROM product_specifications;
+-- DELETE FROM tb_order_itens;
+-- DELETE FROM tb_product;
+-- DELETE FROM tb_category;*/
+
+-- 1. CATEGORIAS
 INSERT INTO tb_category (id, name) VALUES (1, 'Guerra');
 INSERT INTO tb_category (id, name) VALUES (2, 'Estratégia');
 INSERT INTO tb_category (id, name) VALUES (3, 'Cooperativo');
 INSERT INTO tb_category (id, name) VALUES (4, 'Cartas');
 INSERT INTO tb_category (id, name) VALUES (5, 'Clássicos');
 
--- ==================================================================================
--- PRODUTOS, GALERIA E ESPECIFICAÇÕES
--- ==================================================================================
+-- 2. PRODUTOS COMPLETOS (Baseado no seu JSON)
 
--- PRODUTO 1: Catan
+-- ID 1: Catan
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (1, 'Catan', 249.90, '/assets/images/Catan.jpg', 'Em até 12x sem juros',
-     'Descubra tudo sobre o jogo Catan (Os Colonizadores de Catan), um dos board games mais famosos do mundo!', 2);
+     'Descubra tudo sobre o jogo Catan (Os Colonizadores de Catan), um dos board games mais famosos do mundo! Aprenda as regras, estratégias, expansões e curiosidades. Encontre dicas para iniciantes, análises de expansões e onde comprar. Junte-se à comunidade de fãs de Catan!', 2);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (1, 'Marca: KOSMOS'), (1, 'Material: Papelão'), (1, 'Jogadores: 3-4');
-INSERT INTO product_gallery (product_id, image_url) VALUES (1, '/assets/images/catan2.png'), (1, '/assets/images/catan3.webp'), (1, '/assets/images/catan4.webp');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (1, 'Marca: KOSMOS'), (1, 'Material: Papelão'), (1, 'Tema: Fantasia Medieval'), (1, 'Gênero: Estratégia'), (1, 'Jogadores: 3-4');
 
--- PRODUTO 2: Azul
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (1, '/assets/images/catan2.png'), (1, '/assets/images/catan3.webp'), (1, '/assets/images/catan4.webp');
+
+-- ID 2: Azul
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (2, 'Azul', 399.90, '/assets/images/Azul.jpg', 'Em até 10x sem juros',
-     'Azul é um jogo premiado onde os jogadores competem para decorar as paredes do Palácio Real de Évora.', 2);
+     'Azul é um jogo premiado onde os jogadores competem para decorar as paredes do Palácio Real de Évora com azulejos coloridos, combinando estratégia e habilidade.', 2);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (2, 'Marca: Next Move'), (2, 'Jogadores: 2-4');
-INSERT INTO product_gallery (product_id, image_url) VALUES (2, '/assets/images/azul2.jpeg'), (2, '/assets/images/azul3.jpg'), (2, '/assets/images/azul4.jpg');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (2, 'Marca: Next Move Games'), (2, 'Material: Papelão'), (2, 'Tema: Azulejos e Decoração'), (2, 'Gênero: Estratégia Familiar'), (2, 'Jogadores: 2-4');
 
--- PRODUTO 3: Bohnanza
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (2, '/assets/images/azul2.jpeg'), (2, '/assets/images/azul3.jpg'), (2, '/assets/images/azul4.jpg');
+
+-- ID 3: Bohnanza
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (3, 'Bohnanza', 211.99, '/assets/images/Bohnanza.png', 'Em até 10x sem juros',
-     'Bohnanza é um jogo divertido de negociação onde os jogadores cultivam feijões para trocar e lucrar.', 2);
+     'Bohnanza é um jogo divertido de negociação e estratégia onde os jogadores cultivam feijões para trocar e lucrar, exigindo boa comunicação e tática.', 2);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (3, 'Marca: Amigo Spiele'), (3, 'Jogadores: 3-5');
-INSERT INTO product_gallery (product_id, image_url) VALUES (3, '/assets/images/bohnanza2.webp'), (3, '/assets/images/bohnanza3.webp'), (3, '/assets/images/bohnanza4.avif');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (3, 'Marca: Amigo Spiele'), (3, 'Material: Papelão'), (3, 'Tema: Plantação de Feijão'), (3, 'Gênero: Estratégia'), (3, 'Jogadores: 3-5');
 
--- PRODUTO 4: Certo ou Errado
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (3, '/assets/images/bohnanza2.webp'), (3, '/assets/images/bohnanza3.webp'), (3, '/assets/images/bohnanza4.avif');
+
+-- ID 4: Certo ou Errado
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (4, 'Certo ou Errado', 150.90, '/assets/images/CertoouErrado.webp', 'Em até 10x sem juros',
-     'Um jogo rápido de perguntas e respostas que testa seu conhecimento e raciocínio.', 4);
+     'Certo ou Errado é um jogo rápido de perguntas e respostas que testa seu conhecimento e raciocínio, perfeito para grupos e festas.', 4);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (4, 'Gênero: Party Game'), (4, 'Jogadores: 2-8');
-INSERT INTO product_gallery (product_id, image_url) VALUES (4, '/assets/images/certoouerrao2.webp'), (4, '/assets/images/certoouerrado3.jpg'), (4, '/assets/images/certoouerrado4.jpg');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (4, 'Marca: Brain Games'), (4, 'Material: Cartas'), (4, 'Tema: Quiz e Conhecimento'), (4, 'Gênero: Party Game'), (4, 'Jogadores: 2-8');
 
--- PRODUTO 5: CuBirds
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (4, '/assets/images/certoouerrao2.webp'), (4, '/assets/images/certoouerrado3.jpg'), (4, '/assets/images/certoouerrado4.jpg');
+
+-- ID 5: CuBirds
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (5, 'CuBirds', 277.24, '/assets/images/CuBirds.jpg', 'Em até 10x sem juros',
-     'Colecione aves raras neste jogo de estratégia leve e arte encantadora.', 4);
+     'CuBirds é um jogo encantador onde os jogadores colecionam aves raras, usando estratégia e sorte para vencer.', 4);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (5, 'Tema: Aves'), (5, 'Jogadores: 2-5');
-INSERT INTO product_gallery (product_id, image_url) VALUES (5, '/assets/images/cubirds2.JPG'), (5, '/assets/images/cubirds3.jpg'), (5, '/assets/images/cubirds4.jpg');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (5, 'Marca: XYZ Games'), (5, 'Material: Cartas e Peças'), (5, 'Tema: Aves e Estratégia'), (5, 'Gênero: Familiar'), (5, 'Jogadores: 2-4');
 
--- PRODUTO 6: Distilled
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (5, '/assets/images/cubirds2.JPG'), (5, '/assets/images/cubirds3.jpg'), (5, '/assets/images/cubirds4.jpg');
+
+-- ID 6: Distilled
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (6, 'Distilled', 320.99, '/assets/images/Distilled.webp', 'Em até 10x sem juros',
-     'Desafie-se a criar as melhores bebidas destiladas combinando ingredientes e estratégia.', 2);
+     'Distilled desafia os jogadores a criar as melhores bebidas destiladas, combinando estratégia e sorte para dominar o mercado.', 2);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (6, 'Tema: Bebidas'), (6, 'Jogadores: 1-5');
-INSERT INTO product_gallery (product_id, image_url) VALUES (6, '/assets/images/distilled2.webp'), (6, '/assets/images/distilled3.jpg'), (6, '/assets/images/distilled4.jpg');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (6, 'Marca: ABC Entertainment'), (6, 'Material: Cartas'), (6, 'Tema: Produção de Bebidas'), (6, 'Gênero: Estratégia'), (6, 'Jogadores: 2-6');
 
--- PRODUTO 7: Gatinho
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (6, '/assets/images/distilled2.webp'), (6, '/assets/images/distilled3.jpg'), (6, '/assets/images/distilled4.jpg');
+
+-- ID 7: Gatinho (Exploding Kittens)
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (7, 'Gatinho', 200.99, '/assets/images/Gatinho.jpg', 'Em até 10x sem juros',
-     'Um jogo explosivo e divertido envolvendo gatinhos e muito caos.', 3);
+     'Gatinho é um jogo divertido que envolve cuidado e estratégia com gatinhos fofos para toda família.', 3);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (7, 'Gênero: Familiar'), (7, 'Jogadores: 2-5');
-INSERT INTO product_gallery (product_id, image_url) VALUES (7, '/assets/images/gatinho2.jpg'), (7, '/assets/images/gatinho3.jpg'), (7, '/assets/images/gatinho4.webp');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (7, 'Marca: Pet Games'), (7, 'Material: Cartas e Peças'), (7, 'Tema: Animais'), (7, 'Gênero: Familiar'), (7, 'Jogadores: 2-5');
 
--- PRODUTO 8: Pandemic
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (7, '/assets/images/gatinho2.jpg'), (7, '/assets/images/gatinho3.jpg'), (7, '/assets/images/gatinho4.webp');
+
+-- ID 8: Pandemic
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (8, 'Pandemic', 415.70, '/assets/images/Pandemic.jpg', 'Em até 10x sem juros',
-     'Trabalhem juntos como uma equipe de especialistas para impedir pandemias globais.', 3);
+     'Pandemic é um clássico jogo cooperativo onde os jogadores unem forças para conter epidemias que ameaçam o mundo.', 3);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (8, 'Gênero: Cooperativo'), (8, 'Jogadores: 2-4');
-INSERT INTO product_gallery (product_id, image_url) VALUES (8, '/assets/images/pandemic2.webp'), (8, '/assets/images/pandemic3.jpg'), (8, '/assets/images/pandemic4.jpg');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (8, 'Marca: Z-Man Games'), (8, 'Material: Cartas e Peças'), (8, 'Tema: Cooperação e Epidemias'), (8, 'Gênero: Estratégia Cooperativa'), (8, 'Jogadores: 2-4');
 
--- PRODUTO 9: Red7
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (8, '/assets/images/pandemic2.webp'), (8, '/assets/images/pandemic3.jpg'), (8, '/assets/images/pandemic4.jpg');
+
+-- ID 9: Red7
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (9, 'Red7', 178.90, '/assets/images/Red7.webp', 'Em até 10x sem juros',
-     'As regras mudam o tempo todo! Se você não estiver ganhando no final do seu turno, você perde.', 4);
+     'Red7 é um jogo rápido e estratégico onde as regras mudam a cada rodada, exigindo adaptação constante dos jogadores.', 4);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (9, 'Gênero: Cartas'), (9, 'Jogadores: 2-4');
-INSERT INTO product_gallery (product_id, image_url) VALUES (9, '/assets/images/red72.jpg'), (9, '/assets/images/red73.png'), (9, '/assets/images/red74.webp');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (9, 'Marca: Asmadi Games'), (9, 'Material: Cartas'), (9, 'Tema: Estratégia e Mudança de Regras'), (9, 'Gênero: Party Game'), (9, 'Jogadores: 2-4');
 
--- PRODUTO 10: Splendor
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (9, '/assets/images/red72.jpg'), (9, '/assets/images/red73.png'), (9, '/assets/images/red74.webp');
+
+-- ID 10: Splendor
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (10, 'Splendor', 305.80, '/assets/images/Splendor.jpg', 'Em até 10x sem juros',
-     'Assuma o papel de um mercador rico da Renascença e use seus recursos para adquirir minas e transporte.', 1);
+     'Splendor é um jogo de estratégia onde jogadores competem para coletar gemas e comprar cartas para conquistar prestígio.', 1);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (10, 'Marca: Space Cowboys'), (10, 'Jogadores: 2-4');
-INSERT INTO product_gallery (product_id, image_url) VALUES (10, '/assets/images/splendor2.jpg'), (10, '/assets/images/splendor3.webp'), (10, '/assets/images/splendor4.webp');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (10, 'Marca: Space Cowboys'), (10, 'Material: Cartas e Peças'), (10, 'Tema: Comércio e Gemas'), (10, 'Gênero: Estratégia'), (10, 'Jogadores: 2-4');
 
--- PRODUTO 11: Terra Mistica
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (10, '/assets/images/splendor2.jpg'), (10, '/assets/images/splendor3.webp'), (10, '/assets/images/splendor4.webp');
+
+-- ID 11: Terra Mistica
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (11, 'Terra Mistica', 860.90, '/assets/images/TerraMistica.webp', 'Em até 10x sem juros',
-     'Governe uma das 14 facções e transforme a paisagem a seu favor neste jogo de estratégia profunda.', 5);
+     'Terra Mistica é um jogo de estratégia profunda onde os jogadores desenvolvem suas facções para dominar o mapa.', 5);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (11, 'Complexidade: Alta'), (11, 'Jogadores: 2-5');
-INSERT INTO product_gallery (product_id, image_url) VALUES (11, '/assets/images/terramistica2.png'), (11, '/assets/images/terramistica3.jpg'), (11, '/assets/images/terramistica4.webp');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (11, 'Marca: Feuerland Spiele'), (11, 'Material: Peças e Tabuleiro'), (11, 'Tema: Fantasia e Estratégia'), (11, 'Gênero: Estratégia Complexa'), (11, 'Jogadores: 2-5');
 
--- PRODUTO 12: Welcome
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (11, '/assets/images/terramistica2.png'), (11, '/assets/images/terramistica3.jpg'), (11, '/assets/images/terramistica4.webp');
+
+-- ID 12: Welcome
 INSERT INTO tb_product (id, name, price, image, installment_info, description, category_id) VALUES
     (12, 'Welcome', 299.90, '/assets/images/Welcome.jpg', 'Em até 10x sem juros',
-     'Construa a cidade perfeita dos anos 50 neste jogo de "roll and write" sem dados.', 1);
+     'Welcome é um jogo leve e estratégico onde os jogadores desenvolvem a cidade americana ideal através de planejamento cuidadoso.', 1);
 
-INSERT INTO product_specifications (product_id, specification) VALUES (12, 'Gênero: Estratégia'), (12, 'Jogadores: 1-100');
-INSERT INTO product_gallery (product_id, image_url) VALUES (12, '/assets/images/welcome2.jpeg'), (12, '/assets/images/welcome3.jpeg'), (12, '/assets/images/welcome4.jpeg');
+INSERT INTO product_specifications (product_id, specification) VALUES
+                                                                   (12, 'Marca: Blue Orange Games'), (12, 'Material: Cartas'), (12, 'Tema: Construção e Planejamento'), (12, 'Gênero: Estratégia Familiar'), (12, 'Jogadores: 1-5');
 
+INSERT INTO product_gallery (product_id, image_url) VALUES
+                                                        (12, '/assets/images/welcome2.jpeg'), (12, '/assets/images/welcome3.jpeg'), (12, '/assets/images/welcome4.jpeg');
 
--- ==================================================================================
--- USUÁRIOS
--- ==================================================================================
--- Senha padrão: 123
-INSERT INTO tb_user(id, display_name, username, password) VALUES
-    (1, 'Administrador', 'admin', '$2a$10$.PVIfB07x.SfMYTcToxL0.yxcLWU0GbS2NUO1W1QAvqMm/TsFhVem');
-
-INSERT INTO tb_user(id, display_name, username, password) VALUES
-    (2, 'Teste', 'test', '$2a$10$.PVIfB07x.SfMYTcToxL0.yxcLWU0GbS2NUO1W1QAvqMm/TsFhVem');
-
-
--- ==================================================================================
--- ENDEREÇOS
--- ==================================================================================
--- Importante: Definir ID explicitamente para garantir integridade com os Pedidos abaixo
-INSERT INTO tb_address(id, user_id, city, logradouro, numero, bairro, complemento, cep) VALUES
-    (1, 1, 'Pato Branco', 'Rua Vicente Machado', '1230', 'Menino Deus', 'Condominio', '12345678');
-
-INSERT INTO tb_address(id, user_id, city, logradouro, numero, bairro, complemento, cep) VALUES
-    (2, 2, 'São Lourenço do Oeste', 'Rua Rio de Janeiro', '85', 'Perpétuo Socorro', 'Casa com barracão', '89990000');
-
-INSERT INTO tb_address(id, user_id, city, logradouro, numero, bairro, complemento, cep) VALUES
-    (3, 2, 'Pato Branco', 'Rua Taubaté', '231', 'São Roque', 'Apartamento', '87654321');
-
-
--- ==================================================================================
--- PEDIDOS
--- ==================================================================================
--- Pedido 1: Admin, Endereço 1
-INSERT INTO tb_order(id, data, user_id, address_id) VALUES
-    (1, '2025-08-23 10:35:22', 1, 1);
-
--- Pedido 2: Teste, Endereço 3
-INSERT INTO tb_order(id, data, user_id, address_id) VALUES
-    (2, '2025-09-24 13:55:03', 2, 3);
-
-
--- ==================================================================================
--- ITENS DO PEDIDO
--- ==================================================================================
--- Itens Pedido 1 (Admin comprou Azul e Certo ou Errado)
-INSERT INTO tb_order_itens(order_id, product_id, quantity, unit_price) VALUES (1, 2, 5.0, 399.90);
-INSERT INTO tb_order_itens(order_id, product_id, quantity, unit_price) VALUES (1, 4, 2.0, 150.90);
-
--- Itens Pedido 2 (Teste comprou Catan e Pandemic)
-INSERT INTO tb_order_itens(order_id, product_id, quantity, unit_price) VALUES (2, 1, 1.0, 249.90);
-INSERT INTO tb_order_itens(order_id, product_id, quantity, unit_price) VALUES (2, 8, 2.0, 415.70);

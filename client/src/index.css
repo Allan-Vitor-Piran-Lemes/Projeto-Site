@@ -1,5 +1,4 @@
 /* client/src/index.css */
-/* client/src/index.css */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
@@ -8,28 +7,30 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* --- CORES DA TABULA (VERMELHO SUPREMO) --- */
+  /* --- CORES DA TABULA --- */
   --primary-color: rgb(167, 42, 42) !important;
-  --primary-dark: rgb(130, 30, 30) !important; /* Vermelho mais escuro para hover */
+  --primary-dark: rgb(130, 30, 30) !important;
   --text-color: #333;
-  --bg-color: #ecf0f1;
-  --white: #fff;
-  --gray-light: #ecf0f1;
+  
+  /* MUDANÇA AQUI: Fundo mais escuro para destacar os blocos brancos */
+  --bg-color: #e0e0e0; 
+  
+  --white: #ffffff;
+  --gray-light: #f8f9fa; /* Usado em inputs, um pouco mais claro */
   --error-color: red;
 
-  /* --- SOBRESCREVENDO O PRIMEREACT (Matando o Azul) --- */
+  /* --- SOBRESCREVENDO O PRIMEREACT --- */
   --primary-50: #fbf2f2 !important;
   --primary-100: #f5e0e0 !important;
   --primary-200: #ecc4c4 !important;
   --primary-300: #e09e9e !important;
   --primary-400: #d17070 !important;
-  --primary-500: rgb(167, 42, 42) !important; /* Cor Principal */
-  --primary-600: rgb(130, 30, 30) !important; /* Hover */
+  --primary-500: rgb(167, 42, 42) !important;
+  --primary-600: rgb(130, 30, 30) !important;
   --primary-700: #942424 !important;
   --primary-800: #751d1d !important;
   --primary-900: #611818 !important;
   
-  /* Forçando variáveis de azul a serem vermelhas caso algum componente use */
   --blue-500: rgb(167, 42, 42) !important;
   --blue-600: rgb(130, 30, 30) !important;
 }
@@ -37,7 +38,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-color);
+  background-color: var(--bg-color); /* Aplica a nova cor de fundo */
   min-height: 100vh;
   width: 100%; 
 }
@@ -47,28 +48,30 @@ body {
     height: 45px;
     width: 100%;
     border: none;
-    background-color: var(--gray-light);
+    background-color: var(--white); /* Inputs brancos para contraste com fundos cinza */
     border-radius: 8px;
     padding: 0 15px;
     outline: none;
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
+    border: 1px solid #ccc; /* Borda suave */
 }
 
 /* Correção de Senha (PrimeReact) */
 .p-password { width: 100%; }
 .p-password-input {
     width: 100%;
-    background-color: var(--gray-light);
-    border: none;
+    background-color: var(--white);
+    border: 1px solid #ccc;
     padding: 12px 15px;
     font-family: 'Open Sans', sans-serif;
+    border-radius: 8px;
 }
 .p-password-input:focus {
-    box-shadow: 0 0 0 2px var(--primary-color) !important; /* Foco Vermelho */
+    box-shadow: 0 0 0 2px var(--primary-color) !important;
 }
 
-/* Botões do PrimeReact (Paginadores, etc) */
+/* Botões do PrimeReact */
 .p-button {
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
@@ -89,7 +92,7 @@ body {
     text-align: left;
 }
 
-/* --- CLASSES DE BOTÕES (USADAS NO LOGIN/REGISTER) --- */
+/* --- CLASSES DE BOTÕES --- */
 .btn-second {
     background-color: var(--primary-color) !important;
     border: 1px solid var(--primary-color) !important;
@@ -127,11 +130,11 @@ body {
     color: var(--primary-color) !important;
 }
 
-/* Adicione se não tiver */
+/* Helpers de cor */
 .text-green-600 { color: #2ecc71 !important; }
 .bg-green-100 { background-color: #dcfce7 !important; }
 
-/* Ajustes finos para a tabela do carrinho */
+/* Tabela */
 .p-datatable .p-datatable-thead > tr > th {
     background-color: #f8f9fa;
     color: #495057;

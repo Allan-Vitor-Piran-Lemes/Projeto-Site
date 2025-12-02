@@ -1,25 +1,32 @@
 /* client/src/pages/product-detail-page/styles.css */
 
-/* Container principal com padding para não bater no menu fixo */
 .product-detail-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
     padding-bottom: 50px;
 }
 
-/* Área Superior: Imagens e Info de Compra */
-.detail-top-section {
+/* Estilo Geral dos Blocos - AGORA SÃO BRANCOS */
+.detail-block {
+    background-color: #ffffff; 
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
+}
+
+/* --- BLOCO SUPERIOR --- */
+.top-block {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
 }
 
-/* --- Coluna da Esquerda: Galeria --- */
-.gallery-container {
+/* Galeria */
+.gallery-column {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -27,14 +34,17 @@
 
 .main-image-wrapper {
     width: 100%;
-    height: 400px; /* Altura fixa para consistência */
-    border: 1px solid #ddd;
+    background-color: #fff; 
     border-radius: 8px;
-    overflow: hidden;
+    padding: 10px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    background-color: white;
+    align-items: center;
+    height: 400px;
+    
+    /* Borda mais escura e sombra suave */
+    border: 1px solid #ccc; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .main-image {
@@ -45,122 +55,145 @@
 
 .thumbnails-row {
     display: flex;
-    gap: 1rem;
+    gap: 10px;
     overflow-x: auto;
+    padding-bottom: 5px; 
+    padding-left: 1px; /* Evita cortar a borda da primeira imagem */
 }
 
 .thumbnail-image {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     object-fit: cover;
-    border: 2px solid transparent;
     border-radius: 4px;
     cursor: pointer;
-    transition: border-color 0.2s;
+    background-color: white;
+    
+    /* --- MUDANÇA AQUI: Borda sólida cinza igual à principal --- */
+    border: 1px solid #ccc; 
+    box-sizing: border-box; /* Garante que a borda conte no tamanho total */
+    /* --------------------------------------------------------- */
 }
 
+/* Quando passa o mouse ou está ativa */
 .thumbnail-image:hover, .thumbnail-image.active {
-    border-color: #800000; /* Vermelho Tabula */
+    border: 2px solid #800000; /* Borda vermelha e um pouco mais grossa para destaque */
+    border-color: #800000;
 }
 
-/* --- Coluna da Direita: Informações --- */
-.info-container {
+/* Informações */
+.info-column {
     display: flex;
     flex-direction: column;
-    justify-content: center;
 }
 
-.product-title {
-    font-size: 2.5rem;
-    font-weight: bold;
+.product-name {
+    font-size: 2rem;
+    font-weight: 800;
     color: #333;
     margin-bottom: 1rem;
-    text-transform: uppercase;
+    line-height: 1.2;
 }
 
-.product-price {
-    font-size: 2rem;
-    color: #800000; /* Vermelho Tabula */
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    color: #555;
 }
 
-.installment-info {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 2rem;
-}
-
-.actions-row {
-    margin-top: 1rem;
+.info-list li {
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
     display: flex;
-    gap: 1rem;
     align-items: center;
 }
 
-.add-cart-btn {
-    background-color: #800000 !important;
-    border: none !important;
-    font-weight: bold !important;
-    padding: 1rem 2rem !important;
-    width: 100%;
-    max-width: 300px;
+/* Preço e Parcelamento */
+.price-tag {
+    font-size: 2.2rem;
+    color: #800000; /* Vermelho Tabula */
+    font-weight: bold;
 }
 
-.add-cart-btn:hover {
-    background-color: #5c0000 !important;
+.installment-tag {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    margin-top: 5px;
 }
 
-/* --- Área Inferior: Descrição e Specs --- */
-.detail-bottom-section {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 3rem;
-    background-color: white;
-    padding: 2rem;
+/* Área de Compra */
+.purchase-area {
+    margin-top: auto; 
+    background-color: #f9f9f9; /* Leve destaque na área de botões */
+    padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
 }
 
-.section-title {
+.qty-wrapper {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Botões */
+.action-btn {
+    width: 100%;
+    padding: 1rem !important;
+    font-weight: bold !important;
+    font-size: 1.1rem !important;
+    margin-bottom: 10px;
+    border-radius: 8px !important;
+    border: none !important;
+}
+
+.add-btn {
+    background-color: #800000 !important;
+    box-shadow: 0 4px 6px rgba(128, 0, 0, 0.2);
+}
+
+.add-btn:hover {
+    background-color: #5c0000 !important;
+    transform: translateY(-1px);
+}
+
+.back-btn {
+    background-color: #6c757d !important;
+    color: white !important;
+}
+
+.back-btn:hover {
+    background-color: #5a6268 !important;
+}
+
+/* --- BLOCO INFERIOR --- */
+.desc-title {
     font-size: 1.5rem;
     color: #800000;
+    margin-bottom: 1rem;
     border-bottom: 2px solid #eee;
     padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
 }
 
-.description-text {
-    line-height: 1.6;
+.desc-text {
+    line-height: 1.8;
     color: #444;
-    font-size: 1.1rem;
     text-align: justify;
-}
-
-.specs-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.specs-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #f0f0f0;
-    color: #555;
-    font-size: 0.95rem;
-}
-
-.specs-list li:last-child {
-    border-bottom: none;
+    font-size: 1.05rem;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .detail-top-section, .detail-bottom-section {
+    .top-block {
         grid-template-columns: 1fr;
     }
     
-    .product-title {
-        font-size: 1.8rem;
+    .main-image-wrapper {
+        height: 300px;
     }
 }

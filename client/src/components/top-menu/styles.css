@@ -1,84 +1,136 @@
 /* client/src/components/top-menu/styles.css */
-/* Container Principal */
+
 .top-menu-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: #5c0000; /* Vermelho Tabula */
-    padding: 0.5rem 2rem;
-    height: 80px;
-    box-sizing: border-box;
+    background-color: #800000; /* Vermelho Tabula */
+    padding: 0 2rem;
+    height: 70px; /* Altura fixa para evitar quebra */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1100;
 }
 
 /* Logo */
 .top-menu-logo { margin: 0; display: flex; align-items: center; }
-.top-menu-logo-link { color: whitesmoke; font-size: 2rem; text-decoration: none; font-weight: bold; }
+.top-menu-logo-link { color: white; font-size: 1.8rem; text-decoration: none; font-weight: 800; letter-spacing: 1px; }
 
-/* Busca (Escondida em mobile) */
-.top-menu-search-box {
-    display: none;
-    width: 100%;
-    max-width: 400px;
-    background-color: white;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.top-menu-search-input { flex: 1; border: none; padding: 0.5rem 1rem; outline: none; }
-.top-menu-search-icon-container { display: flex; align-items: center; padding: 0 10px; background-color: #fff; cursor: pointer; }
-.top-menu-search-icon { color: #888; }
-
-/* Navegação Direita */
+/* Navegação */
 .top-menu-nav {
     display: flex;
     align-items: center;
-    color: white;
-    gap: 10px;
+    gap: 15px;
 }
 
-/* Ícone de Usuário e Nome */
-.top-menu-user-icon-container {
+/* Carrinho */
+.top-menu-cart-container { position: relative; display: flex; align-items: center; }
+.top-menu-cart-button { color: white !important; width: 40px; height: 40px; }
+.top-menu-cart-button:hover { background-color: rgba(255,255,255,0.1) !important; }
+.top-menu-cart-badge { position: absolute; top: 2px; right: 2px; }
+
+/* --- USUÁRIO LOGADO (Menu e Flecha) --- */
+.user-menu-container {
+    position: relative;
+}
+
+.user-profile-trigger {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-right: 10px;
+    gap: 8px; /* Espaço entre ícone, nome e flecha */
     color: white;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    user-select: none;
 }
 
-.user-first-name {
-    font-size: 0.75rem;
-    margin-top: 2px;
-    font-weight: bold;
+.user-profile-trigger:hover {
+    background-color: rgba(255,255,255,0.15);
 }
 
-/* Links de Login/Cadastro */
+.user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Dropdown Menu */
+.user-dropdown-menu {
+    position: absolute;
+    top: 120%; 
+    right: 0;
+    width: 200px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    overflow: hidden;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.dropdown-header {
+    padding: 15px;
+    background-color: #f9f9f9;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.dropdown-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-list li {
+    padding: 12px 15px;
+    color: #555;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.dropdown-list li:hover {
+    background-color: #fff5f5;
+    color: #800000;
+}
+
+.dropdown-list li.logout-item {
+    border-top: 1px solid #eee;
+    color: #d32f2f;
+}
+
+/* --- BOTÕES ENTRAR / CADASTRAR --- */
 .auth-buttons-container {
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
+    gap: 15px;
+    font-size: 0.95rem;
+    color: white;
 }
 
 .auth-btn-link {
     color: white;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.2s;
+    opacity: 0.9;
+    transition: opacity 0.2s;
 }
 
 .auth-btn-link:hover {
-    color: #ffd700; /* Dourado suave no hover */
+    opacity: 1;
     text-decoration: underline;
 }
 
 .divider {
-    color: rgba(255,255,255,0.5);
+    opacity: 0.5;
 }
 
-/* Carrinho */
-.top-menu-cart-container { position: relative; }
-.top-menu-cart-button { color: whitesmoke !important; }
-.top-menu-cart-badge { position: absolute; top: 0; right: 0; }
-
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

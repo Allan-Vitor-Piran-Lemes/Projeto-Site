@@ -13,16 +13,23 @@ import { ProductDetailPage } from "@/pages/product-detail-page";
 import { CartPage } from "@/pages/cart-page";
 import { PrivacyPolicyPage } from "@/pages/privacy-policy-page";
 
+// Imports das novas páginas de Checkout
+import { CheckoutAddressPage } from "@/pages/checkout-address-page";
+import { CheckoutPaymentPage } from "@/pages/checkout-payment-page";
+import { CheckoutSummaryPage } from "@/pages/checkout-summary-page";
+
+import { MyOrdersPage } from "@/pages/my-orders-page";
+import { OrderDetailPage } from "@/pages/order-detail-page";
+
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* --- ROTAS PÚBLICAS (Acessíveis sem login) --- */}
+        {/* --- ROTAS PÚBLICAS --- */}
         <Route path="login" element={<AuthPage />} />
         <Route path="register" element={<AuthPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} /> 
         
-        {/* Agora Home, Produtos, Categorias e Carrinho são PÚBLICOS */}
         <Route path="/" element={<HomePage />} /> 
         <Route path="/home" element={<HomePage />} />
         
@@ -31,16 +38,22 @@ export function AppRoutes() {
         <Route path="/product/:id" element={<ProductDetailPage />} /> 
         <Route path="/cart" element={<CartPage />} /> 
 
-        {/* --- ROTAS PROTEGIDAS (Apenas Logado) --- */}
-        {/* Aqui ficam telas de Admin ou Checkout futuro */}
+        {/* --- ROTAS PROTEGIDAS (Requer Login) --- */}
         <Route element={<RequireAuth />}>
           <Route path="/categories/new" element={<CategoryFormPage />} />
           <Route path="/categories/:id" element={<CategoryFormPage />} />
           <Route path="/products/new" element={<ProductFormPage />} />
           <Route path="/products/:id" element={<ProductFormPage />} />
+        
+          {/* FLUXO DE CHECKOUT */}
+          <Route path="/checkout/address" element={<CheckoutAddressPage />} />
           
-          {/* Checkout será protegido futuramente */}
-          <Route path="/checkout" element={<NotFound />} /> 
+          {/* MUDANÇA AQUI: Trocamos a div provisória pelos componentes reais */}
+          <Route path="/checkout/payment" element={<CheckoutPaymentPage />} />
+          <Route path="/checkout/summary" element={<CheckoutSummaryPage />} />
+
+          <Route path="/my-orders" element={<MyOrdersPage />} />
+          <Route path="/my-orders/:id" element={<OrderDetailPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

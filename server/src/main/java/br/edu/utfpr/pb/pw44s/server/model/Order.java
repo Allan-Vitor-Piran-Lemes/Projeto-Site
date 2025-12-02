@@ -2,10 +2,7 @@ package br.edu.utfpr.pb.pw44s.server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,26 +21,31 @@ public class Order {
 
     private LocalDateTime data;
 
+    // NOVOS CAMPOS
+    private BigDecimal freight;       // Valor do frete
+    private String paymentMethod;     // PIX, CARD, etc
+
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"order"})
     private List<OrderItens> items;
 
-    // Campo calculado - não é persistido no banco
     @Transient
     public BigDecimal getTotalOrder() {
-        if (items == null || items.isEmpty()) {
-            return BigDecimal.ZERO;
+        BigDecimal totalItems = BigDecimal.ZERO;
+        if (items != null && !items.isEmpty()) {
+            totalItems = items.stream()
+                    .map(OrderItens::getTotalPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
-        return items.stream()
-                .map(OrderItens::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        // Soma o frete ao total se existir
+        return totalItems.add(freight != null ? freight : BigDecimal.ZERO);
     }
-
-
 }

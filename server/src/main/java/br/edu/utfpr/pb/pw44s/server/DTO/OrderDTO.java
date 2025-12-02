@@ -20,4 +20,8 @@ public class OrderDTO {
     private Address address;
     private List<OrderItemCreateDTO> items;
     private BigDecimal total;
+
+    // ADICIONAR AQUI:
+    private BigDecimal freight;
+    private String paymentMethod;
 }

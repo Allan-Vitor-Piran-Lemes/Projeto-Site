@@ -1,4 +1,5 @@
 /* client/src/pages/cart-page/styles.css */
+/* client/src/pages/cart-page/styles.css */
 
 .cart-container {
     min-height: 60vh;
@@ -23,7 +24,21 @@
     border-radius: 12px; 
     padding: 1.5rem;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
-    height: 100%;
+    
+    /* --- MUDANÇAS AQUI --- */
+    
+    /* 1. Removemos height: 100% para ele não esticar */
+    /* height: 100%;  <-- REMOVIDO */
+    
+    /* 2. Usamos fit-content para ele ter apenas o tamanho do conteúdo dele */
+    height: fit-content; 
+    
+    /* 3. (Opcional) Sticky faz ele "grudar" no topo enquanto você rola os produtos */
+    position: sticky;
+    top: 100px; /* Ajuste esse valor dependendo da altura do seu TopMenu */
+    
+    /* --------------------- */
+
     display: flex;
     flex-direction: column;
 }
@@ -76,22 +91,19 @@
     color: #6c757d;
 }
 
-/* --- NOVO: Customização do InputNumber (Flechas/Botões) --- */
-/* Remove a cor azul padrão do PrimeReact e coloca a cor do tema */
 .cart-quantity-input .p-inputnumber-button {
-    background-color: #5c0000 !important; /* Vermelho Tabula */
+    background-color: #5c0000 !important; 
     border-color: #5c0000 !important;
     color: white !important;
 }
 
 .cart-quantity-input .p-inputnumber-button:hover {
-    background-color: #7a0000 !important; /* Vermelho um pouco mais claro no hover */
+    background-color: #7a0000 !important; 
     border-color: #7a0000 !important;
 }
 
-/* Garante que o input do meio fique alinhado e visível */
 .cart-quantity-input .p-inputtext {
     text-align: center;
     font-weight: bold;
-    color: #333; /* Texto escuro para contraste */
+    color: #333; 
 }

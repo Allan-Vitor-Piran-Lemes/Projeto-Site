@@ -11,24 +11,19 @@ export const HomePage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false); 
-  const toast = useRef(null);
+  
+  const toast = useRef<Toast>(null);
+  
   const { findAll } = ProductService;
   const [searchParams, setSearchParams] = useSearchParams(); 
 
-  // Função que carrega os produtos
   const loadProducts = useCallback(async () => { 
     setLoading(true);
     try {
         const response = await findAll(undefined); 
-
         if (response.success && Array.isArray(response.data)) {
             const allProducts = response.data as IProduct[];
-            
-            // CORREÇÃO AQUI: 
-            // Removemos o "TOP_8_PRODUCT_IDS" que estava bloqueando os produtos.
-            // Agora pegamos os primeiros 8 produtos que o banco devolver, não importa o ID.
             const topProducts = allProducts.slice(0, 8);
-            
             setProducts(topProducts);
         } else {
             setProducts([]);
@@ -53,8 +48,20 @@ export const HomePage = () => {
     }
     setIsMenuVisible(false);
   };
+
+  const handleShowToast = (product: IProduct) => {
+      toast.current?.show({ 
+          severity: 'success', 
+          summary: 'Sucesso', 
+          detail: `${product.name} adicionado ao carrinho!`, 
+          life: 3000 
+      });
+  };
   
-  const bannerPlaceholderUrl = "https://placehold.co/1200x200?text=Banner+Promocao"; 
+  // --- CORREÇÃO DO CAMINHO ---
+  // Ajustado para a pasta static/mage conforme solicitado
+  // Verifique se o nome do arquivo é banner-tabula.jpg ou o nome original da imagem
+  const bannerPlaceholderUrl = "/static/mage/banner-tabula.png"; 
   
   return (
     <div className="pt-0"> 
@@ -62,7 +69,17 @@ export const HomePage = () => {
       
       <section className="mb-4">
         <a href="/products">
-          <img src={bannerPlaceholderUrl} className="w-full" alt="Banner Promoção" style={{ display: 'block', maxHeight: '300px', objectFit: 'cover' }} /> 
+          <img 
+            src={bannerPlaceholderUrl} 
+            className="w-full" 
+            alt="Banner Promoção" 
+            style={{ display: 'block', maxHeight: '300px', objectFit: 'cover' }} 
+            onError={(e) => {
+                // Fallback para ajudar a debugar se a imagem não carregar
+                e.currentTarget.src = "https://placehold.co/1200x300?text=Erro+no+Caminho+da+Imagem";
+                console.error("Não foi possível carregar:", bannerPlaceholderUrl);
+            }}
+          /> 
         </a>
       </section>
       <div style={{ height: '5vh', backgroundColor: '#5c0000' }} className="mb-4"></div>
@@ -81,7 +98,7 @@ export const HomePage = () => {
           ) : (
             products.map((product) => (
               <div key={product.id}> 
-                <ProductCard product={product} /> 
+                <ProductCard product={product} onAddToCart={handleShowToast} /> 
               </div>
             ))
           )}
