@@ -15,7 +15,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void save(User user){
+    public void save(User user) {
+        //Validação de email duplicado
+        User existingUser = userRepository.findUserByUsername(user.getUsername());
+        if (existingUser != null) {
+            throw new IllegalStateException("Este e-mail já está cadastrado.");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

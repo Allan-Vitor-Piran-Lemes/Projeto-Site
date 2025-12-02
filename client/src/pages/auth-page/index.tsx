@@ -16,7 +16,6 @@ import { IUserLogin, IUserRegister, AuthenticationResponse } from '@/commons/typ
 
 import './styles.css';
 
-// Schema de Validação
 const registerSchema = yup.object().shape({
     displayName: yup.string().required("O campo nome é de preenchimento obrigatório."),
     cpf: yup.string().required("CPF é obrigatório."),
@@ -63,10 +62,11 @@ export const AuthPage: React.FC = () => {
         }
     }, [location.pathname]);
 
-    // --- CADASTRO ---
+    // --- Cadrastro ---
     const { 
         control: regControl, 
         handleSubmit: handleReg, 
+        setError: setRegError, 
         formState: { errors: regErrors, isSubmitting: isRegSub }, 
         reset: resetReg 
     } = useForm<IRegisterFormInputs>({ 
@@ -89,7 +89,6 @@ export const AuthPage: React.FC = () => {
             if (response.success) {
                 toast.current?.show({ severity: 'success', summary: 'Sucesso', detail: 'Conta criada! Entrando...', life: 2000 });
                 
-                // AUTO-LOGIN
                 try {
                     const loginResponse = await AuthService.login({ 
                         username: data.username, 
@@ -108,14 +107,22 @@ export const AuthPage: React.FC = () => {
                 }
             } else {
                 const msg = response.message || 'Falha ao criar conta.';
-                toast.current?.show({ severity: 'error', summary: 'Erro', detail: msg, life: 3000 });
+                
+                if (msg.toLowerCase().includes("já está cadastrado")) {
+                    setRegError("username", { 
+                        type: "manual", 
+                        message: msg 
+                    });
+                } else {
+                    toast.current?.show({ severity: 'error', summary: 'Erro', detail: msg, life: 3000 });
+                }
             }
         } catch { 
             toast.current?.show({ severity: 'error', summary: 'Erro', detail: 'Erro no servidor.', life: 3000 }); 
         }
     };
 
-    // --- LOGIN ---
+    // --- Login ---
     const { control: logControl, handleSubmit: handleLog, formState: { errors: logErrors, isSubmitting: isLogSub } } = useForm<IUserLogin>({ resolver: yupResolver(loginSchema) });
 
     const onLogin = async (data: IUserLogin) => {
@@ -124,7 +131,6 @@ export const AuthPage: React.FC = () => {
             if (response.success && response.data) {
                 handleLogin(response.data as AuthenticationResponse);
                 toast.current?.show({ severity: 'success', summary: 'Bem-vindo', detail: 'Login realizado!', life: 3000 });
-                // Redireciona para onde o usuário estava antes
                 setTimeout(() => navigate(from, { replace: true }), 500);
             } else {
                 toast.current?.show({ severity: 'error', summary: 'Erro', detail: 'Credenciais inválidas.', life: 3000 });
@@ -138,7 +144,7 @@ export const AuthPage: React.FC = () => {
             
             <div className="auth-card">
                 
-                {/* PAINEL DE CADASTRO */}
+                {/* Painel de cadastro */}
                 <div className="form-wrapper sign-up-wrapper">
                     <form className="auth-form-content" onSubmit={handleReg(onRegister)}>
                         <h2 className="auth-title-second">Criar uma Conta</h2>
@@ -197,7 +203,7 @@ export const AuthPage: React.FC = () => {
                     </form>
                 </div>
 
-                {/* PAINEL DE LOGIN */}
+                {/* Pinel de login */}
                 <div className="form-wrapper sign-in-wrapper">
                     <form className="auth-form-content" onSubmit={handleLog(onLogin)}>
                         <h2 className="auth-title-second">Entrar</h2>
@@ -227,13 +233,11 @@ export const AuthPage: React.FC = () => {
                     </form>
                 </div>
 
-                {/* OVERLAY */}
                 <div className="overlay-container">
                     <div className="overlay">
                         <div className="overlay-panel overlay-left">
                             <h2 className="auth-title-primary">Bem Vindo!</h2>
                             <p className="description-primary">Já tem conta?</p>
-                            {/* AQUI ESTAVA O PROBLEMA: Agora passamos o state (histórico) ao navegar */}
                             <button 
                                 className="btn-primary" 
                                 onClick={() => { 
@@ -247,7 +251,6 @@ export const AuthPage: React.FC = () => {
                         <div className="overlay-panel overlay-right">
                             <h2 className="auth-title-primary">Olá, Amigo!</h2>
                             <p className="description-primary">Cadastre-se agora</p>
-                            {/* AQUI TAMBÉM: Passamos o state ao ir para o registro */}
                             <button 
                                 className="btn-primary" 
                                 onClick={() => { 

@@ -15,15 +15,17 @@ public class ApiError {
     private String url;
     private Map<String, String> validationErrors;
 
-    public ApiError(String message, int status, String url) {
-        this.message = message;
+    // Construtor para erros simples (sem validação de campos)
+    public ApiError(int status, String message, String url) {
         this.status = status;
+        this.message = message;
         this.url = url;
     }
 
-    public ApiError(String message, int status, String url, Map<String, String> validationErrors) {
-        this.message = message;
+    // Construtor completo (com validação de campos)
+    public ApiError(int status, String message, String url, Map<String, String> validationErrors) {
         this.status = status;
+        this.message = message;
         this.url = url;
         this.validationErrors = validationErrors;
     }
