@@ -16,10 +16,7 @@ public class OrderResponseDTO {
     private LocalDateTime data;
     private UserDTO user;
     private AddressDTO address;
-
-    // MUDANÇA: Usando o DTO específico de resposta para itens
     private List<OrderItensResponseDTO> items;
-
     private BigDecimal total;
     private BigDecimal freight;
     private String paymentMethod;

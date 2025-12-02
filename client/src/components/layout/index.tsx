@@ -1,12 +1,10 @@
-// client/src/components/layout/index.tsx
 import { Outlet, useNavigate, Link as RouterLink } from "react-router-dom";
-import TopMenu from "@/components/top-menu"; // Importação Padrão (Sem chaves)
+import TopMenu from "@/components/top-menu"; 
 import React, { useEffect, useState } from "react"; 
 import CategoryService from "@/services/category-service"; 
 import type { ICategory } from "@/commons/types"; 
 import './styles.css';
 
-// --- COMPONENTE: Menu de Categorias (Underbar) ---
 const Underbar: React.FC = () => {
     const navigate = useNavigate();
     const [categories, setCategories] = useState<ICategory[]>([]);
@@ -56,7 +54,6 @@ const Underbar: React.FC = () => {
     );
 };
 
-// --- COMPONENTE: Rodapé (Footer) ---
 const Footer: React.FC = () => {
     const socialLinks = [
         { name: 'whatsapp', icon: 'pi pi-whatsapp', url: 'https://wa.me/559999999999' },
@@ -68,25 +65,25 @@ const Footer: React.FC = () => {
         <footer className="layout-footer"> 
             <div className="footer-container"> 
                 <div className="footer-column">
-                    <h5 className="text-xl mb-1">Institution Information</h5> 
+                    <h5 className="text-xl mb-1">Informações Institucionais</h5> 
                     <p className="text-base m-0">CNPJ: 00.623.904/0001-73</p>
-                    <p className="text-base m-0">Registration: 123.45678-50</p>
-                    <p className="text-base m-0">Address: Rua Ernesto Beuter - 53</p>
+                    <p className="text-base m-0">Inscrição: 123.45678-50</p>
+                    <p className="text-base m-0">Endereço: Rua Ernesto Beuter - 53</p>
                 </div>
                 
                 <div className="footer-column">
-                    <h5 className="text-xl mb-1">Customer Support</h5> 
-                    <p className="text-base m-0">Email: tabula.email@tabulairos.com</p>
-                    <p className="text-base m-0">Phone: +55 (99) 99999-9999</p>
+                    <h5 className="text-xl mb-1">Atendimento ao Cliente</h5> 
+                    <p className="text-base m-0">E-mail: tabula.email@tabulairos.com</p>
+                    <p className="text-base m-0">Telefone: +55 (99) 99999-9999</p>
                 </div>
                 
                 <div className="footer-column">
-                    <h5 className="text-xl mb-1">Privacy</h5> 
+                    <h5 className="text-xl mb-1">Privacidade</h5> 
                     <RouterLink 
                         to="/privacy-policy" 
                         className="footer-link-privacy"
                     >
-                        Our Privacy Policy
+                        Nossa Política de Privacidade
                     </RouterLink>
                 </div>
             </div>
@@ -100,13 +97,12 @@ const Footer: React.FC = () => {
             </div>
             
             <div className="footer-copyright"> 
-                © {new Date().getFullYear()} Tabula. All rights reserved.
+                © {new Date().getFullYear()} Tabula. Todos os direitos reservados.
             </div>
         </footer>
     );
 };
 
-// --- COMPONENTE LAYOUT PRINCIPAL ---
 export function Layout() {
     return (
         <div className="flex flex-column min-h-screen">

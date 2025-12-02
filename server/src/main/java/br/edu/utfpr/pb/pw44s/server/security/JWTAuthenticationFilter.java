@@ -38,8 +38,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            //HTTP.POST {"username":"admin", "password":"P4ssword"}
-            //Obtém os dados de username e password utilizando o ObjectMapper para converter o JSON //em um objeto User com esses dados.  User credentials = new User();
             User user = new User();
             //Verifica se o usuário existe no banco de dados, caso não exista uma Exception será disparada
             //e o código será parado de executar nessa parte e o usuário irá receber uma resposta //com falha na autenticação (classe: EntryPointUnauthorizedHandler)

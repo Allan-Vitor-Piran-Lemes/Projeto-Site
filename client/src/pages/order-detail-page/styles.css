@@ -1,5 +1,3 @@
-/* client/src/pages/order-detail-page/styles.css */
-
 .order-detail-container {
     max-width: 1100px;
     margin: 2rem auto;
@@ -7,13 +5,12 @@
     min-height: 80vh;
 }
 
-/* --- CABEÇALHO --- */
 .detail-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    border-bottom: 2px solid #800000; /* Vermelho Tabula */
+    border-bottom: 2px solid #800000; 
     padding-bottom: 1rem;
 }
 
@@ -32,14 +29,12 @@
     font-weight: bold;
 }
 
-/* --- GRID PRINCIPAL --- */
 .detail-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* 2 partes produtos, 1 parte lateral */
+    grid-template-columns: 2fr 1fr; 
     gap: 2rem;
 }
 
-/* --- CARDS GERAIS --- */
 .detail-card {
     background-color: white;
     border-radius: 10px;
@@ -57,7 +52,6 @@
     padding-bottom: 0.5rem;
 }
 
-/* --- LISTA DE PRODUTOS --- */
 .item-row {
     display: flex;
     align-items: center;
@@ -100,7 +94,6 @@
     font-size: 1.1rem;
 }
 
-/* --- COLUNA LATERAL (Endereço e Totais) --- */
 .side-column {
     display: flex;
     flex-direction: column;
@@ -112,7 +105,6 @@
     font-size: 0.95rem;
 }
 
-/* Totais */
 .total-line {
     display: flex;
     justify-content: space-between;
@@ -130,10 +122,26 @@
     color: #800000;
 }
 
-/* Responsividade */
+.btn-back-red {
+    background-color: #800000 !important; 
+    border: 1px solid #800000 !important;
+    color: white !important; 
+    font-weight: bold !important;
+    transition: background-color 0.2s;
+}
+
+.btn-back-red:hover {
+    background-color: #5c0000 !important; 
+    border-color: #5c0000 !important;
+}
+
+.btn-back-red .pi {
+    color: white !important;
+}
+
 @media (max-width: 768px) {
     .detail-grid {
-        grid-template-columns: 1fr; /* Vira uma coluna só no mobile */
+        grid-template-columns: 1fr; 
     }
 
     .detail-header {

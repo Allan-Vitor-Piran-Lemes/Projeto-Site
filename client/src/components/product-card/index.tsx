@@ -1,11 +1,12 @@
 import { IProduct } from "@/commons/types";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/hooks/use-cart";
+import React from 'react';
 import './styles.css';
 
 interface ProductCardProps {
   product: IProduct;
-  onAddToCart: (product: IProduct) => void; // Nova prop obrigatória
+  onAddToCart: (product: IProduct) => void; 
 }
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
@@ -21,18 +22,17 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation(); 
     
-    // 1. Adiciona ao Contexto (lógica)
     addItem(product, 1);
     
-    // 2. Chama a função do Pai para mostrar o Toast (visual)
     onAddToCart(product);
   };
 
-  const imageUrl = product.image || "https://placehold.co/600x400?text=Sem+Imagem";
+  const imageUrl = product.image.startsWith('http') 
+    ? product.image 
+    : `http://localhost:8044${product.image}`;
 
   return (
     <div className="product-card-custom"> 
-      {/* Removemos o Toast daqui de dentro para corrigir o bug visual */}
       
       <div onClick={handleDetailsClick} className="card-link cursor-pointer">
         <img

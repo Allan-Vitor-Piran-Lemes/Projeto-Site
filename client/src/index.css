@@ -1,4 +1,3 @@
-/* client/src/index.css */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
@@ -7,19 +6,16 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* --- CORES DA TABULA --- */
   --primary-color: rgb(167, 42, 42) !important;
   --primary-dark: rgb(130, 30, 30) !important;
   --text-color: #333;
   
-  /* MUDANÇA AQUI: Fundo mais escuro para destacar os blocos brancos */
   --bg-color: #e0e0e0; 
   
   --white: #ffffff;
-  --gray-light: #f8f9fa; /* Usado em inputs, um pouco mais claro */
+  --gray-light: #f8f9fa; 
   --error-color: red;
 
-  /* --- SOBRESCREVENDO O PRIMEREACT --- */
   --primary-50: #fbf2f2 !important;
   --primary-100: #f5e0e0 !important;
   --primary-200: #ecc4c4 !important;
@@ -38,26 +34,24 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-color); /* Aplica a nova cor de fundo */
+  background-color: var(--bg-color); 
   min-height: 100vh;
   width: 100%; 
 }
 
-/* --- INPUTS GLOBAIS --- */
 .input-field {
     height: 45px;
     width: 100%;
     border: none;
-    background-color: var(--white); /* Inputs brancos para contraste com fundos cinza */
+    background-color: var(--white); 
     border-radius: 8px;
     padding: 0 15px;
     outline: none;
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
-    border: 1px solid #ccc; /* Borda suave */
+    border: 1px solid #ccc; 
 }
 
-/* Correção de Senha (PrimeReact) */
 .p-password { width: 100%; }
 .p-password-input {
     width: 100%;
@@ -71,7 +65,6 @@ body {
     box-shadow: 0 0 0 2px var(--primary-color) !important;
 }
 
-/* Botões do PrimeReact */
 .p-button {
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
@@ -81,7 +74,6 @@ body {
     border-color: var(--primary-dark) !important;
 }
 
-/* Erros */
 .p-invalid { border: 2px solid var(--error-color) !important; }
 .error-msg {
     color: var(--error-color);
@@ -92,7 +84,6 @@ body {
     text-align: left;
 }
 
-/* --- CLASSES DE BOTÕES --- */
 .btn-second {
     background-color: var(--primary-color) !important;
     border: 1px solid var(--primary-color) !important;
@@ -130,31 +121,11 @@ body {
     color: var(--primary-color) !important;
 }
 
-/* Helpers de cor */
 .text-green-600 { color: #2ecc71 !important; }
 .bg-green-100 { background-color: #dcfce7 !important; }
 
-/* Tabela */
 .p-datatable .p-datatable-thead > tr > th {
     background-color: #f8f9fa;
     color: #495057;
     border-bottom: 2px solid #dee2e6;
 }
-
-
-
-
-/* Responsividade Básica *
-@media (max-width: 900px) {
-  .grade-compras {
-    flex-direction: column;
-  }
-  
-  .image {
-    width: 100%;
-  }
-  
-  .main-image {
-      height: 300px;
-  }
-}*/

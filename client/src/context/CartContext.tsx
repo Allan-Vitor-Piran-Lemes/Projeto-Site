@@ -1,4 +1,3 @@
-// client/src/context/CartContext.tsx
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import type { IProduct, ICartItem } from '@/commons/types';
@@ -44,19 +43,16 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   const addItem = useCallback((product: IProduct, quantity: number = 1) => {
     setCart(prevCart => {
-      // Cria uma cópia profunda para evitar mutação direta
       const newCart = [...prevCart];
       const existingItemIndex = newCart.findIndex(item => item.product.id === product.id);
 
       if (existingItemIndex > -1) {
-        // Se já existe, soma a quantidade
         newCart[existingItemIndex] = {
             ...newCart[existingItemIndex],
             quantity: newCart[existingItemIndex].quantity + quantity
         };
         return newCart;
       } else {
-        // Se não existe, adiciona novo
         return [...newCart, { product, quantity }];
       }
     });

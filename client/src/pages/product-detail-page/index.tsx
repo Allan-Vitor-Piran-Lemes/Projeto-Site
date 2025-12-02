@@ -1,4 +1,3 @@
-// client/src/pages/product-detail-page/index.tsx
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import { Toast } from "primereact/toast";
@@ -46,6 +45,12 @@ export const ProductDetailPage = () => {
     };
     loadProduct();
   }, [id]); 
+
+  const getFullImageUrl = (path: string | undefined) => {
+    if (!path) return "https://placehold.co/600x400?text=Sem+Imagem";
+    if (path.startsWith('http')) return path;
+    return `http://localhost:8044${path}`;
+  };
   
   const handleAddToCart = () => {
     if (product) {
@@ -61,7 +66,7 @@ export const ProductDetailPage = () => {
   };
 
   const handleGoBack = () => {
-      navigate(-1); // Volta para a página anterior
+      navigate(-1); 
   };
 
   if (loading) {
@@ -80,14 +85,11 @@ export const ProductDetailPage = () => {
     <div className="product-detail-container">
       <Toast ref={toast} />
       
-      {/* --- BLOCO SUPERIOR (IMAGENS + INFO) --- */}
-      <div className="detail-block top-block">
-        
-        {/* Lado Esquerdo: Galeria */}
+      <div className="detail-block top-block"> 
         <div className="gallery-column">
             <div className="main-image-wrapper">
                 <img 
-                    src={selectedImage} 
+                    src={getFullImageUrl(selectedImage)} 
                     alt={product.name} 
                     className="main-image"
                     onError={(e) => (e.currentTarget.src = fallbackImage)}
@@ -98,7 +100,7 @@ export const ProductDetailPage = () => {
                     {allImages.map((imgSrc, index) => (
                         <img 
                             key={index}
-                            src={imgSrc} 
+                            src={getFullImageUrl(imgSrc)} 
                             alt={`Miniatura ${index}`}
                             className={`thumbnail-image ${selectedImage === imgSrc ? 'active' : ''}`}
                             onClick={() => setSelectedImage(imgSrc!)}
@@ -109,11 +111,9 @@ export const ProductDetailPage = () => {
             )}
         </div>
 
-        {/* Lado Direito: Informações e Ações */}
         <div className="info-column">
             <h1 className="product-name">{product.name}</h1>
-            
-            {/* Lista de Informações (Ficha Técnica aqui) */}
+    
             <ul className="info-list">
                 {product.specifications && product.specifications.length > 0 ? (
                     product.specifications.map((spec, i) => (
@@ -167,7 +167,6 @@ export const ProductDetailPage = () => {
         </div>
       </div>
 
-      {/* --- BLOCO INFERIOR (DESCRIÇÃO) --- */}
       <div className="detail-block bottom-block">
         <h3 className="desc-title">Descrição</h3>
         <p className="desc-text">

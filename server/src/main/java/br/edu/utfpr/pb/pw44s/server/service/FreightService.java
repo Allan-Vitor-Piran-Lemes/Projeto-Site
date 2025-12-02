@@ -27,13 +27,11 @@ public class FreightService {
     public FreightResponseDTO calculateCheapestFreight(String cepDestino, Double valorSeguro) {
         RestTemplate restTemplate = new RestTemplate();
 
-        // 1. Headers
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
         headers.set("Content-Type", "application/json");
         headers.set("Accept", "application/json");
 
-        // CORREÇÃO AQUI: Usar .set com a constante USER_AGENT
         headers.set(HttpHeaders.USER_AGENT, "Tabula Loja (contato@tabula.com.br)");
 
         // 2. Tratamento do Valor do Seguro

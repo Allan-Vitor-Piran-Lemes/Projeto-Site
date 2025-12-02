@@ -1,6 +1,3 @@
-/* client/src/pages/cart-page/styles.css */
-/* client/src/pages/cart-page/styles.css */
-
 .cart-container {
     min-height: 60vh;
     max-width: 1200px;
@@ -24,21 +21,9 @@
     border-radius: 12px; 
     padding: 1.5rem;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
-    
-    /* --- MUDANÇAS AQUI --- */
-    
-    /* 1. Removemos height: 100% para ele não esticar */
-    /* height: 100%;  <-- REMOVIDO */
-    
-    /* 2. Usamos fit-content para ele ter apenas o tamanho do conteúdo dele */
     height: fit-content; 
-    
-    /* 3. (Opcional) Sticky faz ele "grudar" no topo enquanto você rola os produtos */
     position: sticky;
-    top: 100px; /* Ajuste esse valor dependendo da altura do seu TopMenu */
-    
-    /* --------------------- */
-
+    top: 100px; 
     display: flex;
     flex-direction: column;
 }
@@ -106,4 +91,17 @@
     text-align: center;
     font-weight: bold;
     color: #333; 
+}
+
+.btn-start-shopping {
+    background-color: #800000 !important;
+    border: 1px solid #800000 !important;
+    color: white !important; 
+    font-weight: bold !important;
+    padding: 0.8rem 1.5rem !important;
+}
+
+.btn-start-shopping:hover {
+    background-color: #5c0000 !important; 
+    border-color: #5c0000 !important;
 }

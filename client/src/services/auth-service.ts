@@ -1,11 +1,6 @@
 import type { IUserRegister, IUserLogin, IResponse } from "@/commons/types";
 import { api } from "@/lib/axios";
 
-/**
- * Função para cadastrar um novo usuário
- * @param user - Dados do usuário que será cadastrado do tipo IUserRegister
- * @returns - Retorna a resposta da API
- */
 const signup = async (user: IUserRegister): Promise<IResponse> => {
   let response = {} as IResponse;
   try {
@@ -27,12 +22,6 @@ const signup = async (user: IUserRegister): Promise<IResponse> => {
   return response;
 };
 
-/**
- * Função para realizar a autenticação do usuário
- * @param user - Dados do usuário que será autenticado do tipo IUserLogin (username e password)
- * @returns - Retorna a resposta da API
- * Além disso salva o token no localStorage e adiciona o token no cabeçalho da requisição
- */
 const login = async (user: IUserLogin) => {
   let response = {} as IResponse;
   try {

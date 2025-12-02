@@ -19,7 +19,6 @@ export const CheckoutAddressPage = () => {
     const [deliveryDays, setDeliveryDays] = useState<number>(0);
     const [isProcessing, setIsProcessing] = useState(false);
     
-    // CORREÇÃO 1: Mudamos 'cidade' para 'city' no estado para bater com a Interface IAddress
     const [newAddress, setNewAddress] = useState({
         title: "",
         cep: "",
@@ -27,7 +26,7 @@ export const CheckoutAddressPage = () => {
         numero: "",
         complemento: "",
         bairro: "",
-        city: "",    // <--- AQUI
+        city: "",    
         estado: ""
     });
 
@@ -62,11 +61,11 @@ export const CheckoutAddressPage = () => {
                     ...prev,
                     logradouro: response.data.logradouro,
                     bairro: response.data.bairro,
-                    city: response.data.localidade, // CORREÇÃO 2: ViaCEP 'localidade' vai para 'city'
+                    city: response.data.localidade, 
                     estado: response.data.uf
                 }));
                 await updateFreight(cleanCep);
-                toast.current?.show({ severity: 'info', summary: 'Endereço', detail: 'Preenchido automaticamente.' });
+                // AQUI: Removi a linha do toast 'info' (azul)
             } else {
                 toast.current?.show({ severity: 'error', summary: 'Erro', detail: 'CEP não encontrado.' });
                 setFreightCost(0);
@@ -109,16 +108,13 @@ export const CheckoutAddressPage = () => {
         let finalAddressId = selectedAddressId;
         let finalAddressData: IAddress | undefined;
 
-        // CASO 1: NOVO ENDEREÇO
         if (selectedAddressId === NEW_ADDRESS_ID) {
-            // CORREÇÃO 3: Validação usando 'city'
             if (!newAddress.cep || !newAddress.logradouro || !newAddress.numero || !newAddress.bairro || !newAddress.city) {
                 toast.current?.show({ severity: 'error', summary: 'Erro', detail: 'Preencha os campos obrigatórios.' });
                 setIsProcessing(false);
                 return;
             }
 
-            // CORREÇÃO 4: Agora o Typescript aceita porque newAddress tem 'city'
             const addressToSave: IAddress = { ...newAddress }; 
             
             const response = await AddressService.create(addressToSave);
@@ -128,6 +124,7 @@ export const CheckoutAddressPage = () => {
                 if (savedAddress.id) {
                     finalAddressId = savedAddress.id;
                     finalAddressData = savedAddress;
+                    // Mantive a mensagem verde de sucesso
                     toast.current?.show({ severity: 'success', summary: 'Sucesso', detail: 'Endereço salvo!' });
                 } else {
                     await loadAddresses();
@@ -140,7 +137,6 @@ export const CheckoutAddressPage = () => {
                 return;
             }
         } 
-        // CASO 2: ENDEREÇO EXISTENTE
         else {
             finalAddressData = addresses.find(a => a.id === selectedAddressId);
         }
@@ -189,7 +185,6 @@ export const CheckoutAddressPage = () => {
                             <div className="endereco-info">
                                 <h3>{addr.title || "Minha Casa"}</h3>
                                 <p><strong>{addr.logradouro}, {addr.numero}</strong></p>
-                                {/* CORREÇÃO 5: Usando addr.city */}
                                 <p>{addr.bairro} - {addr.city}/{addr.estado}</p>
                                 <p className="text-gray-500 text-sm">CEP: {addr.cep}</p>
                                 {selectedAddressId === addr.id && freightCost > 0 && (
@@ -246,7 +241,6 @@ export const CheckoutAddressPage = () => {
                                 </div>
                                 <div className="form-group">
                                     <label>Cidade</label>
-                                    {/* CORREÇÃO 6: Input name='city' e value={newAddress.city} */}
                                     <input name="city" className="form-control" value={newAddress.city} readOnly />
                                 </div>
                                 <div className="form-group">

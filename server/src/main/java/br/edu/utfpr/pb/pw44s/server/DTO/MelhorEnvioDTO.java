@@ -9,7 +9,6 @@ import java.util.List;
 
 public class MelhorEnvioDTO {
 
-    // REQUEST (O que enviamos)
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -46,13 +45,12 @@ public class MelhorEnvioDTO {
         private int quantity;
     }
 
-    // RESPONSE (O que recebemos)
     @Data
     @NoArgsConstructor
     public static class Response {
         private Integer id;
         private String name;
-        private String price; // Vem como String!
+        private String price;
         @JsonProperty("delivery_time")
         private Integer deliveryTime;
         private String error;

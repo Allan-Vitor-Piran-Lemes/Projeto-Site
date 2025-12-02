@@ -18,12 +18,9 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private LocalDateTime data;
-
-    // NOVOS CAMPOS
     private BigDecimal freight;       // Valor do frete
-    private String paymentMethod;     // PIX, CARD, etc
+    private String paymentMethod;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

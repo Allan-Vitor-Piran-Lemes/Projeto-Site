@@ -29,23 +29,19 @@ export const CheckoutPaymentPage = () => {
                 <span className="divisor"></span>
             </div>
 
-            {/* Bloco branco para destacar do fundo cinza */}
             <div className="payment-box">
                 <div className="payment-options">
                     
-                    {/* PIX */}
                     <div 
                         className={`payment-card ${selectedMethod === 'PIX' ? 'selected' : ''}`}
                         onClick={() => setSelectedMethod('PIX')}
                     >
                         <div className="radio-check"></div>
-                        {/* ÍCONE DO PIX VIA FONTAWESOME */}
                         <i className="fa-brands fa-pix payment-icon" style={{color: '#32bcad'}}></i>
                         <div className="payment-title">PIX</div>
                         <p className="payment-desc">Aprovação imediata.</p>
                     </div>
 
-                    {/* CARTÃO DE CRÉDITO */}
                     <div 
                         className={`payment-card ${selectedMethod === 'CREDIT_CARD' ? 'selected' : ''}`}
                         onClick={() => setSelectedMethod('CREDIT_CARD')}
@@ -56,7 +52,6 @@ export const CheckoutPaymentPage = () => {
                         <p className="payment-desc">Em até 12x sem juros.</p>
                     </div>
 
-                    {/* CARTÃO DE DÉBITO */}
                     <div 
                         className={`payment-card ${selectedMethod === 'DEBIT_CARD' ? 'selected' : ''}`}
                         onClick={() => setSelectedMethod('DEBIT_CARD')}
@@ -67,7 +62,6 @@ export const CheckoutPaymentPage = () => {
                         <p className="payment-desc">À vista.</p>
                     </div>
 
-                    {/* BOLETO */}
                     <div 
                         className={`payment-card ${selectedMethod === 'BOLETO' ? 'selected' : ''}`}
                         onClick={() => setSelectedMethod('BOLETO')}

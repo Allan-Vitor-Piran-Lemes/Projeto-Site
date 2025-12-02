@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Toast } from "primereact/toast";
+import { Paginator } from 'primereact/paginator'; // <--- 1. Import do Paginator
 import { IProduct } from "@/commons/types";
 import ProductService from "@/services/product-service";
 import { ProductCard } from "@/components/product-card";
 import { CategoryMenu } from "@/components/category-menu"; 
 import { useSearchParams } from "react-router-dom"; 
+import bannerImage from "@/assets/banner-tabula.png";
 import './styles.css';
 
 export const HomePage = () => {
@@ -12,10 +14,14 @@ export const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false); 
   
+  // --- 2. Estados para a Paginação ---
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(8); // Fixo em 8 produtos
+
   const toast = useRef<Toast>(null);
   
   const { findAll } = ProductService;
-  const [searchParams, setSearchParams] = useSearchParams(); 
+  const [, setSearchParams] = useSearchParams();
 
   const loadProducts = useCallback(async () => { 
     setLoading(true);
@@ -23,6 +29,7 @@ export const HomePage = () => {
         const response = await findAll(undefined); 
         if (response.success && Array.isArray(response.data)) {
             const allProducts = response.data as IProduct[];
+            // Mantém apenas os 8 primeiros, conforme sua regra
             const topProducts = allProducts.slice(0, 8);
             setProducts(topProducts);
         } else {
@@ -57,31 +64,35 @@ export const HomePage = () => {
           life: 3000 
       });
   };
-  
-  // --- CORREÇÃO DO CAMINHO ---
-  // Ajustado para a pasta static/mage conforme solicitado
-  // Verifique se o nome do arquivo é banner-tabula.jpg ou o nome original da imagem
-  const bannerPlaceholderUrl = "/static/mage/banner-tabula.png"; 
+
+  // 3. Função para controlar a mudança de página (mesmo sendo só 1)
+  const onPageChange = (event: any) => {
+      setFirst(event.first);
+      setRows(event.rows);
+  };
+ 
+  const bannerPlaceholderUrl = bannerImage; 
   
   return (
     <div className="pt-0"> 
       <Toast ref={toast} />
       
-      <section className="mb-4">
+      <section> 
         <a href="/products">
           <img 
             src={bannerPlaceholderUrl} 
             className="w-full" 
             alt="Banner Promoção" 
-            style={{ display: 'block', maxHeight: '300px', objectFit: 'cover' }} 
+            // Mantive EXATAMENTE como você enviou para não esticar
+            style={{ display: 'block', maxHeight: '450px', objectFit: 'cover' }} 
             onError={(e) => {
-                // Fallback para ajudar a debugar se a imagem não carregar
-                e.currentTarget.src = "https://placehold.co/1200x300?text=Erro+no+Caminho+da+Imagem";
+                e.currentTarget.src = "https://placehold.co/1200x450?text=Erro+no+Caminho+da+Imagem";
                 console.error("Não foi possível carregar:", bannerPlaceholderUrl);
             }}
           /> 
         </a>
       </section>
+
       <div style={{ height: '5vh', backgroundColor: '#5c0000' }} className="mb-4"></div>
 
       <div className="Lista">
@@ -110,6 +121,22 @@ export const HomePage = () => {
              </div>
           )} 
         </div>
+
+        {/* --- 4. Adicionei o Paginator aqui embaixo --- */}
+        {!loading && products.length > 0 && (
+            <div className="flex justify-content-center mb-5 mt-3">
+                <Paginator 
+                    first={first} 
+                    rows={rows} 
+                    totalRecords={products.length} 
+                    onPageChange={onPageChange}
+                    template="PrevPageLink PageLinks NextPageLink"
+                    className="custom-paginator"
+                    style={{ backgroundColor: 'transparent', border: 'none' }}
+                />
+            </div>
+        )}
+
       </div>
       
       <CategoryMenu 

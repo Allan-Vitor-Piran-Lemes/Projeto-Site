@@ -7,17 +7,18 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer { // <--- ESSA PARTE É ESSENCIAL
+public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
-    @Override // Agora o vermelho vai sumir corretamente
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Libera o acesso à pasta assetsImages via URL
         registry.addResourceHandler("/assetsImages/**")
                 .addResourceLocations("classpath:/assetsImages/");
+        registry.addResourceHandler("/mage/**")
+                .addResourceLocations("classpath:/static/mage/");
     }
 }

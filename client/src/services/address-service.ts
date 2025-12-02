@@ -1,4 +1,3 @@
-// client/src/services/address-service.ts
 import { api } from "@/lib/axios";
 import axios from "axios";
 import { IAddress } from "@/commons/types";
@@ -38,7 +37,6 @@ const findByCep = async (cep: string) => {
     }
 };
 
-// MUDANÇA: Retorna objeto com valor e dias
 interface FreightResult {
     value: number;
     deliveryDays: number;
@@ -46,13 +44,10 @@ interface FreightResult {
 
 const calculateFreight = async (cep: string, totalValue: number): Promise<FreightResult> => {
     try {
-        // Envia CEP e Valor Total para o Backend
         const response = await api.post('/freight/calculate', { 
             cep, 
             totalValue 
         });
-        
-        // O Backend retorna: { value: 19.90, deliveryDays: 5 }
         return {
             value: response.data.value || 0.0,
             deliveryDays: response.data.deliveryDays || 0

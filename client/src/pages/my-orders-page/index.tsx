@@ -19,7 +19,6 @@ export const MyOrdersPage = () => {
         try {
             const response = await OrderService.getMyOrders();
             if (response.success && Array.isArray(response.data)) {
-                // Ordena: mais recente primeiro (ID maior primeiro)
                 const sorted = (response.data as IOrder[]).sort((a, b) => b.id - a.id);
                 setOrders(sorted);
             } else {

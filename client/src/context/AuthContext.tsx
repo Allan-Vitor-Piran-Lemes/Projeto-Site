@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type { AuthenticatedUser, AuthenticationResponse } from "@/commons/types";
 import { api } from "@/lib/axios";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   authenticated: boolean;
@@ -20,7 +20,7 @@ const AuthContext = createContext({} as AuthContextType);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setAuthenticatedUser(JSON.parse(storedUser));
       setAuthenticated(true);
       api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(storedToken)}`;
-      // REMOVIDO: navigate("/") -> Isso evita o redirect forçado no F5
     }
   }, []);
 
@@ -42,7 +41,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       setAuthenticatedUser(authenticationResponse.user);
       setAuthenticated(true);
-      // O redirect para a Home é feito na página de Login (AuthPage) após sucesso
     } catch {
       setAuthenticatedUser(undefined);
       setAuthenticated(false);

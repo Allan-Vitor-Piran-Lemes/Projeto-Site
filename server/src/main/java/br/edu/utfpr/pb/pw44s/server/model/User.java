@@ -39,11 +39,9 @@ public class User implements UserDetails {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
     private String password;
 
-    // MUDANÇA CRÍTICA 1: Adicionar campo CPF
     @Column(name = "cpf", length = 14)
     private String cpf;
 
-    // MUDANÇA CRÍTICA 2: Adicionar campo Telefone
     @Column(name = "telefone", length = 15)
     private String telefone;
 

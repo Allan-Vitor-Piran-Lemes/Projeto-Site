@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("addresses")
 public class AddressController extends CrudController<Address, AddressDTO, Long> {
-    private final IAddressService addressService; // Tirei o static
-    private final ModelMapper modelMapper; // Tirei o static
+    private final IAddressService addressService;
+    private final ModelMapper modelMapper;
     private final AuthService authService;
 
     public AddressController(IAddressService addressService, ModelMapper modelMapper, AuthService authService) {
@@ -39,7 +39,6 @@ public class AddressController extends CrudController<Address, AddressDTO, Long>
         return modelMapper;
     }
 
-    // --- CORREÇÃO CRÍTICA: Sobrescreve o create para vincular o User ---
     @Override
     @PostMapping
     public ResponseEntity<AddressDTO> create(@RequestBody @Valid AddressDTO dto) {
@@ -59,7 +58,6 @@ public class AddressController extends CrudController<Address, AddressDTO, Long>
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(modelMapper.map(saved, AddressDTO.class));
     }
-    // -------------------------------------------------------------------
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<AddressDTO>> getAddressByUser(@PathVariable Long userId) {

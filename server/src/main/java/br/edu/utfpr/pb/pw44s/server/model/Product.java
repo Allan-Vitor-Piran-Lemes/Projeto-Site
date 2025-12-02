@@ -17,12 +17,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
     private BigDecimal price;
-
-    // Renomeado de url_image para image para ficar mais limpo
     private String image;
 
     // Novo campo para o parcelamento
@@ -31,7 +27,7 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    // Lista de especificações (Marca, Material, Jogadores...)
+    // Lista de especificações (Marca, Material, ...)
     @ElementCollection
     @CollectionTable(name = "product_specifications", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "specification")

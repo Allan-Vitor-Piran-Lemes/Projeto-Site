@@ -18,14 +18,9 @@ public class ProductDTO {
     private String name;
     private String description;
     private BigDecimal price;
-
-    // O Front espera 'image', a Entidade tem 'image'. O DTO precisava ter 'image'.
     private String image;
-
-    // Campos adicionais para bater com a sua Entidade e Front-end
     private String installmentInfo;
     private List<String> specifications;
     private List<String> gallery;
-
     private CategoryDTO category;
 }

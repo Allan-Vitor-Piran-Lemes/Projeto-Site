@@ -1,5 +1,3 @@
-// client/src/commons/types.ts
-
 export interface IUserRegister {
   displayName: string;
   username: string;
@@ -12,8 +10,8 @@ export interface IResponse {
   status?: number;
   success?: boolean;
   message?: string;
-  data?: any; // Alterado para any para facilitar
-  error?: any; // Adicionado para capturar erros
+  data?: any; 
+  error?: any; 
 }
 
 export interface IUserLogin {
@@ -64,8 +62,6 @@ export interface ICartItem {
   quantity: number;
 }
 
-// --- NOVAS INTERFACES ADICIONADAS ---
-
 export interface IAddress {
     id?: number;
     title?: string;
@@ -73,7 +69,7 @@ export interface IAddress {
     numero: string;
     bairro: string;
     complemento?: string;
-    city: string;       // Aqui está o 'city' que estava dando erro
+    city: string;       
     estado?: string;
     cep: string;
     userId?: number;
@@ -92,8 +88,6 @@ export interface IOrder {
     total: number;
     address: IAddress;
     items: IOrderItem[];
-    
-    // Campos que estavam faltando:
     freight?: number;         
     paymentMethod?: string;
 }

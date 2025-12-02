@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderItensResponseDTO {
     private Long id;
-    private ProductDTO product; // Importante: Traz o produto completo (nome, imagem)
+    private ProductDTO product;
     private Integer quantity;
     private BigDecimal unit_price;
 }

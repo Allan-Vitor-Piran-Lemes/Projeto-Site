@@ -36,8 +36,6 @@ const loginSchema = yup.object().shape({
     password: yup.string().required("Senha é obrigatória."),
 });
 
-// CORREÇÃO: Interface explícita para o Formulário de Cadastro
-// Isso resolve o conflito com o IUserRegister do commons
 interface IRegisterFormInputs {
     displayName: string;
     username: string;
@@ -54,6 +52,7 @@ export const AuthPage: React.FC = () => {
     const location = useLocation();
     const { handleLogin } = useAuth();
 
+    // Captura a página anterior (ex: /checkout/address) ou define a Home como padrão
     const from = location.state?.from?.pathname || location.state?.from || "/";
 
     useEffect(() => {
@@ -77,7 +76,6 @@ export const AuthPage: React.FC = () => {
     
     const onRegister = async (data: IRegisterFormInputs) => {
         try {
-            // Prepara o objeto para enviar ao backend (sem confirmPassword)
             const userData: IUserRegister = {
                 displayName: data.displayName,
                 username: data.username,
@@ -100,6 +98,7 @@ export const AuthPage: React.FC = () => {
                     
                     if (loginResponse.success && loginResponse.data) {
                         handleLogin(loginResponse.data as AuthenticationResponse);
+                        // Redireciona para onde o usuário estava antes (ex: checkout)
                         setTimeout(() => navigate(from, { replace: true }), 1000);
                     }
                 } catch (loginError) {
@@ -125,6 +124,7 @@ export const AuthPage: React.FC = () => {
             if (response.success && response.data) {
                 handleLogin(response.data as AuthenticationResponse);
                 toast.current?.show({ severity: 'success', summary: 'Bem-vindo', detail: 'Login realizado!', life: 3000 });
+                // Redireciona para onde o usuário estava antes
                 setTimeout(() => navigate(from, { replace: true }), 500);
             } else {
                 toast.current?.show({ severity: 'error', summary: 'Erro', detail: 'Credenciais inválidas.', life: 3000 });
@@ -233,12 +233,30 @@ export const AuthPage: React.FC = () => {
                         <div className="overlay-panel overlay-left">
                             <h2 className="auth-title-primary">Bem Vindo!</h2>
                             <p className="description-primary">Já tem conta?</p>
-                            <button className="btn-primary" onClick={() => { setIsRightPanelActive(false); navigate('/login'); }}>ENTRAR</button>
+                            {/* AQUI ESTAVA O PROBLEMA: Agora passamos o state (histórico) ao navegar */}
+                            <button 
+                                className="btn-primary" 
+                                onClick={() => { 
+                                    setIsRightPanelActive(false); 
+                                    navigate('/login', { state: location.state }); 
+                                }}
+                            >
+                                ENTRAR
+                            </button>
                         </div>
                         <div className="overlay-panel overlay-right">
                             <h2 className="auth-title-primary">Olá, Amigo!</h2>
                             <p className="description-primary">Cadastre-se agora</p>
-                            <button className="btn-primary" onClick={() => { setIsRightPanelActive(true); navigate('/register'); }}>CADASTRAR</button>
+                            {/* AQUI TAMBÉM: Passamos o state ao ir para o registro */}
+                            <button 
+                                className="btn-primary" 
+                                onClick={() => { 
+                                    setIsRightPanelActive(true); 
+                                    navigate('/register', { state: location.state }); 
+                                }}
+                            >
+                                CADASTRAR
+                            </button>
                         </div>
                     </div>
                 </div>

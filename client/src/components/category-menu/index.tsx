@@ -1,9 +1,7 @@
-// client/src/components/category-menu/index.tsx
 import React, { useEffect, useState } from "react";
 import { Menu } from "primereact/menu";
 import { Sidebar } from "primereact/sidebar";
 import CategoryService from "@/services/category-service";
-// MUDANÇA: Apenas ICategory é necessário. ICategoryMenuItem foi removido.
 import type { ICategory } from "@/commons/types"; 
 import type { MenuItem } from "primereact/menuitem"; 
 
@@ -18,14 +16,12 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({
   visible,
   onHide,
 }) => {
-  // MUDANÇA: O estado usa o tipo nativo do PrimeReact (MenuItem[])
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]); 
 
   useEffect(() => {
     const loadCategories = async () => {
       const response = await CategoryService.findAll();
       if (response.success && Array.isArray(response.data)) {
-        // Mapeamento direto para o tipo MenuItem[]
         const items: MenuItem[] = response.data.map(
           (category: ICategory) => ({
             label: category.name,
@@ -43,7 +39,6 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({
       }
     };
     loadCategories();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

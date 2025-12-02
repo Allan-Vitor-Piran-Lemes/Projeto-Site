@@ -128,7 +128,6 @@ export const CheckoutSummaryPage = () => {
                                 <>
                                     <p className="font-bold text-lg">{address.title || 'Principal'}</p>
                                     <p>{address.logradouro}, {address.numero}</p>
-                                    {/* AQUI: Agora 'city' é reconhecido pelo types.ts */}
                                     <p>{address.bairro} - {address.city}/{address.estado}</p>
                                     <p>CEP: {address.cep}</p>
                                     <p className="text-green-700 text-sm mt-2 font-bold">Chega em até {deliveryDays} dias úteis</p>

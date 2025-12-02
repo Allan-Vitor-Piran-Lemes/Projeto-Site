@@ -1,10 +1,7 @@
-/* client/src/App.css */
-/* Limpeza: Garante que o contêiner #root não tenha restrições de largura/centralização que atrapalhem o Footer (que precisa de 100%). */
 #root {
   min-height: 100vh;
 }
 
-/* Opcional: Adicione o seu estilo de barra de busca do projeto antigo para estilizar o TopMenu */
 .search-box {
     display: flex;
     width: 30%;

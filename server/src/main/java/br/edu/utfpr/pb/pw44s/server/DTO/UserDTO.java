@@ -30,7 +30,6 @@ public class UserDTO {
             message = "A senha deve conter pelo menos uma letra maiúscula, uma minúscula e um número")
     private String password;
 
-    // Novos campos
     @NotNull(message = "O CPF é obrigatório")
     @Size(min = 11, max = 14, message = "O CPF deve ter 11 ou 14 caracteres")
     private String cpf;

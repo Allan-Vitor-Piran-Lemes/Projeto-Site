@@ -1,4 +1,3 @@
-// client/src/routes/app-routes/index.tsx
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { AuthPage } from "@/pages/auth-page";
@@ -12,12 +11,9 @@ import { NotFound } from "@/pages/not-found";
 import { ProductDetailPage } from "@/pages/product-detail-page"; 
 import { CartPage } from "@/pages/cart-page";
 import { PrivacyPolicyPage } from "@/pages/privacy-policy-page";
-
-// Imports das novas páginas de Checkout
 import { CheckoutAddressPage } from "@/pages/checkout-address-page";
 import { CheckoutPaymentPage } from "@/pages/checkout-payment-page";
 import { CheckoutSummaryPage } from "@/pages/checkout-summary-page";
-
 import { MyOrdersPage } from "@/pages/my-orders-page";
 import { OrderDetailPage } from "@/pages/order-detail-page";
 
@@ -25,7 +21,6 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* --- ROTAS PÚBLICAS --- */}
         <Route path="login" element={<AuthPage />} />
         <Route path="register" element={<AuthPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} /> 
@@ -38,17 +33,14 @@ export function AppRoutes() {
         <Route path="/product/:id" element={<ProductDetailPage />} /> 
         <Route path="/cart" element={<CartPage />} /> 
 
-        {/* --- ROTAS PROTEGIDAS (Requer Login) --- */}
         <Route element={<RequireAuth />}>
           <Route path="/categories/new" element={<CategoryFormPage />} />
           <Route path="/categories/:id" element={<CategoryFormPage />} />
           <Route path="/products/new" element={<ProductFormPage />} />
           <Route path="/products/:id" element={<ProductFormPage />} />
         
-          {/* FLUXO DE CHECKOUT */}
           <Route path="/checkout/address" element={<CheckoutAddressPage />} />
           
-          {/* MUDANÇA AQUI: Trocamos a div provisória pelos componentes reais */}
           <Route path="/checkout/payment" element={<CheckoutPaymentPage />} />
           <Route path="/checkout/summary" element={<CheckoutSummaryPage />} />
 

@@ -12,8 +12,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findByNameStartingWith(String name);
 
-   // @Query(value = "Select * from tb_category where name LIKE :name", nativeQuery = true)
-   // List<Category> findByMeuFind(String name);
-
 
 }

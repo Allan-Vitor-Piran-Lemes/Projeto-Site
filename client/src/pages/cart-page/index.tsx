@@ -1,4 +1,3 @@
-// client/src/pages/cart-page/index.tsx
 import { useCart } from "@/context/hooks/use-cart";
 import { useAuth } from "@/context/hooks/use-auth";
 import { Button } from "primereact/button";
@@ -14,11 +13,8 @@ export const CartPage = () => {
     const { cart, cartTotal, updateQuantity, removeItem, clearCart, cartCount } = useCart();
     const { authenticated } = useAuth(); 
     
-    // O total é apenas o subtotal agora, pois o frete é calculado/exibido depois
     const finalTotal = cartTotal; 
-    
-    // --- Templates da Tabela ---
-
+   
     const productColumnTemplate = (item: ICartItem) => (
         <div className="flex align-items-center gap-3">
             <img 
@@ -65,21 +61,15 @@ export const CartPage = () => {
         </div>
     );
 
-    // --- Lógica de Finalização (CORRIGIDA) ---
     const handleCheckout = () => {
         if (authenticated) {
-            // Se logado, segue direto para a seleção de endereço
             navigate("/checkout/address");
         } else {
-            // Se não logado, manda para o login COM O ESTADO de origem
-            // Assim, após logar, ele volta para /checkout/address automaticamente
             navigate("/login", { 
                 state: { from: { pathname: "/checkout/address" } } 
             });
         }
     };
-
-    // --- Renderização ---
 
     if (cartCount === 0) {
         return (
@@ -91,7 +81,7 @@ export const CartPage = () => {
                     label="Começar a Comprar" 
                     icon="pi pi-arrow-left" 
                     onClick={() => navigate("/")} 
-                    className="p-button-secondary p-button-outlined"
+                    className="btn-start-shopping" 
                 />
             </div>
         );
@@ -103,7 +93,6 @@ export const CartPage = () => {
 
             <div className="grid">
                 
-                {/* COLUNA ESQUERDA: LISTA DE PRODUTOS */}
                 <div className="col-12 lg:col-8">
                     <div className="card shadow-1 border-round-xl overflow-hidden bg-white">
                         <DataTable value={cart} className="p-datatable-lg" stripedRows responsiveLayout="scroll">
@@ -130,7 +119,6 @@ export const CartPage = () => {
                     </div>
                 </div>
 
-                {/* COLUNA DIREITA: RESUMO */}
                 <div className="col-12 lg:col-4">
                     <div className="summary-card">
                         <h3 className="text-xl font-bold mb-4 text-900">Resumo da Compra</h3>

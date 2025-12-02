@@ -13,14 +13,10 @@ export const ProductListPage = () => {
   const navigate = useNavigate();
   const toast = useRef<Toast>(null);
 
-  // hook do react para executar ações ao carregar o componente
-  // carrega a lista de produtos
   useEffect(() => {
     loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // função para carregar a lista de produtos
   const loadData = async () => {
     const response = await findAll();
 

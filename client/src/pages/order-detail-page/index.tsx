@@ -43,8 +43,12 @@ export const OrderDetailPage = () => {
 
     return (
         <div className="order-detail-container">
-            <Button label="Voltar" icon="pi pi-arrow-left" className="p-button-text mb-3" onClick={() => navigate("/my-orders")} />
-            
+            <Button
+                label="Voltar"
+                icon="pi pi-arrow-left"
+                onClick={() => navigate("/my-orders")} 
+                className="p-button-rounded btn-back-red" 
+            />
             <div className="detail-header">
                 <h2>Pedido #{order.id}</h2>
                 <span className="status-tag">Realizado em {new Date(order.data).toLocaleDateString()}</span>
@@ -69,12 +73,10 @@ export const OrderDetailPage = () => {
                     <div className="detail-card">
                         <h3>Endereço de Entrega</h3>
                         <p>{order.address?.logradouro}, {order.address?.numero}</p>
-                        {/* city agora funciona */}
                         <p>{order.address?.bairro} - {order.address?.city}/{order.address?.estado || 'UF'}</p>
                         <p>CEP: {order.address?.cep}</p>
                         <div className="mt-3 pt-2 border-top-1 border-gray-200">
                             <strong>Forma de Pagamento:</strong>
-                            {/* paymentMethod agora funciona */}
                             <p>{translatePayment(order.paymentMethod)}</p>
                         </div>
                     </div>
@@ -87,7 +89,6 @@ export const OrderDetailPage = () => {
                         </div>
                         <div className="total-line">
                             <span>Frete</span>
-                            {/* freight agora funciona */}
                             <span>{(order.freight || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                         </div>
                         <div className="total-line total-final">

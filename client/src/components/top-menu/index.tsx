@@ -1,6 +1,6 @@
-// client/src/components/top-menu/index.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext"; // <--- 1. IMPORT NOVO
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/hooks/use-auth";
 import { Badge } from 'primereact/badge';
@@ -32,20 +32,30 @@ const TopMenu: React.FC = () => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Pega o primeiro nome
     const firstName = authenticatedUser?.displayName?.split(' ')[0] || 'Usuário';
 
     return (
         <header className="top-menu-header">
-            {/* LOGO */}
+            {/* 1. LOGO */}
             <h1 className="top-menu-logo">
                 <Link to="/" className="top-menu-logo-link">Tabula</Link>
             </h1>
 
-            {/* NAVEGAÇÃO DIREITA */}
+            {/* 2. BARRA DE PESQUISA (NOVO - ADICIONADO AQUI) */}
+            <div className="search-container">
+                <span className="p-input-icon-left w-full">
+                    <i className="pi pi-search" />
+                    <InputText 
+                        placeholder="O que você está procurando?" 
+                        className="w-full p-inputtext-sm" 
+                        style={{ borderRadius: '2rem' }} 
+                    />
+                </span>
+            </div>
+
+            {/* 3. NAVEGAÇÃO (CARRINHO + USER) */}
             <nav className="top-menu-nav">
                 
-                {/* Carrinho */}
                 <div className="top-menu-cart-container mr-4">
                     <Button 
                         icon="pi pi-shopping-cart" 
@@ -58,7 +68,6 @@ const TopMenu: React.FC = () => {
                     )}
                 </div>
 
-                {/* LÓGICA: Logado ou Não */}
                 {authenticated ? (
                     <div className="user-menu-container" ref={menuRef}>
                         <div 
@@ -67,7 +76,6 @@ const TopMenu: React.FC = () => {
                         >
                             <i className="pi pi-user text-xl"></i>
                             <span className="user-name">{firstName}</span>
-                            {/* Flecha alinhada à direita */}
                             <i className={`pi pi-angle-${showUserMenu ? 'up' : 'down'} ml-1 text-xs`}></i>
                         </div>
 

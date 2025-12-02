@@ -49,7 +49,7 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
         return modelMapper;
     }
 
-    // --- LISTAR MEUS PEDIDOS ---
+    // Listar meus pedidos
     @GetMapping("/my_orders")
     public ResponseEntity<List<OrderResponseDTO>> getMyOrders() {
         User user = authService.getAuthenticatedUser();
@@ -62,7 +62,7 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
         return ResponseEntity.ok(response);
     }
 
-    // --- DETALHES DO PEDIDO ---
+    // Detalhes do pedido
     @GetMapping("/detail/{id}")
     public ResponseEntity<OrderResponseDTO> getOrderDetail(@PathVariable Long id) {
         Order order = orderService.findOrderById(id);
@@ -93,9 +93,6 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
             List<OrderItensResponseDTO> itemsDto = order.getItems().stream().map(item -> {
                 OrderItensResponseDTO iDto = new OrderItensResponseDTO();
                 iDto.setId(item.getId());
-
-                // --- CORREÇÃO AQUI ---
-                // Como 'quantity' é double primitivo, fazemos o cast direto para int
                 iDto.setQuantity((int) item.getQuantity());
 
                 iDto.setUnit_price(item.getUnit_price());
@@ -111,7 +108,7 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
         return dto;
     }
 
-    // --- CRIAR PEDIDO ---
+    // Criar pedido
     @Override
     @PostMapping
     @Transactional
@@ -138,8 +135,6 @@ public class OrderController extends CrudController<Order, OrderDTO, Long> {
                         Product product = new Product();
                         product.setId(itemDTO.getProductId());
                         item.setProduct(product);
-
-                        // Cast de Integer (DTO) para double (Banco)
                         item.setQuantity((double) itemDTO.getQuantity());
 
                         item.setUnit_price(itemDTO.getUnit_price());

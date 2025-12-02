@@ -12,10 +12,8 @@ const getMyOrders = async (): Promise<IResponse> => {
     }
 };
 
-// ATENÇÃO: Mudamos a URL aqui para '/detail/' para pegar o DTO completo
 const findById = async (id: number): Promise<IResponse> => {
     try {
-        // MUDANÇA AQUI: de `${BASE_URL}/${id}` para `${BASE_URL}/detail/${id}`
         const response = await api.get(`${BASE_URL}/detail/${id}`);
         return { success: true, data: response.data };
     } catch (error: any) {

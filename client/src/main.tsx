@@ -1,4 +1,3 @@
-// client/src/main.tsx
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css"; 
@@ -14,7 +13,7 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css"; 
 
 import { AuthProvider } from "@/context/AuthContext";
-import { CartProvider } from "@/context/CartContext"; // ADIÇÃO: Importar CartProvider
+import { CartProvider } from "@/context/CartContext"; 
 
 const themeId = "theme-link";
 const themeHref =
@@ -31,7 +30,6 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <PrimeReactProvider>
         <AuthProvider>
-          {/* MUDANÇA CRÍTICA: Envolver a aplicação no CartProvider */}
           <CartProvider> 
             <App />
           </CartProvider>
