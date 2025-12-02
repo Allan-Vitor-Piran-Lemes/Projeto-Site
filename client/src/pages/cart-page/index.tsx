@@ -15,20 +15,26 @@ export const CartPage = () => {
     
     const finalTotal = cartTotal; 
    
-    const productColumnTemplate = (item: ICartItem) => (
-        <div className="flex align-items-center gap-3">
-            <img 
-                src={item.product.image || "https://placehold.co/100x100?text=Sem+Imagem"} 
-                alt={item.product.name} 
-                className="cart-product-image"
-                onError={(e) => (e.currentTarget.src = "https://placehold.co/100x100?text=Erro")}
-            />
-            <div className="flex flex-column">
-                <span className="font-bold text-lg text-900">{item.product.name}</span>
-                <span className="text-sm text-500">{item.product.category?.name || 'Geral'}</span>
+    const productColumnTemplate = (item: ICartItem) => {
+        const imageUrl = item.product.image.startsWith('http') 
+            ? item.product.image 
+            : `http://localhost:8044${item.product.image}`;
+
+        return (
+            <div className="flex align-items-center gap-3">
+                <img 
+                    src={imageUrl || "https://placehold.co/100x100?text=Sem+Imagem"} 
+                    alt={item.product.name} 
+                    className="cart-product-image"
+                    onError={(e) => (e.currentTarget.src = "https://placehold.co/100x100?text=Erro")}
+                />
+                <div className="flex flex-column">
+                    <span className="font-bold text-lg text-900">{item.product.name}</span>
+                    <span className="text-sm text-500">{item.product.category?.name || 'Geral'}</span>
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     const priceColumnTemplate = (item: ICartItem) => (
         <span className="font-medium text-lg">

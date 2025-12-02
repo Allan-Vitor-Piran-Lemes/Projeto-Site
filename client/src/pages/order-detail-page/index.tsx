@@ -57,16 +57,28 @@ export const OrderDetailPage = () => {
             <div className="detail-grid">
                 <div className="detail-card products">
                     <h3>Itens do Pedido</h3>
-                    {order.items?.map((item) => (
-                        <div key={item.id} className="item-row">
-                            <img src={item.product.image} className="item-img" onError={(e) => e.currentTarget.src="https://placehold.co/60"} />
-                            <div className="item-info">
-                                <span>{item.product.name}</span>
-                                <small>Qtd: {item.quantity}</small>
+                    {order.items?.map((item) => {
+                        // --- AQUI A CORREÇÃO DA IMAGEM ---
+                        const imageUrl = item.product.image.startsWith('http') 
+                            ? item.product.image 
+                            : `http://localhost:8044${item.product.image}`;
+
+                        return (
+                            <div key={item.id} className="item-row">
+                                <img 
+                                    src={imageUrl} 
+                                    className="item-img" 
+                                    alt={item.product.name}
+                                    onError={(e) => e.currentTarget.src="https://placehold.co/60x60?text=..."} 
+                                />
+                                <div className="item-info">
+                                    <span>{item.product.name}</span>
+                                    <small>Qtd: {item.quantity}</small>
+                                </div>
+                                <div className="item-price">{item.unit_price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                             </div>
-                            <div className="item-price">{item.unit_price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <div className="side-column">

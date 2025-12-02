@@ -59,7 +59,8 @@ export const MyOrdersPage = () => {
                             backgroundColor: '#800000', 
                             border: 'none', 
                             fontWeight: 'bold',
-                            padding: '10px 20px'
+                            padding: '10px 20px',
+                            color: 'white' // Garante texto branco
                         }}
                         onClick={() => navigate("/")} 
                     />
@@ -81,6 +82,36 @@ export const MyOrdersPage = () => {
                                 <div className="order-status">
                                     <span className="status-badge success">Realizado</span>
                                 </div>
+
+                                {/* --- AQUI ESTÁ A ÚNICA ADIÇÃO: IMAGENS DOS PRODUTOS --- */}
+                                <div style={{ display: 'flex', gap: '8px', margin: '12px 0', overflowX: 'auto' }}>
+                                    {order.items?.map((item: any, idx: number) => {
+                                        // Lógica para corrigir a URL da imagem
+                                        const rawImg = item.product?.image || "";
+                                        const imgUrl = rawImg.startsWith('http') 
+                                            ? rawImg 
+                                            : `http://localhost:8044${rawImg}`;
+
+                                        return (
+                                            <img 
+                                                key={idx}
+                                                src={imgUrl}
+                                                alt={item.product?.name}
+                                                style={{ 
+                                                    width: '50px', 
+                                                    height: '50px', 
+                                                    objectFit: 'cover', 
+                                                    borderRadius: '4px',
+                                                    border: '1px solid #e0e0e0',
+                                                    backgroundColor: '#fff'
+                                                }}
+                                                onError={(e) => e.currentTarget.src = "https://placehold.co/50x50?text=..."}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                                {/* --------------------------------------------------- */}
+
                                 <div className="order-total">
                                     <small>Total:</small>
                                     <strong>

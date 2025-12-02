@@ -142,16 +142,28 @@ export const CheckoutSummaryPage = () => {
                         </div>
                     </div>
                     <div className="products-card">
-                        {cart.map(item => (
-                            <div key={item.product.id} className="product-item">
-                                <img src={item.product.image} className="prod-img" onError={(e)=>e.currentTarget.src="https://placehold.co/60"} />
-                                <div className="prod-details">
-                                    <span className="prod-name">{item.product.name}</span>
-                                    <span className="prod-qty">Qtd: {item.quantity}</span>
+                        {cart.map(item => {
+                            // --- AQUI A CORREÇÃO: Ajusta o caminho da imagem ---
+                            const imageUrl = item.product.image.startsWith('http') 
+                                ? item.product.image 
+                                : `http://localhost:8044${item.product.image}`;
+
+                            return (
+                                <div key={item.product.id} className="product-item">
+                                    <img 
+                                        src={imageUrl} 
+                                        className="prod-img" 
+                                        alt={item.product.name}
+                                        onError={(e)=>e.currentTarget.src="https://placehold.co/60x60?text=..."} 
+                                    />
+                                    <div className="prod-details">
+                                        <span className="prod-name">{item.product.name}</span>
+                                        <span className="prod-qty">Qtd: {item.quantity}</span>
+                                    </div>
+                                    <div className="prod-price">{(item.product.price * item.quantity).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
                                 </div>
-                                <div className="prod-price">{(item.product.price * item.quantity).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
                 <div className="right-column">

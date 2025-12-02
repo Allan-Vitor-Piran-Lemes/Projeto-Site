@@ -66,6 +66,8 @@ public class WebSecurity {
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                 //permite que a rota "/categories" seja acessada, mesmo sem o usuário estar autenticado desde que o método HTTP da requisição seja GET
                 .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+
+                .requestMatchers("/mage/**").permitAll()
                 //as demais rotas da aplicação só podem ser acessadas se o usuário estiver autenticado
                 .anyRequest().authenticated()
         );

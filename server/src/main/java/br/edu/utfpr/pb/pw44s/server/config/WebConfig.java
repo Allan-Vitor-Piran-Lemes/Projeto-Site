@@ -20,5 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/assetsImages/");
         registry.addResourceHandler("/mage/**")
                 .addResourceLocations("classpath:/static/mage/");
+        registry.addResourceHandler("/mage/**")
+                .addResourceLocations("classpath:/static/mage/");
     }
 }
