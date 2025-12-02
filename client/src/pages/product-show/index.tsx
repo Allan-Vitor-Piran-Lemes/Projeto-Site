@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+/*import { useEffect, useState, useRef } from "react";
 import ProductService from "@/services/product-service";
 import { Toast } from "primereact/toast";
 import { ProductCard } from "@/components/product-card";
@@ -58,4 +58,4 @@ export const ProductShow = () => {
       ))}
     </div>
   );
-};
+};*/

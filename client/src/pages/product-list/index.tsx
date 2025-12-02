@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+/*import { useEffect, useRef, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -98,4 +98,4 @@ export const ProductListPage = () => {
       </DataTable>
     </div>
   );
-};
+};*/
