@@ -1,4 +1,4 @@
-import React from 'react'; // Adicionado para garantir que o React.MouseEvent funcione
+import React from 'react'; 
 import { IProduct } from "@/commons/types";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/hooks/use-cart";
@@ -11,25 +11,24 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addItem } = useCart(); // Função para adicionar o item ao estado global do carrinho.
 
+  // Lida com o clique na área do card (leva para a página de detalhes).
   const handleDetailsClick = () => {
     if (product.id) {
       navigate(`/product/${product.id}`);
     }
   };
   
+  // Lida com o clique no botão de Adicionar ao Carrinho.
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Impede que o clique no botão abra os detalhes do produto
+    e.stopPropagation(); 
     
     addItem(product, 1);
     
-    onAddToCart(product);
+    onAddToCart(product); //mostra a msg
   };
 
-  // --- LÓGICA IMPORTANTE DA IMAGEM ---
-  // Se a imagem vier do banco como "/mage/nome.jpg", adicionamos o servidor antes.
-  // Se vier da web (http...), usamos direto.
   const imageUrl = product.image.startsWith('http') 
     ? product.image 
     : `http://localhost:8044${product.image}`;
@@ -37,13 +36,13 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   return (
     <div className="product-card-custom"> 
       
-      {/* Área clicável que leva aos detalhes */}
+      {/*Área clicável que leva aos detalhes*/}
       <div onClick={handleDetailsClick} className="card-link cursor-pointer">
         <img
             alt={product.name}
             src={imageUrl} 
             className="product-image"
-            // Fallback: se a imagem não carregar, mostra um cinza com texto
+            //se a imagem não carregar, mostra um cinza com texto
             onError={(e) => (e.currentTarget.src = "https://placehold.co/600x400?text=Sem+Imagem")}
         />
         <h3 className="Titulo">

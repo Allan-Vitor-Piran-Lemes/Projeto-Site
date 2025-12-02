@@ -35,7 +35,11 @@ export const CheckoutSummaryPage = () => {
         }
 
         setPaymentMethod(payMethod);
-        setFreightCost(parseFloat(freight || "0"));
+        
+        // CORREÇÃO: Garante que o valor analisado de freight seja um número válido (0 se a análise falhar)
+        const parsedFreight = parseFloat(freight || "0");
+        setFreightCost(isNaN(parsedFreight) ? 0 : parsedFreight);
+        
         setDeliveryDays(days || "0");
 
         if (addrData) {

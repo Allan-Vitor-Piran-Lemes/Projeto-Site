@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "@/components/layout";
-import { AuthPage } from "@/pages/auth-page"; // Usar apenas a AuthPage
+import { AuthPage } from "@/pages/auth-page"; 
 import { HomePage } from "@/pages/home-page";
 import { RequireAuth } from "@/components/require-auth";
 import { CategoryListPage } from "@/pages/category-list";
 import { CategoryFormPage } from "@/pages/category-form";
-import { ProductListPage } from "@/pages/product-list-page"; // Usar a Vitrine (Grid)
+import { ProductListPage } from "@/pages/product-list-page"; 
 import { ProductFormPage } from "@/pages/product-form";
 import { NotFound } from "@/pages/not-found";
 import { ProductDetailPage } from "@/pages/product-detail-page";

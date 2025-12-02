@@ -5,13 +5,14 @@ import CategoryService from "@/services/category-service";
 import type { ICategory } from "@/commons/types"; 
 import './styles.css';
 
+//Componente Underbar, menu secundário de categorias
 const Underbar: React.FC = () => {
     const navigate = useNavigate();
     const [categories, setCategories] = useState<ICategory[]>([]);
 
     useEffect(() => {
         const loadCategories = async () => {
-            const response = await CategoryService.findAll();
+            const response = await CategoryService.findAll(); //busca todas as categorias no back
             if (response.success && Array.isArray(response.data)) {
                 setCategories(response.data as ICategory[]);
             }
@@ -19,6 +20,7 @@ const Underbar: React.FC = () => {
         loadCategories();
     }, []);
 
+    // Função que navega para a página de produtos, passando o id e o nome da categoria como parâmetros de URL.
     const handleCategoryClick = (categoryId: number | null, categoryName: string) => {
         if (categoryId) {
             navigate(`/products?categoryId=${categoryId}&title=${categoryName}`);
@@ -38,7 +40,7 @@ const Underbar: React.FC = () => {
                         Todos os Produtos
                     </span>
                 </li>
-
+                {/* Mapeia e renderiza cada categoria*/}
                 {categories.map((category) => (
                     <li key={category.id}>
                         <span 
@@ -54,6 +56,7 @@ const Underbar: React.FC = () => {
     );
 };
 
+//Componente Footer, Rodapé
 const Footer: React.FC = () => {
     const socialLinks = [
         { name: 'whatsapp', icon: 'pi pi-whatsapp', url: 'https://wa.me/559999999999' },
@@ -103,6 +106,7 @@ const Footer: React.FC = () => {
     );
 };
 
+//Componente Layout Principal
 export function Layout() {
     return (
         <div className="flex flex-column min-h-screen">

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
-import { Paginator } from 'primereact/paginator'; // <--- IMPORTANTE
+import { Paginator } from 'primereact/paginator'; 
 import type { IProduct } from "@/commons/types";
 import ProductService from "@/services/product-service";
 import { ProductCard } from "@/components/product-card";

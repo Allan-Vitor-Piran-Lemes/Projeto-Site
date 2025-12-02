@@ -22,6 +22,7 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({
     const loadCategories = async () => {
       const response = await CategoryService.findAll();
       if (response.success && Array.isArray(response.data)) {
+        // Mapeia os dados do Backend (ICategory) para o formato esperado pelo componente Menu (MenuItem)
         const items: MenuItem[] = response.data.map(
           (category: ICategory) => ({
             label: category.name,

@@ -34,14 +34,15 @@ const TopMenu: React.FC = () => {
 
     const firstName = authenticatedUser?.displayName?.split(' ')[0] || 'Usuário';
 
+    // Pega apenas o primeiro nome para exibição no menu
     return (
         <header className="top-menu-header">
-            {/* 1. LOGO */}
+            {/*LOGO*/}
             <h1 className="top-menu-logo">
                 <Link to="/" className="top-menu-logo-link">Tabula</Link>
             </h1>
 
-            {/* 2. BARRA DE PESQUISA (NOVO - ADICIONADO AQUI) */}
+            {/*BARRA DE PESQUISA*/}
             <div className="search-container">
                 <span className="p-input-icon-left w-full">
                     <i className="pi pi-search" />
@@ -53,7 +54,7 @@ const TopMenu: React.FC = () => {
                 </span>
             </div>
 
-            {/* 3. NAVEGAÇÃO (CARRINHO + USER) */}
+            {/*NAVEGAÇÃO(CARRINHO + USUÁRIO)*/}
             <nav className="top-menu-nav">
                 
                 <div className="top-menu-cart-container mr-4">
@@ -69,6 +70,7 @@ const TopMenu: React.FC = () => {
                 </div>
 
                 {authenticated ? (
+                    //Se autenticado: Exibe o nome e ícone do usuário---
                     <div className="user-menu-container" ref={menuRef}>
                         <div 
                             className="user-profile-trigger"
@@ -96,6 +98,7 @@ const TopMenu: React.FC = () => {
                         )}
                     </div>
                 ) : (
+                    //Se não autenticado: Exibe os botões de Login e Cadastro
                     <div className="auth-buttons-container">
                         <Link to="/login" state={{ from: location }} className="auth-btn-link">Entrar</Link>
                         <span className="divider">/</span>

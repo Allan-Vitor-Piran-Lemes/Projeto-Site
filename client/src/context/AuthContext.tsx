@@ -2,7 +2,6 @@ import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type { AuthenticatedUser, AuthenticationResponse } from "@/commons/types";
 import { api } from "@/lib/axios";
-//import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   authenticated: boolean;
@@ -20,7 +19,6 @@ const AuthContext = createContext({} as AuthContextType);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>();
-  //const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

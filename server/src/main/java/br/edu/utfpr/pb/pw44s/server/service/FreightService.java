@@ -68,10 +68,14 @@ public class FreightService {
             MelhorEnvioDTO.Response cheapestOption = Arrays.stream(responseArray)
                     .filter(opt -> opt.getError() == null) // Sem erro
                     .filter(opt -> opt.getPrice() != null) // Com preço
-                    .min(Comparator.comparingDouble(opt -> Double.parseDouble(opt.getPrice()))) // Menor valor
+                    // CORREÇÃO AQUI: Substitui vírgula por ponto antes de fazer a comparação
+                    .min(Comparator.comparingDouble(opt -> Double.parseDouble(opt.getPrice().replace(",", "."))))
                     .orElseThrow(() -> new RuntimeException("Nenhuma opção de frete disponível."));
 
-            Double finalPrice = Double.parseDouble(cheapestOption.getPrice());
+            // Garante que o preço final seja convertido corretamente
+            String finalPriceStr = cheapestOption.getPrice().replace(",", ".");
+            Double finalPrice = Double.parseDouble(finalPriceStr);
+
             return new FreightResponseDTO(finalPrice, cheapestOption.getDeliveryTime());
 
         } catch (Exception e) {
